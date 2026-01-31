@@ -24,7 +24,8 @@ const App: React.FC = () => {
     const [isLoadModalOpen, setIsLoadModalOpen] = useState(false);
     
     const CONCURRENCY_LIMIT = 4;
-    const APP_PASSWORD = import.meta.env.VITE_APP_PASSWORD; 
+    // @ts-ignore
+    const APP_PASSWORD = process.env.VITE_APP_PASSWORD || import.meta.env.VITE_APP_PASSWORD; 
 
     const currentResult = selectedBatchId ? batchQueue.find(b => b.id === selectedBatchId)?.result || null : null;
     const currentError = selectedBatchId ? batchQueue.find(b => b.id === selectedBatchId)?.error || null : error;
