@@ -67,8 +67,29 @@ ${articleText}`;
             },
         });
 
-        const jsonText = response.text.trim();
-        const result: SeoResult = JSON.parse(jsonText);
+        let jsonText = response.text.trim();
+        
+        // Try to parse the JSON response
+        let result: SeoResult;
+        try {
+            result = JSON.parse(jsonText);
+        } catch (parseError) {
+            // If parsing fails, try to clean the response
+            console.warn("Initial JSON parse failed, attempting to clean response...");
+            
+            // Remove markdown code blocks if present
+            jsonText = jsonText.replace(/```json\s*/g, '').replace(/```\s*/g, '');
+            
+            // Try parsing again
+            try {
+                result = JSON.parse(jsonText);
+            } catch (secondError) {
+                console.error("JSON Parse Error:", secondError);
+                console.error("Problematic JSON:", jsonText.substring(0, 500));
+                throw new Error(`Impossibile parsare la risposta dell'IA. L'IA potrebbe aver restituito un formato non valido.`);
+            }
+        }
+        
         // Extract sources if available (though unlikely without tools)
         result.groundingSources = extractSources(response);
         return result;
