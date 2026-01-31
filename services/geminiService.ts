@@ -1,6 +1,8 @@
 
+
 import { GoogleGenAI, Type } from "@google/genai";
 import { SeoResult, GroundingSource } from '../types';
+import DebugLogger from '../components/DebugPanel';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
@@ -75,7 +77,7 @@ ${articleText}`;
             result = JSON.parse(jsonText);
         } catch (parseError) {
             // If parsing fails, try to clean the response
-            console.warn("Initial JSON parse failed, attempting to clean response...");
+            DebugLogger.log('warn', 'Initial JSON parse failed, attempting to clean response...', parseError);
             
             // Remove markdown code blocks if present
             jsonText = jsonText.replace(/```json\s*/g, '').replace(/```\s*/g, '');
@@ -83,9 +85,12 @@ ${articleText}`;
             // Try parsing again
             try {
                 result = JSON.parse(jsonText);
+                DebugLogger.log('info', 'JSON successfully parsed after cleaning');
             } catch (secondError) {
-                console.error("JSON Parse Error:", secondError);
-                console.error("Problematic JSON:", jsonText.substring(0, 500));
+                DebugLogger.log('error', 'JSON Parse Error (second attempt)', {
+                    error: secondError,
+                    problematicJSON: jsonText.substring(0, 500)
+                });
                 throw new Error(`Impossibile parsare la risposta dell'IA. L'IA potrebbe aver restituito un formato non valido.`);
             }
         }
@@ -94,7 +99,10 @@ ${articleText}`;
         result.groundingSources = extractSources(response);
         return result;
     } catch (error: any) {
-        console.error("Dettaglio Errore Gemini:", error);
+        DebugLogger.log('error', 'Gemini API Error', {
+            message: error.message,
+            fullError: error
+        });
         const errorMsg = error.message || JSON.stringify(error);
         throw new Error(`Errore API: ${errorMsg}`);
     }

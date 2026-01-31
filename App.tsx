@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArticleInput } from './components/ArticleInput';
 import { SeoOutput } from './components/SeoOutput';
 import { optimizeArticleForSeo, enrichArticleDepth } from './services/geminiService';
@@ -8,6 +8,8 @@ import { SparklesIcon, ArchiveBoxIcon, TrashIcon } from './components/IconCompon
 import { LoadModal } from './components/LoadModal';
 import { saveArticleToDb, loadArticlesFromDb, deleteArticleFromDb, supabase } from './services/supabaseService';
 import { Login } from './components/Login';
+import { DebugPanel } from './components/DebugPanel';
+import DebugLogger from './components/DebugPanel';
 
 const App: React.FC = () => {
     // Auth State
@@ -297,6 +299,8 @@ const App: React.FC = () => {
                 onLoad={handleLoadArticle}
                 onDelete={handleDeleteArticle}
             />
+            
+            <DebugPanel />
         </div>
     );
 };
