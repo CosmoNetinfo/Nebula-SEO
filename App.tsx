@@ -123,7 +123,7 @@ const App: React.FC = () => {
         if (selectedBatchId === id) setSelectedBatchId(null);
     };
 
-    const handleSaveArticle = useCallback((finalHtml?: string) => {
+    const handleSaveArticle = (finalHtml?: string) => {
         const item = batchQueue.find(b => b.id === selectedBatchId);
         if (!item || !item.result) return;
         
@@ -149,9 +149,9 @@ const App: React.FC = () => {
         };
 
         internalSave();
-    }, [selectedBatchId, batchQueue]); // Removed savedArticles dependency to avoid loop
+    };
 
-    const handleLoadArticle = useCallback((article: SavedSeoResult) => {
+    const handleLoadArticle = (article: SavedSeoResult) => {
         const { id, originalArticleText, ...resultData } = article;
         const newItem: BatchItem = {
             id: Date.now().toString(),
@@ -162,9 +162,9 @@ const App: React.FC = () => {
         setBatchQueue(prev => [...prev, newItem]);
         setSelectedBatchId(newItem.id);
         setIsLoadModalOpen(false);
-    }, []);
+    };
 
-    const handleDeleteArticle = useCallback((id: string) => {
+    const handleDeleteArticle = (id: string) => {
         setSavedArticles(prev => {
             const updated = prev.filter(a => a.id !== id);
             localStorage.setItem('seo-optimizer-saved-articles', JSON.stringify(updated));
@@ -174,11 +174,11 @@ const App: React.FC = () => {
         if (supabase) {
             deleteArticleFromDb(id).catch(console.error);
         }
-    }, []);
+    };
 
     // Dummy handlers for now
-    const handleExport = useCallback(() => {}, []);
-    const handleImport = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {}, []);
+    const handleExport = () => {};
+    const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {};
 
     return (
         <div className="bg-slate-900 min-h-screen text-slate-200 font-sans pb-20">
