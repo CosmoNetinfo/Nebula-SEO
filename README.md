@@ -1,20 +1,59 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Nebula SEO - AI Content Optimizer
 
-# Run and deploy your AI Studio app
+![Nebula SEO Login Screen](https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop)
 
-This contains everything you need to run your app locally.
+**Nebula SEO** è un'applicazione avanzata basata su IA per ottimizzare, arricchire e formattare articoli per il web. Utilizza Google Gemini 2.5 Flash per analizzare i testi, correggere errori SEO, generare metadati e cercare fonti autorevoli in tempo reale.
 
-View your app in AI Studio: https://ai.studio/apps/drive/1gJv-M2Yw9PX9UNhYrWeFUXIjYeCB5SkB
+## ✨ Funzionalità Principali
 
-## Run Locally
+*   **Ottimizzazione SEO Automatica**: Corregge la struttura, i tag HTML (H2, H3), e migliora la leggibilità.
+*   **Arricchimento Intelligente**: Cerca sul web fonti reali e inserisce link contestuali pertinenti.
+*   **Gestione in Batch**: Elabora code di articoli (fino a 4 in parallelo).
+*   **Archivio Cloud**: Salva i tuoi articoli su Supabase per accedervi da ovunque.
+*   **Analisi SEO**: Checklist automatica per verificare title, meta description, slug e altro.
+*   **Login Sicuro**: Accesso protetto da password.
 
-**Prerequisites:**  Node.js
+## 🚀 Tecnologie
 
+*   **Frontend**: React 19, Vite, TailwindCSS
+*   **AI Engine**: Google Gemini 2.5 Flash (via `google-genai` SDK)
+*   **Database**: Supabase
+*   **Deploy**: Vercel
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 🛠️ Installazione Locale
+
+1.  Clona il repository:
+    ```bash
+    git clone https://github.com/CosmoNetinfo/Nebula-SEO.git
+    cd Nebula-SEO
+    ```
+
+2.  Installa le dipendenze:
+    ```bash
+    npm install
+    ```
+
+3.  Crea un file `.env.local` nella root del progetto e aggiungi le tue chiavi:
+    ```env
+    GEMINI_API_KEY=tua_chiave_gemini
+    VITE_APP_PASSWORD=tua_password_accesso
+    VITE_SUPABASE_URL=tuo_url_supabase
+    VITE_SUPABASE_ANON_KEY=tua_chiave_anon_supabase
+    ```
+
+4.  Avvia il server di sviluppo:
+    ```bash
+    npm run dev
+    ```
+
+## 🌐 Deploy
+
+Questo progetto è ottimizzato per **Vercel**.
+
+1.  Collega il repository a Vercel.
+2.  Imposta `Output Directory` su `build_output`.
+3.  Aggiungi le variabili d'ambiente nelle impostazioni di Vercel.
+
+---
+
+**CosmoNet** © 2026 - *Ad Astra Per Aspera*
