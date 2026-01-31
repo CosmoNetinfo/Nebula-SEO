@@ -2,12 +2,19 @@
 import { createClient } from '@supabase/supabase-js';
 import { SavedSeoResult } from '../types';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = supabaseUrl && supabaseKey 
-  ? createClient(supabaseUrl, supabaseKey) 
-  : null;
+let dbClient = null;
+try {
+    if (supabaseUrl && supabaseKey) {
+        dbClient = createClient(supabaseUrl, supabaseKey);
+    }
+} catch (e) {
+    console.error("Supabase init failed:", e);
+}
+
+export const supabase = dbClient;
 
 export const saveArticleToDb = async (article: SavedSeoResult) => {
     if (!supabase) return null;
