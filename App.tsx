@@ -24,7 +24,7 @@ const App: React.FC = () => {
     const [isLoadModalOpen, setIsLoadModalOpen] = useState(false);
     
     const CONCURRENCY_LIMIT = 4;
-    const APP_PASSWORD = import.meta.env.VITE_APP_PASSWORD || "cosmo2026"; 
+    const APP_PASSWORD = import.meta.env.VITE_APP_PASSWORD; 
 
     const currentResult = selectedBatchId ? batchQueue.find(b => b.id === selectedBatchId)?.result || null : null;
     const currentError = selectedBatchId ? batchQueue.find(b => b.id === selectedBatchId)?.error || null : error;
@@ -171,7 +171,7 @@ const App: React.FC = () => {
                     <div className="flex items-center gap-3">
                         <SparklesIcon className="w-10 h-10 text-indigo-400" />
                         <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 text-transparent bg-clip-text">
-                            CosmoNet_MultiOptimizer
+                            Nebula SEO
                         </h1>
                     </div>
                     <div className="flex gap-2 items-center">

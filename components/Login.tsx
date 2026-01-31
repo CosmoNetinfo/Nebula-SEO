@@ -32,7 +32,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 <SparklesIcon className="w-8 h-8 text-indigo-400" />
             </div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 text-transparent bg-clip-text mb-2">
-                CosmoNet
+                Nebula SEO
             </h1>
             <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em]">Portale di Accesso</p>
         </div>
