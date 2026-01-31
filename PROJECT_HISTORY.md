@@ -298,7 +298,12 @@ git push             # Deploy automatico su Vercel
 **Progetto:** Nebula SEO  
 **Sviluppato per:** CosmoNet (https://www.cosmonet.info/)  
 **Data Creazione:** Gennaio 2026  
-**Versione:** 1.1.0 (con Debug Panel)
+**Versione:** 2.0.0 (Modern Premium UI - 31 Gennaio 2026)
+
+### Changelog:
+- **v2.0.0** - UI Modernization completa con glassmorphism, nuove animazioni, design premium
+- **v1.1.0** - Aggiunto Debug Panel
+- **v1.0.0** - Release iniziale
 
 ---
 
