@@ -36,7 +36,8 @@ l:/cosmonet_articoli_perfetti/
 │   ├── Login.tsx              # Schermata di autenticazione
 │   ├── Loader.tsx             # Spinner di caricamento
 │   ├── IconComponents.tsx     # Icone SVG custom
-│   └── ErrorBoundary.tsx      # Gestione errori React
+│   ├── ErrorBoundary.tsx      # Gestione errori React
+│   └── DebugPanel.tsx         # Pannello debug per tracking errori
 ├── services/
 │   ├── geminiService.ts       # Logica API Gemini (ottimizzazione + ricerca)
 │   └── supabaseService.ts     # CRUD database Supabase
@@ -48,6 +49,8 @@ l:/cosmonet_articoli_perfetti/
 ├── tailwind.config.js         # Configurazione Tailwind v3
 ├── postcss.config.js          # PostCSS per Tailwind
 ├── .gitignore                 # File da escludere da Git
+├── PROJECT_HISTORY.md         # Storia completa del progetto
+├── ROADMAP.md                 # Roadmap funzionalità future
 ├── DEPLOY_GUIDE.md            # Guida deploy Vercel
 └── README.md                  # Documentazione pubblica
 ```
@@ -97,6 +100,16 @@ l:/cosmonet_articoli_perfetti/
 - Modalità Preview/Code per articoli
 - Copia rapida di tutti i metadati
 - Responsive design
+
+### 7. **Debug Panel (Sistema di Diagnostica)**
+- Pannello flottante in basso a destra
+- Tracking in tempo reale di errori, warning e info
+- Timestamp per ogni log
+- Dettagli espandibili (stack trace, JSON problematici)
+- Contatore errori visibile sul pulsante
+- Pulsante "Pulisci" per reset log
+- Mantiene ultimi 100 log in memoria
+- Integrato in `geminiService.ts` per tracciare errori API
 
 ---
 
@@ -285,7 +298,7 @@ git push             # Deploy automatico su Vercel
 **Progetto:** Nebula SEO  
 **Sviluppato per:** CosmoNet (https://www.cosmonet.info/)  
 **Data Creazione:** Gennaio 2026  
-**Versione:** 1.0.0
+**Versione:** 1.1.0 (con Debug Panel)
 
 ---
 
