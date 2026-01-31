@@ -123,25 +123,33 @@ const App: React.FC = () => {
         if (selectedBatchId === id) setSelectedBatchId(null);
     };
 
-    const handleSaveArticle = useCallback(async (finalHtml?: string) => {
+    const handleSaveArticle = useCallback((finalHtml?: string) => {
         const item = batchQueue.find(b => b.id === selectedBatchId);
         if (!item || !item.result) return;
         
-        const newSavedArticle: SavedSeoResult = {
-            ...item.result,
-            htmlContent: finalHtml || item.result.htmlContent,
-            id: Date.now().toString(),
-            originalArticleText: item.text,
+        const internalSave = async () => {
+            const newSavedArticle: SavedSeoResult = {
+                ...item.result!,
+                htmlContent: finalHtml || item.result!.htmlContent,
+                id: Date.now().toString(),
+                originalArticleText: item.text,
+            };
+            
+            // Local Update
+            setSavedArticles(prev => {
+                const updated = [...prev, newSavedArticle];
+                localStorage.setItem('seo-optimizer-saved-articles', JSON.stringify(updated));
+                return updated;
+            });
+            
+            // Remote Update
+            if (supabase) {
+                await saveArticleToDb(newSavedArticle);
+            }
         };
-        const updatedArticles = [...savedArticles, newSavedArticle];
-        setSavedArticles(updatedArticles);
-        localStorage.setItem('seo-optimizer-saved-articles', JSON.stringify(updatedArticles));
-        
-        // Save to DB
-        if (supabase) {
-            await saveArticleToDb(newSavedArticle);
-        }
-    }, [selectedBatchId, batchQueue, savedArticles]);
+
+        internalSave();
+    }, [selectedBatchId, batchQueue]); // Removed savedArticles dependency to avoid loop
 
     const handleLoadArticle = useCallback((article: SavedSeoResult) => {
         const { id, originalArticleText, ...resultData } = article;
@@ -156,14 +164,21 @@ const App: React.FC = () => {
         setIsLoadModalOpen(false);
     }, []);
 
-    const handleDeleteArticle = async (id: string) => {
-        const updated = savedArticles.filter(a => a.id !== id);
-        setSavedArticles(updated);
-        localStorage.setItem('seo-optimizer-saved-articles', JSON.stringify(updated));
+    const handleDeleteArticle = useCallback((id: string) => {
+        setSavedArticles(prev => {
+            const updated = prev.filter(a => a.id !== id);
+            localStorage.setItem('seo-optimizer-saved-articles', JSON.stringify(updated));
+            return updated;
+        });
+        
         if (supabase) {
-            await deleteArticleFromDb(id);
+            deleteArticleFromDb(id).catch(console.error);
         }
-    };
+    }, []);
+
+    // Dummy handlers for now
+    const handleExport = useCallback(() => {}, []);
+    const handleImport = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {}, []);
 
     return (
         <div className="bg-slate-900 min-h-screen text-slate-200 font-sans pb-20">
@@ -198,11 +213,11 @@ const App: React.FC = () => {
                             onChange={setArticleText}
                             onOptimize={addToQueue}
                             isLoading={isLoading}
-                            onLoadClick={() => {}}
+                            onLoadClick={() => setIsLoadModalOpen(true)}
                             savedCount={savedArticles.length}
                             lastAutoSave={null}
-                            onExportDB={() => {}}
-                            onImportDB={() => {}}
+                            onExportDB={handleExport}
+                            onImportDB={handleImport}
                         />
 
                         <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 shadow-xl">
