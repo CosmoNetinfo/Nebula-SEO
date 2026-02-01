@@ -1,7 +1,7 @@
 import { SeoResult, GroundingSource } from '../types';
 import DebugLogger from '../components/DebugPanel';
 
-const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const GEMINI_API_KEY = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
 
 const extractJSON = (text: string): string => {
     const firstOpen = text.indexOf('{');
@@ -12,16 +12,44 @@ const extractJSON = (text: string): string => {
     return text;
 };
 
-// --- GROQ ENGINE ---
-const callGroq = async (systemPrompt: string, userPrompt: string): Promise<string> => {
-    if (!GROQ_API_KEY) {
-        throw new Error("GROQ_API_KEY mancante. Configurala su Vercel o nel file .env.local");
+// --- GEMINI ENGINE (Zero-Loss Specialist) ---
+const callGemini = async (systemPrompt: string, userPrompt: string): Promise<string> => {
+    if (!GEMINI_API_KEY) {
+        throw new Error("GEMINI_API_KEY mancante. Configurala nel file .env.local");
     }
 
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            system_instruction: { parts: [{ text: systemPrompt }] },
+            contents: [{ parts: [{ text: userPrompt }] }],
+            generationConfig: {
+                temperature: 0.9, // Higher temperature for better expansion
+                maxOutputTokens: 8192,
+                responseMimeType: "application/json"
+            }
+        })
+    });
+
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(`Errore Gemini: ${err.error?.message || response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text;
+};
+
+// --- GROQ ENGINE (Fallback) ---
+const callGroq = async (systemPrompt: string, userPrompt: string): Promise<string> => {
+    const KEY = process.env.VITE_GROQ_API_KEY || process.env.GROQ_API_KEY || import.meta.env.VITE_GROQ_API_KEY;
+    if (!KEY) throw new Error("API KEY Mancante");
+    
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${GROQ_API_KEY}`,
+            'Authorization': `Bearer ${KEY}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -95,12 +123,18 @@ export const optimizeArticleForSeo = async (articleText: string): Promise<SeoRes
     3. EXPANSE: If word count is ${wordCount}, target is ${Math.round(wordCount * 1.3)}.`;
 
     try {
-        DebugLogger.log('info', `Optimization started: Input ${wordCount} words.`);
-        const jsonText = await callGroq(systemPrompt, prompt);
+        DebugLogger.log('info', `Optimization started with Gemini: Input ${wordCount} words.`);
+        const jsonText = await callGemini(systemPrompt, prompt);
         return JSON.parse(extractJSON(jsonText));
     } catch (error: any) {
-        DebugLogger.log('error', 'Optimization failed', { error: error.message });
-        throw error;
+        DebugLogger.log('error', 'Optimization failed with Gemini, trying Groq fallback', { error: error.message });
+        try {
+            const jsonText = await callGroq(systemPrompt, prompt);
+            return JSON.parse(extractJSON(jsonText));
+        } catch (groqError: any) {
+            DebugLogger.log('error', 'Groq fallback also failed', { error: groqError.message });
+            throw error;
+        }
     }
 };
 
@@ -116,12 +150,18 @@ export const enrichArticleDepth = async (currentResult: SeoResult, originalText:
     const systemPrompt = "You are a Link Enrichment Expert. Add links without removing any original text.";
 
     try {
-        DebugLogger.log('info', 'Enriching with Groq (Zero-Loss Mode)');
-        const jsonText = await callGroq(systemPrompt, prompt);
+        DebugLogger.log('info', 'Enriching with Gemini (Zero-Loss Mode)');
+        const jsonText = await callGemini(systemPrompt, prompt);
         const result = JSON.parse(extractJSON(jsonText));
         return { ...currentResult, ...result };
     } catch (error: any) {
-        DebugLogger.log('error', 'Enrichment failed', { error: error.message });
-        throw error;
+        DebugLogger.log('error', 'Enrichment failed with Gemini, trying Groq fallback', { error: error.message });
+        try {
+            const jsonText = await callGroq(systemPrompt, prompt);
+            const result = JSON.parse(extractJSON(jsonText));
+            return { ...currentResult, ...result };
+        } catch (groqError: any) {
+            throw error;
+        }
     }
 };
