@@ -14,7 +14,7 @@ interface SeoAnalysisPanelProps {
 export const SeoAnalysisPanel: React.FC<SeoAnalysisPanelProps> = ({ items }) => {
 
     const score = useMemo(() => {
-        if (!items || items.length === 0) return 0;
+        if (!Array.isArray(items) || items.length === 0) return 0;
         
         const totalPoints = items.reduce((acc, item) => {
             if (!item) return acc + 30;
@@ -52,7 +52,7 @@ export const SeoAnalysisPanel: React.FC<SeoAnalysisPanelProps> = ({ items }) => 
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-                {items && items.map((r, i) => (
+                {Array.isArray(items) && items.map((r, i) => (
                      <div key={i} className="flex items-start gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800/30 bg-zinc-50 dark:bg-black/20 hover:bg-zinc-100 dark:hover:bg-zinc-900/40 transition-colors group/item">
                         {getStatusIcon(r.status)}
                         <div>

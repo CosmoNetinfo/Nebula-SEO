@@ -50,7 +50,7 @@ export const LoadModal: React.FC<LoadModalProps> = ({ isOpen, onClose, articles,
                         </div>
                     ) : (
                         <ul className="space-y-3">
-                            {articles.slice().reverse().map((article) => (
+                            {Array.isArray(articles) && articles.slice().reverse().map((article) => (
                                 <li key={article.id} className="bg-zinc-900/40 p-4 rounded-xl border border-zinc-800/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-zinc-700 hover:bg-zinc-900/60 transition-all group">
                                     <div className="flex-grow overflow-hidden">
                                         <p className="font-bold text-zinc-200 truncate pr-4 text-sm mb-1" title={article.title}>{article.title}</p>

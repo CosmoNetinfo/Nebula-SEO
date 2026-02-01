@@ -9,7 +9,7 @@ interface ReadabilityScorePanelProps {
 export const ReadabilityScorePanel: React.FC<ReadabilityScorePanelProps> = ({ items }) => {
 
     const score = useMemo(() => {
-        if (!items || items.length === 0) return 0;
+        if (!Array.isArray(items) || items.length === 0) return 0;
         
         const totalPoints = items.reduce((acc, item) => {
             if (!item) return acc + 30;
@@ -39,7 +39,7 @@ export const ReadabilityScorePanel: React.FC<ReadabilityScorePanelProps> = ({ it
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-                {items.map((r, i) => (
+                {Array.isArray(items) && items.map((r, i) => (
                      <div key={i} className="flex items-start gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800/30 bg-zinc-50 dark:bg-black/20 hover:bg-zinc-100 dark:hover:bg-zinc-900/40 transition-colors group/item">
                         <div className="mt-0.5 shrink-0">
                             {r.status === 'good' && <CheckCircleIcon className="w-4 h-4 text-zinc-900 dark:text-zinc-300" />}

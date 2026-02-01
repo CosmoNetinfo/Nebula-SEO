@@ -98,7 +98,7 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-6">
                         
                         <div className="mb-6">
-                            <SeoAnalysisPanel items={result.seoChecklist} />
+                            <SeoAnalysisPanel items={Array.isArray(result.seoChecklist) ? result.seoChecklist : []} />
                         </div>
 
                         <div className="flex justify-end">
@@ -154,7 +154,7 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
 
                 {activeTab === 'readability' && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-6">
-                        <ReadabilityScorePanel items={result.readability} />
+                        <ReadabilityScorePanel items={Array.isArray(result.readability) ? result.readability : []} />
 
                         <div className="bg-zinc-900/30 p-5 rounded-xl border border-zinc-800/50">
                             <div className="flex justify-between items-center mb-3">
@@ -176,8 +176,8 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                                 <button onClick={() => setViewMode('code')} className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all ${viewMode === 'code' ? 'bg-white dark:bg-zinc-200 text-zinc-900 dark:text-black shadow-sm' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300'}`}>HTML</button>
                             </div>
                             <div className="flex gap-2">
-                                <button onClick={() => onSave()} className="bg-zinc-900 text-white dark:bg-white dark:text-black p-2 rounded-lg hover:bg-zinc-700 dark:hover:bg-zinc-200 transition-colors border border-transparent shadow-sm" title="Save Draft"><BookmarkIcon className="w-4 h-4" /></button>
-                                <button onClick={() => window.print()} className="bg-zinc-100 dark:bg-zinc-900 p-2 rounded-lg text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors" title="Print"><PrinterIcon className="w-4 h-4" /></button>
+                                <button onClick={() => onSave()} className="bg-black text-white dark:bg-white dark:text-black p-2 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors border border-transparent shadow-sm" title="Save Draft"><BookmarkIcon className="w-4 h-4" /></button>
+                                <button onClick={() => window.print()} className="bg-zinc-100 dark:bg-zinc-900 p-2 rounded-lg text-zinc-500 hover:text-black dark:hover:text-white border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors" title="Print"><PrinterIcon className="w-4 h-4" /></button>
                             </div>
                         </div>
 

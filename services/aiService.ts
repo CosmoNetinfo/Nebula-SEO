@@ -29,7 +29,7 @@ const callGroq = async (prompt: string): Promise<string> => {
             messages: [
                 { 
                     role: "system", 
-                    content: "Sei un Editor SEO che lavora su testi di valore. Il tuo compito è formattare e ottimizzare, MAI riassumere. La tua metrica di successo è il mantenimento del 100% delle parole originali." 
+                    content: "Sei un Editor SEO di altissimo livello specializzato in Long-Form Strategy. Il tuo compito è l'espansione e l'ottimizzazione del testo, MAI la sintesi. Se ricevi 1000 parole, devi restituirne almeno 1000 o di più. Ogni informazione, dettaglio tecnico, citazione e sottosfumatura deve essere mantenuta e valorizzata. La tua priorità assoluta è l'INTEGRITÀ DEL CONTENUTO: non tagliare, non riassumere, non omettere nulla. La tua metrica di successo è il mantenimento del 100% delle parole originali." 
                 },
                 { role: "user", content: prompt }
             ],
@@ -54,9 +54,10 @@ export const optimizeArticleForSeo = async (articleText: string): Promise<SeoRes
     const prompt = `COMPITO: Ottimizza SEO e formatta in HTML l'articolo seguente.
     
     DIRETTIVA DI FERRO (NON VIOLABILE): 
-    - NON RIASSUMERE. 
-    - NON TRASFORMARE PARAGRAFI IN ELENCHI PUNTATI BREVI.
-    - Se l'articolo originale ha 15 pararafi, l'output deve avere 15 (o più) paragrafi ottimizzati.
+    - VIETATO RIASSUMERE: Non accorpare paragrafi, non eliminare frasi, non semplificare i concetti.
+    - INTEGRITÀ TOTALE: Se l'articolo originale ha 2000 parole, l'output DEVE avere 2000+ parole.
+    - ESPANSIONE SEO: Se necessario, espandi i concetti per migliorare la profondità, ma non tagliare mai.
+    - Se l'articolo originale ha N paragrafi, l'output deve avere >= N paragrafi ottimizzati.
     - Mantieni ogni singolo dato, citazione, nome e spiegazione tecnica.
     - L'OUTPUT DEVE ESSERE LUNGO QUANTO O PIÙ DELL'INPUT.
 
