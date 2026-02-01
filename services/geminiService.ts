@@ -1,4 +1,3 @@
-
 import { SeoResult, GroundingSource } from '../types';
 import DebugLogger from '../components/DebugPanel';
 
@@ -13,10 +12,10 @@ const extractJSON = (text: string): string => {
     return text;
 };
 
-// --- GROQ INTEGRATION ---
+// --- GROQ ENGINE ---
 const callGroq = async (prompt: string): Promise<string> => {
     if (!GROQ_API_KEY) {
-        throw new Error("GROQ_API_KEY non configurata. Aggiungila alle variabili di ambiente.");
+        throw new Error("GROQ_API_KEY mancante. Configurala su Vercel o nel file .env.local");
     }
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -27,8 +26,14 @@ const callGroq = async (prompt: string): Promise<string> => {
         },
         body: JSON.stringify({
             model: "llama-3.3-70b-versatile",
-            messages: [{ role: "user", content: prompt }],
-            temperature: 0.1, // Lower temperature for maximum precision
+            messages: [
+                { 
+                    role: "system", 
+                    content: "Sei un Editor SEO che lavora su testi di valore. Il tuo compito è formattare e ottimizzare, MAI riassumere. La tua metrica di successo è il mantenimento del 100% delle parole originali." 
+                },
+                { role: "user", content: prompt }
+            ],
+            temperature: 0.1,
             max_tokens: 8192,
             response_format: { type: "json_object" }
         })
@@ -36,76 +41,57 @@ const callGroq = async (prompt: string): Promise<string> => {
 
     if (!response.ok) {
         const err = await response.json();
-        throw new Error(`Groq Error: ${err.error?.message || response.statusText}`);
+        throw new Error(`Errore Groq: ${err.error?.message || response.statusText}`);
     }
 
     const data = await response.json();
     return data.choices[0].message.content;
 };
 
-// --- MAIN FUNCTIONS ---
+// --- FUNZIONA PRINCIPALE ---
 
 export const optimizeArticleForSeo = async (articleText: string): Promise<SeoResult> => {
-    const prompt = `Sei un Senior SEO Editor. Il tuo compito è ottimizzare l'articolo fornito SENZA MAI RIDURNE LA LUNGHEZZA. 
+    const prompt = `COMPITO: Ottimizza SEO e formatta in HTML l'articolo seguente.
+    
+    DIRETTIVA DI FERRO (NON VIOLABILE): 
+    - NON RIASSUMERE. 
+    - NON TRASFORMARE PARAGRAFI IN ELENCHI PUNTATI BREVI.
+    - Se l'articolo originale ha 15 pararafi, l'output deve avere 15 (o più) paragrafi ottimizzati.
+    - Mantieni ogni singolo dato, citazione, nome e spiegazione tecnica.
+    - L'OUTPUT DEVE ESSERE LUNGO QUANTO O PIÙ DELL'INPUT.
 
-    DIRETTIVA CRITICA DI INTEGRITÀ: 
-    - NON RIASSUMERE MAI. 
-    - NON TAGLIARE PARAGRAFI O DETTAGLI. 
-    - L'output deve essere un ESPANSIONE o una REDAZIONE identica in lunghezza. 
-    - Se ricevi 1600 parole, devi restituire 1600+ parole.
-    - Mantieni ogni singola informazione, dato tecnico e concetto.
+    REGOLE TECNICHE:
+    1. HTML: Usa H2 per i titoli, strong per le parole chiave, p per i paragrafi.
+    2. SEO: Migliora il ritmo e la leggibilità senza rimuovere informazioni.
+    3. JSON: Restituisci esclusivamente un oggetto JSON con i campi: keyPhrase, title, description, slug, htmlContent, tags, categories, socialMediaPost, seoChecklist, readability.
 
-    COMPITI:
-    1. OTTIMIZZAZIONE SEO: Inserisci la keyword in modo naturale.
-    2. LEGGIBILITÀ: Migliora la prosa senza eliminare contenuti.
-    3. FORMATTAZIONE: HTML semantico (H2, H3, p, strong, ul, li).
-    4. LINGUA: 100% ITALIANO.
-
-    STRUTTURA JSON:
-    {
-        "keyPhrase": "string",
-        "title": "string",
-        "description": "string",
-        "slug": "string",
-        "htmlContent": "HTML INTEGRALE - NON TAGLIATO",
-        "tags": "string",
-        "categories": "string",
-        "socialMediaPost": "string",
-        "seoChecklist": [{"item": "string", "status": "good/average/poor", "details": "string"}],
-        "readability": [{"criteria": "string", "status": "good/average/poor", "score": "string", "message": "string"}]
-    }
-
-    TESTO ORIGINALE (MANTIENI TUTTO):
+    TESTO ORIGINALE DA LAVORARE (MANTIENI TUTTE LE PAROLE):
     ${articleText}`;
 
     try {
-        DebugLogger.log('info', 'Optimizing with Groq (Llama 3.3 70B)');
+        DebugLogger.log('info', 'Processing with Groq Llama 3.3 (High-Integrity Mode)');
         const jsonText = await callGroq(prompt);
-        const cleanJson = extractJSON(jsonText);
-        return JSON.parse(cleanJson);
+        return JSON.parse(extractJSON(jsonText));
     } catch (error: any) {
-        DebugLogger.log('error', 'Groq optimization failed', { message: error.message });
+        DebugLogger.log('error', 'Optimization failed', { error: error.message });
         throw error;
     }
 };
 
 export const enrichArticleDepth = async (currentResult: SeoResult, originalText: string): Promise<SeoResult> => {
-    const prompt = `Analista SEO: aggiungi tag <a href="..."> nel testo HTML fornito per collegare fonti ufficiali o download.
-    REGOLE:
-    1. NON TOCCARE IL TESTO: Lunghezza IDENTICA.
-    2. LINK REALI: Solo link pertinenti.
-    3. FORMATO: JSON identico all'input.
-
-    HTML:
+    const prompt = `Analista SEO: Aggiungi tag <a href="..."> nel testo HTML fornito per collegare fonti o software citati.
+    ATTENZIONE: Non rimuovere né modificare una singola parola del testo esistente. Aggiungi solo i link.
+    
+    HTML DA NON ACCORCIARE:
     ${currentResult.htmlContent}`;
 
     try {
-        DebugLogger.log('info', 'Enriching with Groq (Llama 3.3 70B)');
+        DebugLogger.log('info', 'Enriching with Groq (Zero-Loss Mode)');
         const jsonText = await callGroq(prompt);
-        const parsed = JSON.parse(extractJSON(jsonText));
-        return { ...currentResult, ...parsed };
+        const result = JSON.parse(extractJSON(jsonText));
+        return { ...currentResult, ...result };
     } catch (error: any) {
-        DebugLogger.log('error', 'Groq enrichment failed', { message: error.message });
+        DebugLogger.log('error', 'Enrichment failed', { error: error.message });
         throw error;
     }
 };
