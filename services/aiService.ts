@@ -29,7 +29,13 @@ const callGroq = async (prompt: string): Promise<string> => {
             messages: [
                 { 
                     role: "system", 
-                    content: "You are a World-Class SEO Editor specializing in Long-Form Article Excellence. Your mission is CONTENT PRESERVATION. You must NEVER summarize, NEVER truncate, and NEVER omit details. If the input is 2000 words, the output MUST be 2000+ words. Your success metric is 100% word retention. You transform simple text into SEO-optimized HTML without losing a single piece of information, data, or technical detail." 
+                    content: `You are the "Expansion Engine" SEO Copywriter. 
+                    MISSION: Transform input text into a World-Class SEO Masterpiece.
+                    STRICT RULES:
+                    1. ZERO CONTENT LOSS: Every single fact, name, number, and nuance must be preserved.
+                    2. EXPANSION ONLY: Your goal is to EXPAND the content. Add professional depth, context, and clear explanations.
+                    3. READABILITY EXCELLENCE: The generated 'htmlContent' MUST be optimized for a 90/100 readability score. Use short sentences, clear Italian transitions, and H2/H3 headings.
+                    4. OUTPUT LENGTH: If input is X words, output 'htmlContent' MUST be at least X + 10% words. Summarizing is a fatal failure.` 
                 },
                 { role: "user", content: prompt }
             ],
@@ -53,40 +59,41 @@ const callGroq = async (prompt: string): Promise<string> => {
 export const optimizeArticleForSeo = async (articleText: string): Promise<SeoResult> => {
     const wordCount = articleText.trim().split(/\s+/).filter(w => w.length > 0).length;
 
-    const prompt = `URGENT MISSION: SEO Optimization & Professional HTML Formatting.
+    const prompt = `URGENT COMMAND: ENHANCE AND EXPAND ARTICLE.
     
     SOURCE WORD COUNT: ${wordCount} words.
-    MINIMUM OUTPUT WORD COUNT: ${wordCount} words for 'htmlContent'.
+    TARGET MINIMUM OUTPUT: ${Math.round(wordCount * 1.1)} words.
 
-    STRICT INSTRUCTIONS (NO EXCEPTIONS):
-    1. DO NOT SUMMARIZE. DO NOT SHORTEN. DO NOT OMIT.
-    2. VERBATIM REQUIREMENT: Every fact, quote, name, and technical detail from the input must appear in the 'htmlContent' field.
-    3. LENGTH PARITY: If the input has ${wordCount} words, the optimized output MUST have at least ${wordCount} words. 
-    4. STRUCTURE INTEGRITY: Maintain all original information blocks. If the input has multiple detailed sections, keep them detailed.
-    
-    OUTPUT FORMAT (STRICT JSON):
-    - Return a JSON object with EXACTLY these fields:
-      * keyPhrase: (string) The main SEO keyword.
-      * title: (string) Optimized SEO Title.
-      * description: (string) SEO Meta Description.
-      * slug: (string) URL-friendly slug.
-      * htmlContent: (string) The article in HTML (H2, strong, p).
-      * tags: (string) CSV tags.
-      * categories: (string) Relevant categories.
-      * socialMediaPost: (string) A catchy social caption.
-      * seoChecklist: (Array) MUST HAVE AT LEAST 6 ITEMS. Each: { "item": "Condition", "status": "pass" | "manual_action" | "fail", "details": "Explanation" }.
-      * readability: (Array) MUST HAVE AT LEAST 5 ITEMS. Each: { "criteria": "Metric", "score": "X%", "status": "good" | "ok" | "needs_improvement", "message": "Feedback" }.
+    EXECUTION PLAN:
+    1. READABILITY OVERHAUL: Rewrite the article in professional Italian, optimizing for maximum clarity. Use short paragraphs and explicit transition words. Every readability metric MUST be "good" (90%+).
+    2. DETAIL PRESERVATION: Do not omit any original information. If the source mentions a specific detail, the output must discuss it in more depth.
+    3. HTML STRUCTURE: Use H2 for main sections, H3 for sub-points, and <strong> for key concepts.
+    4. NO SUMMARIZATION: If the output is shorter than the input, you have FAILED the mission.
 
-    CRITICAL:
-    - ALL fields must be populated. 
-    - NEVER return empty arrays for seoChecklist or readability.
-    - NEVER return empty strings for item, details, criteria, or message.
-    - KEEP ALL KEYS AND STATUSES IN ENGLISH AS SPECIFIED.
+    OBJECTIVE JSON SCHEMA:
+    {
+      "keyPhrase": "string",
+      "title": "SEO Optimized Title",
+      "description": "Compelling Meta Description",
+      "slug": "url-slug",
+      "htmlContent": "FULL EXPANDED ARTICLE IN HTML (Min ${Math.round(wordCount * 1.1)} words)",
+      "tags": "CSV format",
+      "categories": "comma separated",
+      "socialMediaPost": "Captivating social caption",
+      "seoChecklist": [
+        { "item": "Focus Keyword in H1", "status": "pass", "details": "The keyword is perfectly placed." },
+        ... (min 6 items)
+      ],
+      "readability": [
+        { "criteria": "Sentence Length", "score": "95%", "status": "good", "message": "Perfectly balanced for web reading." },
+        ... (min 5 items, all status MUST be 'good')
+      ]
+    }
 
-    SOURCE TEXT TO PROCESS:
+    SOURCE CONTENT (ITALIAN):
     ${articleText}
     
-    FINAL CHECK: Is the output as long or longer than the input? Are all checklist items present and detailed? If no, rewrite.`;
+    VERIFICATION: Ensure 'htmlContent' is at least ${Math.round(wordCount * 1.1)} words. If you feel like summarizing, EXPAND instead.`;
 
     try {
         DebugLogger.log('info', `Optimization started: Input ${wordCount} words.`);
