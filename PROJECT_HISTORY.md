@@ -10,157 +10,62 @@
 ### Frontend
 - **React 19** - UI Framework
 - **Vite 6** - Build Tool & Dev Server
-- **Tailwind CSS v3** - Styling (installato correttamente, non CDN)
+- **Tailwind CSS v3** - Styling (Monochrome OLED Theme)
 - **TypeScript** - Type Safety
 
+### AI Engines (Multi-Model Support)
+- **Google Gemini 1.5 Flash** - Primario per l'Ultra-Espansione (Zero-Loss)
+- **OpenAI GPT-4o** - Supporto alternativo via User API Key
+- **Anthropic Claude 3.5 Sonnet** - Supporto alternativo via User API Key
+- **Groq (Llama 3.3 70B)** - Fallback ultra-veloce
+
 ### Backend & Services
-- **Groq (Llama 3.3 70B)** - AI Engine ultra-veloce per ottimizzazione testi
-- **Supabase** - Database PostgreSQL cloud per persistenza articoli
+- **Supabase** - Database PostgreSQL per persistenza articoli e sincronizzazione chiavi API (Cloud Sync)
 - **Vercel** - Hosting & Deploy automatico
-
-### Librerie Chiave
-- `@google/genai` - SDK ufficiale Google Gemini
-- `@supabase/supabase-js` - Client Supabase
-- `react-dom` - Rendering React
-
----
-
-## 📁 Struttura del Progetto
-
-```
-l:/cosmonet_articoli_perfetti/
-├── components/
-│   ├── ArticleInput.tsx       # Input per inserire articoli
-│   ├── SeoOutput.tsx          # Visualizzazione risultati ottimizzati
-│   ├── LoadModal.tsx          # Modal per caricare articoli salvati
-│   ├── Login.tsx              # Schermata di autenticazione
-│   ├── Loader.tsx             # Spinner di caricamento
-│   ├── IconComponents.tsx     # Icone SVG custom
-│   ├── ErrorBoundary.tsx      # Gestione errori React
-│   └── DebugPanel.tsx         # Pannello debug per tracking errori
-├── services/
-│   ├── aiService.ts           # Logica API Groq (Llama 3.3) - Ottimizzazione Integrale
-│   └── supabaseService.ts     # CRUD database Supabase
-├── App.tsx                    # Componente principale
-├── index.tsx                  # Entry point React
-├── index.css                  # Stili globali + Tailwind
-├── types.ts                   # TypeScript interfaces
-├── vite.config.ts             # Configurazione Vite
-├── tailwind.config.js         # Configurazione Tailwind v3
-├── postcss.config.js          # PostCSS per Tailwind
-├── .gitignore                 # File da escludere da Git
-├── PROJECT_HISTORY.md         # Storia completa del progetto
-├── ROADMAP.md                 # Roadmap funzionalità future
-├── DEPLOY_GUIDE.md            # Guida deploy Vercel
-└── README.md                  # Documentazione pubblica
-```
 
 ---
 
 ## 🚀 Funzionalità Implementate
 
-### 1. **Ottimizzazione SEO Automatica (Groq Engine)**
-- Integrità Totale: Ordine di "Zero-Loss" per mantenere il 100% della lunghezza originale.
-- Corregge errori SEO (frasi consecutive con stessa parola iniziale).
-- Genera HTML semantico (H2, H3, strong, ul, li).
-- Word Count Tracker: Confronto parole input/output in tempo reale.
-- Genera metadati completi:
-  - Title SEO
-  - Meta Description
-  - Slug URL
-  - Focus Keyword
-  - Tag CSV
-  - Categorie Editoriali
-  - Post Social Media
+### 1. **Ultra-Espansione SEO (Proprietary Prompts)**
+- **Zero-Loss Integrity**: Ordine tassativo di non riassumere mai.
+- **Target 125%+: Multi-step expansion** per trasformare bozze brevi in articoli approfonditi (1800+ parole).
+- **HTML Semantico**: Struttura professionale (H2, H3, liste, strong).
+- **Readability Core**: Ottimizzazione per punteggio leggibilità >95% (Italiano).
 
-### 2. **Arricchimento con Fonti (Google Search)**
-- Usa il tool `googleSearch` di Gemini
-- Cerca fonti autorevoli correlate al contenuto
-- Inserisce link contestuali nell'articolo
+### 2. **Gestione Chiavi API (BYOK - Bring Your Own Key)**
+- **Settings Modal (⚙️)**: Gli utenti inseriscono le proprie chiavi Gemini/OpenAI/Claude nell'app.
+- **Dimentica Vercel**: Non è più necessario aggiungere variabili d'ambiente manualmente per ogni chiave AI.
+- **Preferenza Engine**: Selezione del modello AI preferito salvata nel profilo.
 
-### 3. **Gestione Batch (Coda di Elaborazione)**
-- Elabora fino a 4 articoli in parallelo
-- Visualizzazione stato (pending, processing, completed, error)
-- Selezione articolo attivo per visualizzazione
+### 3. **Account-Based Cloud Sync**
+- **User Association**: Articoli e impostazioni sono legati all'ID utente (derivato dal login).
+- **Cloud Sync (Supabase)**: Le chiavi e le preferenze vengono salvate nel database e ricaricate automaticamente su ogni dispositivo.
 
-### 4. **Archivio Cloud (Supabase)**
-- Salvataggio articoli ottimizzati nel database
-- Sincronizzazione tra localStorage e Supabase
-- Caricamento articoli salvati
-- Eliminazione articoli
-- **Capacità:** ~50.000 articoli (piano gratuito)
-
-### 5. **Autenticazione Client-Side**
-- Login protetto da password (variabile ambiente)
-- Token salvato in localStorage
-- Logout con pulizia sessione
-
-### 6. **UI/UX Premium**
-- Design "space/cosmic" theme
-- Animazioni fluide
-- Modalità Preview/Code per articoli
-- Copia rapida di tutti i metadati
-- Responsive design
-
-### 7. **Debug Panel (Sistema di Diagnostica)**
-- Pannello flottante in basso a destra
-- Tracking in tempo reale di errori, warning e info
-- Timestamp per ogni log
-- Dettagli espandibili (stack trace, JSON problematici)
-- Contatore errori visibile sul pulsante
-- Pulsante "Pulisci" per reset log
-- Mantiene ultimi 100 log in memoria
-- Integrato in `geminiService.ts` per tracciare errori API
+### 4. **Gestione Batch & SEO Analysis**
+- Elabora fino a 4 articoli in parallelo.
+- **Efficiency Tracker**: Analisi visiva della crescita del contenuto (originale vs ottimizzato).
+- **SEO Checklist & Metadati**: Generazione automatica di Title, Meta, Slug, Tag e Post Social.
 
 ---
 
-## 🔐 Variabili d'Ambiente (Vercel)
+## 🐛 Problemi Risolti Recentemente
 
-### Obbligatorie
-```env
-GROQ_API_KEY=gsk_...              # Chiave API GroqCloud
-VITE_APP_PASSWORD=tua_password   # Password accesso app
-```
+### 1. **Content Shortening**
+**Problema:** I modelli AI (specialmente Groq) tendevano a riassumere invece di espandere.
+**Soluzione:** Passaggio a Gemini 1.5 Flash (temperature 0.9) con prompt di sistema "Ultra-Expander" ultra-aggressivi.
 
-### Opzionali (Database)
-```env
-VITE_SUPABASE_URL=https://xyz.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJ...
-```
+### 2. **Configurazione Variabili Vercel**
+**Problema:** Difficoltà per l'utente finale nel gestire le chiavi API via Vercel Dashboard.
+**Soluzione:** Spostato il controllo nell'app tramite `SettingsModal` e sincronizzazione Supabase.
 
-⚠️ **IMPORTANTE:** Se la chiave Gemini viene esposta su GitHub, Google la blocca automaticamente. Generarne una nuova e aggiornarla su Vercel.
+### 3. **Sincronizzazione Multi-Dispositivo**
+**Problema:** Le chiavi salvate in localStorage andavano perse cambiando browser.
+**Soluzione:** Implementata la tabella `user_settings` su Supabase per il backup cloud automatico legato all'account.
 
 ---
 
-## 🐛 Problemi Risolti Durante lo Sviluppo
-
-### 1. **React Error #310 (Minified)**
-**Causa:** Uso di `useCallback` con funzioni async in produzione.
-**Soluzione:** Rimossi tutti i `useCallback` e convertiti in funzioni normali.
-
-### 2. **Schermo Nero dopo Login**
-**Causa:** Variabili d'ambiente non iniettate correttamente in `vite.config.ts`.
-**Soluzione:** Aggiunto fallback `process.env` per tutte le variabili.
-
-### 3. **Supabase Crash all'Avvio**
-**Causa:** `createClient` riceveva `undefined` se le chiavi non erano configurate.
-**Soluzione:** Wrappato in `try-catch` e gestione null-safe.
-
-### 4. **JSON Parse Error da Gemini**
-**Causa:** L'IA a volte restituisce JSON con markdown o caratteri speciali.
-**Soluzione:** Aggiunto sanitizer che rimuove blocchi markdown e riprova il parsing.
-
-### 5. **Tailwind CDN Warning in Produzione**
-**Causa:** Uso del CDN invece dell'installazione locale.
-**Soluzione:** Installato Tailwind v3 con PostCSS.
-
-### 6. **Build Output in Git**
-**Causa:** La cartella `build_output` conteneva chiavi API "baked-in".
-**Soluzione:** Aggiunta a `.gitignore` e rimossa dalla cronologia Git.
-
----
-
-## 📊 Database Schema (Supabase)
+## 📊 Database Schema (Supabase - Aggiornato v3.0)
 
 ### Tabella: `articles`
 ```sql
@@ -169,157 +74,38 @@ CREATE TABLE articles (
   title TEXT,
   original_text TEXT,
   full_json JSONB,
+  user_id TEXT, -- Nuovo: Associazione all'utente
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
+```
 
--- Row Level Security
-ALTER TABLE articles ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Enable all access for anon users" 
-ON articles FOR ALL 
-USING (true) 
-WITH CHECK (true);
+### Tabella: `user_settings`
+```sql
+CREATE TABLE user_settings (
+  user_id TEXT PRIMARY KEY,
+  settings JSONB NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
 ```
 
 ---
 
-## 🎨 Design System
+## 📝 Changelog
 
-### Colori Principali
-- **Background:** `slate-900` (#0f172a)
-- **Accenti:** `indigo-600` (#4f46e5), `cyan-400` (#22d3ee)
-- **Successo:** `green-400` (#4ade80)
-- **Errore:** `red-400` (#f87171)
+- **v3.0.0 (1 Febbraio 2026)** - **Multi-AI & Personal Key Control**:
+  - Supporto per **Gemini 1.5 Flash**, **OpenAI GPT-4o**, **Claude 3.5 Sonnet**.
+  - introdotto il pannello **⚙️ IMPOSTAZIONI API**.
+  - Sincronizzazione Cloud delle chiavi e preferenze via Supabase.
+  - Associazione automatica articoli/impostazioni all'account utente.
+  - Rafforzamento dei prompt per l'espansione testo (>125% lunghezza).
 
-### Font
-- **Primario:** Inter (Google Fonts)
-- **Titoli Articoli:** Playfair Display (serif)
+- **v2.5.0** - **Groq Engine Integration**: Migrazione a Groq (Llama 3.3). Ridenominazione service in `aiService.ts`.
 
----
-
-## 🔮 Funzionalità Future Suggerite
-
-### 1. 🔌 **Pubblicazione Diretta su WordPress**
-Aggiungere integrazione con API WordPress REST per pubblicare articoli direttamente dal pannello.
-
-**Implementazione:**
-- Aggiungere variabili ambiente: `WORDPRESS_URL`, `WORDPRESS_APP_PASSWORD`
-- Creare `wordpressService.ts` con funzione `publishToWordPress(article)`
-- Aggiungere pulsante "Pubblica su CosmoNet" in `SeoOutput.tsx`
-
-**Beneficio:** Risparmio del 50% del tempo di pubblicazione.
-
----
-
-### 2. 🎨 **Generatore Prompt per Immagini AI**
-Analizzare l'articolo e generare 3-4 prompt ultra-dettagliati per Midjourney/DALL-E/Ideogram.
-
-**Implementazione:**
-- Aggiungere funzione `generateImagePrompts(article)` in `geminiService.ts`
-- Prompt: "Analizza questo articolo e genera 3 prompt per immagini di copertina professionali, cinematografiche, 16:9"
-- Visualizzare i prompt in una nuova tab "Immagini" in `SeoOutput.tsx`
-
-**Beneficio:** Copertine originali e coerenti senza sforzo.
-
----
-
-### 3. 🧠 **Nebula Trends - Suggeritore di Argomenti**
-Invece di incollare testi esistenti, chiedere all'IA di suggerire argomenti virali.
-
-**Implementazione:**
-- Aggiungere tab "Trends" in `ArticleInput.tsx`
-- Input: keyword (es. "Intelligenza Artificiale")
-- Usare `googleSearch` tool per cercare ultime novità
-- L'IA propone 5 titoli virali ancora non trattati
-- Click su un titolo → genera automaticamente l'articolo completo
-
-**Beneficio:** Mai più senza idee su cosa scrivere.
-
----
-
-### 4. 📊 **Analytics Dashboard**
-Visualizzare statistiche sugli articoli salvati.
-
-**Implementazione:**
-- Aggiungere query Supabase per contare articoli per categoria/mese
-- Creare componente `Analytics.tsx` con grafici (usando `recharts`)
-- Mostrare: articoli totali, categorie più usate, parole medie per articolo
-
-**Beneficio:** Insight sulla produttività editoriale.
-
----
-
-### 5. 🌐 **Multi-Lingua**
-Tradurre automaticamente articoli in altre lingue.
-
-**Implementazione:**
-- Aggiungere dropdown "Traduci in: [EN, ES, FR, DE]"
-- Chiamare Gemini con prompt: "Traduci questo articolo in [lingua] mantenendo SEO e HTML"
-- Salvare traduzioni come varianti dello stesso articolo
-
-**Beneficio:** Espansione internazionale del blog.
-
----
-
-## 📝 Comandi Utili
-
-### Sviluppo Locale
-```bash
-npm run dev          # Avvia server dev (porta 3000)
-npm run build        # Build produzione
-npm run preview      # Preview build locale
-```
-
-### Deploy
-```bash
-git add .
-git commit -m "Descrizione modifiche"
-git push             # Deploy automatico su Vercel
-```
-
-### Database (Supabase)
-- **Dashboard:** https://supabase.com/dashboard
-- **Table Editor:** Visualizza/modifica articoli salvati
-- **SQL Editor:** Esegui query custom
-
----
-
-## 🔗 Link Importanti
-
-- **Sito Live:** https://nebula-seo.vercel.app/
-- **Repository GitHub:** https://github.com/CosmoNetinfo/Nebula-SEO
-- **Vercel Dashboard:** https://vercel.com/dashboard
-- **Supabase Dashboard:** https://supabase.com/dashboard
-- **Google AI Studio:** https://aistudio.google.com/app/apikey
+- **v2.1.0** - **Monochrome UI**: Introduzione del tema OLED Black e supporto Light/Dark Mode.
 
 ---
 
 ## 👤 Autore & Contatti
-
 **Progetto:** Nebula SEO  
 **Sviluppato per:** CosmoNet (https://www.cosmonet.info/)  
-**Data Creazione:** Gennaio 2026  
-**Versione:** 2.5.0 (Groq Engine & Zero-Loss Integrity - 1 Febbraio 2026)
-
-### Changelog:
-- **v2.5.0** - **Groq Engine Integration**: Migrazione completa da Google Gemini a Groq (Modello Llama 3.3 70B). Risolti problemi di troncamento articoli lunghi. Implementata direttiva "Zero-Loss" per l'integrità del contenuto. Ridenominazione di `geminiService.ts` in `aiService.ts`. Aggiunto Word Count tracker nei risultati.
-- **v2.1.0** - **Monochrome UI & Light Mode Support**: Totale riscrittura del tema grafico. Abbandonato lo schema colori "indigo/slate" per un approccio professionale "Monochrome/OLED" (Zinc/Black/White). Aggiunto supporto completo per Light Mode e Dark Mode con toggle dinamico. Aggiornati tutti i componenti per supportare il doppio tema.
-- **v2.0.0** - UI Modernization completa con glassmorphism, nuove animazioni, design premium e layout ultra-compatto. Aggiunta documentazione completa (README.md) per uso editoriale.
-- **v1.1.0** - Aggiunto Debug Panel
-- **v1.0.0** - Release iniziale
-
----
-
-## 📜 Licenza & Note
-
-Questo progetto è proprietario e sviluppato per uso interno di CosmoNet.
-
-**Note di Sicurezza:**
-- Mai committare file `.env` o chiavi API
-- Ruotare le chiavi se esposte pubblicamente
-- Usare sempre HTTPS in produzione
-- Mantenere aggiornate le dipendenze (`npm audit`)
-
----
-
-**🌟 Ad Astra Per Aspera - Verso le stelle attraverso le difficoltà 🌟**
+**Versione:** 3.0.0 (Expansion Engine Edition - 1 Febbraio 2026)

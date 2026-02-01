@@ -1,99 +1,85 @@
 # ✨ Nebula SEO - AI Content Optimizer
 > **L'Architetto Cosmico per i tuoi Contenuti Web**
 
-![Nebula SEO Banner](https://img.shields.io/badge/Status-Stable_v2.5-18181b?style=for-the-badge&logo=rocket)
-![Tech Stack](https://img.shields.io/badge/Stack-React_19_•_Groq_•_Llama_3.3_•_Supabase-ffffff?style=for-the-badge&labelColor=000000)
+![Nebula SEO Banner](https://img.shields.io/badge/Status-Stable_v3.0-18181b?style=for-the-badge&logo=rocket)
+![Tech Stack](https://img.shields.io/badge/Stack-React_19_•_Gemini_1.5_•_OpenAI_•_Claude_•_Supabase-ffffff?style=for-the-badge&labelColor=000000)
 ![Theme](https://img.shields.io/badge/Theme-Monochrome_OLED-000000?style=for-the-badge)
 
-**Nebula SEO** è una piattaforma avanzata per l'ottimizzazione editoriale che combina la potenza di **Groq (Llama 3.3 70B)** con un'interfaccia **Monochrome OLED** professionale. Progettata per content creator, SEO specialist e redazioni digitali, trasforma bozze grezze (generate da AI come Perplexity o scritte a mano) in articoli perfettamente formattati, ottimizzati per i motori di ricerca e arricchiti con fonti autorevoli.
+**Nebula SEO** è una piattaforma avanzata per l'ottimizzazione editoriale che combina la precisione di **Google Gemini 1.5 Flash**, **OpenAI GPT-4o** e **Anthropic Claude 3.5 Sonnet** con un'interfaccia **Monochrome OLED** professionale. Progettata per content creator, SEO specialist e redazioni digitali, trasforma bozze grezze in articoli massicciamente espansi, ottimizzati per i motori di ricerca e pronti per la pubblicazione.
 
 ---
 
-## 🌌 Perché Nebula SEO?
+## 🌌 Perché Nebula SEO 3.0?
 
-Il web writing moderno richiede velocità e precisione. Nebula SEO risolve problemi critici:
-1.  **L'Integrità del Contenuto**: Mentre altre AI riassumono, Nebula è configurata con una direttiva di "Zero-Loss", garantendo che ogni parola e dettaglio originale venga preservato e potenziato.
-2.  **Velocità Estrema**: Grazie all'integrazione con l'engine **Groq**, l'elaborazione di articoli lunghi è quasi istantanea.
-3.  **Il "Muro di Testo"**: Le AI generiche producono testi piatti. Nebula ristruttura automaticamente inserendo H2, H3, liste puntate e grassetti strategici.
-4.  **Produttività Estrema**: La coda di elaborazione batch permette di lavorare su 4 articoli simultaneamente, mentre l'interfaccia **Light/Dark Mode** si adatta al tuo ambiente di lavoro.
+Il web writing moderno richiede profondità e ampiezza. Nebula SEO v3 introduce una filosofia di **Auto-Gestione**:
+1.  **Motori AI Multipli**: Scegli il tuo modello preferito tra Gemini, OpenAI, Claude o Groq direttamente dalle impostazioni.
+2.  **Zero-Loss Ultra-Expansion**: Direttiva ferrea per espandere il testo del 125% o più, garantendo che ogni dettaglio originale venga preservato e potenziato con approfondimenti tecnici esperti.
+3.  **Gestione Chiavi API Personale**: Non è più necessario configurare server o variabili d'ambiente. Inserisci le tue chiavi API direttamente nell'app; verranno salvate nel tuo profilo e sincronizzate su tutti i tuoi dispositivi tramite cloud.
+4.  **Readability 95+**: Ottimizzazione automatica per una leggibilità professionale (Italiano), con enfasi su paragrafi brevi, H2/H3 frequenti e una struttura ritmata.
 
 ---
 
 ## 🚀 Funzionalità Stellari
 
-### 1. ⚡ Ottimizzazione Intelligente (Smart Rewriting)
-Il cuore del sistema. L'IA analizza il testo in entrata e applica oltre **20 regole editoriali** in tempo reale:
-*   **Zero-Summarization**: Direttiva ferrea per mantenere la lunghezza originale al 100%.
-*   **Correzione Ripetizioni**: Elimina l'inizio di frase ripetitivo.
-*   **HTML Semantico**: Genera automaticamente una struttura gerarchica (`<h2>`, `<h3>`, `<ul>`, `<strong>`).
-*   **Metadati Completi**: Genera Title Tag, Meta Description, Slug URL, Focus Keyword e Tag CSV.
+### 1. ⚡ Ultra-Expansion (Power Rewriting)
+Il cuore del sistema 3.0. L'IA non si limita a correggere, ma **espande** la bozza:
+*   **Target 1800+ Parole**: Se la bozza è breve, l'IA è istruita per ricercare profondità e superare le soglie di lunghezza necessarie per l'authority SEO.
+*   **Zero-Summarization**: È vietato riassumere. L'output deve essere sempre più lungo dell'input.
+*   **HTML Semantico Avanzato**: Genera automaticamente una struttura gerarchica complessa (`<h2>`, `<h3>`, `<ul>`, `<strong>`).
 
-### 2. 📊 SEO Score & Analisi (NEW)
+### 2. 📊 Comparison & SEO Score
 Monitoraggio della qualità in tempo reale:
-*   **Word Count Tracker**: Confronto immediato tra parole originali e ottimizzate.
-*   **Keyword Density**: Analizza la frequenza della parola chiave principale.
-*   **Readability Score**: Valuta la leggibilità del testo (indice Flesch-Kincaid adattato).
+*   **Efficiency Tracker**: Confronto dinamico tra caratteri originali e ottimizzati con percentuale di espansione.
+*   **Readability Panel**: Analisi granulare della struttura delle frasi, densità dei paragrafi e semplicità del vocabolario.
 
-### 3. 🔗 Arricchimento Fonti (Source Grounding)
-Non solo forma, ma sostanza. La funzione **"Aumenta Profondità"**:
-*   Esegue ricerche live su Google per trovare fonti autorevoli correlate.
-*   Inserisce link esterni contestuali naturali nel testo.
-*   Aggiunge una sezione "Fonti e Approfondimenti" a fine articolo.
+### 3. ⚙️ Pannello Impostazioni Cloud (NEW)
+*   **BYOK (Bring Your Own Key)**: Inserisci le tue chiavi per Gemini, OpenAI, Claude o Groq.
+*   **Cloud Sync**: Le tue preferenze e chiavi sono salvate in modo sicuro su Supabase e associate al tuo account. Accedi da qualsiasi browser e ritrova tutto pronto.
 
-### 4. 📦 Coda Batch Parallela
-*   **Concorrenza**: Elabora **4 articoli contemporaneamente**.
-*   **Status Tracking**: Monitora visivamente lo stato (Pending ➔ Processing ➔ Done).
-
-### 5. 🎨 Interfaccia "Monochrome Professional" v2.1
-Un'esperienza utente raffinata e priva di distrazioni.
-*   **OLED Dark Mode**: Neri profondi per ridurre l'affaticamento visivo.
-*   **Clean Light Mode**: Bianco carta e grigi neutri per la massima leggibilità diurna.
-*   **Design Neutrale**: Palette colori Zinc/Black/White per un look editoriale premium.
+### 4. 🔗 Arricchimento Fonti (Source Grounding)
+La funzione **"Enrich Content"** utilizza il motore AI scelto per:
+*   Inserire link esterni contestuali naturali nel testo.
+*   Aggiungere una sezione "Fonti e Approfondimenti" a fine articolo senza perdere una singola parola del testo già ottimizzato.
 
 ---
 
 ## 📖 Guida all'Utilizzo Passo-Passo
 
-### Passo 1: Inserimento del Contenuto
-1.  Nel pannello di sinistra **"NEW ARTICLE"**, incolla il testo grezzo.
-2.  Clicca sul pulsante **"ADD TO QUEUE"**.
+### Passo 1: Configurazione (Una sola volta)
+1.  Fai il Login con il tuo codice di accesso.
+2.  Clicca sull'icona **⚙️ IMPOSTAZIONI API**.
+3.  Incolla le tue chiavi API (almeno quella di Google Gemini, consigliata per l'espansione).
+4.  Seleziona il tuo **Preferred AI Engine**. Salva.
 
-### Passo 2: Elaborazione
-1.  L'articolo appare nella coda centrale.
-2.  Premi **"RUN BATCH"**. L'IA Gemini elaborerà il testo (15-20 secondi).
+### Passo 2: Inserimento del Contenuto
+1.  Nel pannello **"NEW ARTICLE"**, incolla il testo grezzo (o l'output di Perplexity).
+2.  Clicca su **"ADD TO QUEUE"**.
 
-### Passo 3: Review e Arricchimento
-1.  Clicca sull'articolo completato nella coda (contrassegnato da "Done").
-2.  Controlla il **SEO Score** e i suggerimenti nel pannello sinistro.
-3.  Usa **"Enrich Content"** per aggiungere fonti e link.
-
-### Passo 4: Export
-1.  Controlla i metadati generati.
-2.  Usa **"Copia"** o **"Download"** per ottenere l'HTML pronto per il CMS.
-3.  Il lavoro viene salvato automaticamente nel database locale (Archive).
+### Passo 3: Elaborazione e Review
+1.  Premi **"RUN BATCH"**. L'IA selezionata elaborerà l'espansione.
+2.  Controlla il pannello dei metadati (Title, Description, Tags) e la preview dell'articolo.
+3.  Verifica che il contatore delle parole sia "verde" (indica espansione riuscita).
 
 ---
 
-## 🛠️ Specifiche Tecniche per Sviluppatori
+## 🛠️ Specifiche Tecniche
 
 | Componente | Tecnologia | Descrizione |
 |------------|------------|-------------|
-| **Frontend** | React 19 + Vite | Rendering ultra-veloce e State management ottimizzato. |
-| **Styling** | Tailwind CSS v3 | Design System custom con supporto nativo Dark Mode. |
-| **AI Core** | Groq (Llama 3.3 70B) | Engine ultra-veloce con latenza minima e alta precisione. |
-| **Database** | Supabase (PostgreSQL) | Backend-as-a-Service per persistenza dati e Archivio. |
+| **Frontend** | React 19 + Vite | Interfaccia OLED Dark/Light reattiva. |
+| **AI Models** | Gemini 1.5, GPT-4o, Claude 3.5 | Supporto nativo per i principali LLM tramite API. |
+| **API Sync** | Supabase Store | Sincronizzazione preferenze utente e archiviazione cloud. |
+| **Layout** | Tailwind CSS v3 | Design neutro, professionale e privo di distrazioni. |
 
 ---
 
 ## 🌟 Roadmap Futura
 
-*   🔌 **WordPress Direct Connect**: Pubblicazione diretta tramite API XML-RPC/REST.
-*   🖼️ **AI Image Generation**: Creazione automatica copertine articolo (Midjourney/DALL-E).
-*   🌍 **Multi-language**: Traduzione e adattamento culturale automatico.
+*   🔌 **WordPress Direct Connect**: Pubblicazione diretta tramite API.
+*   🖼️ **AI Image Generation**: Integrazione DALL-E 3 per copertine.
+*   🌍 **Multi-language Expansion**: Adattamento e traduzione per mercati globali.
 
 ---
 
-> *"Ad Astra Per Aspera" - Verso le stelle attraverso le difficoltà.*
->
 > **Sviluppato da:** CosmoNet Labs  
-> **Versione Corrente:** 2.1.0 (Monochrome Theme)
+> **Versione Corrente:** 3.0.0 (Expansion Engine Edition)

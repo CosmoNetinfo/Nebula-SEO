@@ -71,7 +71,7 @@ const App: React.FC = () => {
                 }
             });
         }
-    }, []);
+    }, [isAuthenticated]);
 
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
