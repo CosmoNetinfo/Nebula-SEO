@@ -29,11 +29,11 @@ const callGroq = async (prompt: string): Promise<string> => {
             messages: [
                 { 
                     role: "system", 
-                    content: "Sei un Editor SEO di altissimo livello specializzato in Long-Form Strategy. Il tuo compito è l'espansione e l'ottimizzazione del testo, MAI la sintesi. Se ricevi 1000 parole, devi restituirne almeno 1000 o di più. Ogni informazione, dettaglio tecnico, citazione e sottosfumatura deve essere mantenuta e valorizzata. La tua priorità assoluta è l'INTEGRITÀ DEL CONTENUTO: non tagliare, non riassumere, non omettere nulla. La tua metrica di successo è il mantenimento del 100% delle parole originali." 
+                    content: "You are a World-Class SEO Editor specializing in Long-Form Article Excellence. Your mission is CONTENT PRESERVATION. You must NEVER summarize, NEVER truncate, and NEVER omit details. If the input is 2000 words, the output MUST be 2000+ words. Your success metric is 100% word retention. You transform simple text into SEO-optimized HTML without losing a single piece of information, data, or technical detail." 
                 },
                 { role: "user", content: prompt }
             ],
-            temperature: 0.1,
+            temperature: 0,
             max_tokens: 8192,
             response_format: { type: "json_object" }
         })
@@ -51,26 +51,31 @@ const callGroq = async (prompt: string): Promise<string> => {
 // --- FUNZIONA PRINCIPALE ---
 
 export const optimizeArticleForSeo = async (articleText: string): Promise<SeoResult> => {
-    const prompt = `COMPITO: Ottimizza SEO e formatta in HTML l'articolo seguente.
+    const wordCount = articleText.trim().split(/\s+/).filter(w => w.length > 0).length;
+
+    const prompt = `URGENT MISSION: SEO Optimization & Professional HTML Formatting.
     
-    DIRETTIVA DI FERRO (NON VIOLABILE): 
-    - VIETATO RIASSUMERE: Non accorpare paragrafi, non eliminare frasi, non semplificare i concetti.
-    - INTEGRITÀ TOTALE: Se l'articolo originale ha 2000 parole, l'output DEVE avere 2000+ parole.
-    - ESPANSIONE SEO: Se necessario, espandi i concetti per migliorare la profondità, ma non tagliare mai.
-    - Se l'articolo originale ha N paragrafi, l'output deve avere >= N paragrafi ottimizzati.
-    - Mantieni ogni singolo dato, citazione, nome e spiegazione tecnica.
-    - L'OUTPUT DEVE ESSERE LUNGO QUANTO O PIÙ DELL'INPUT.
+    SOURCE WORD COUNT: ${wordCount} words.
+    MINIMUM OUTPUT WORD COUNT: ${wordCount} words for 'htmlContent'.
 
-    REGOLE TECNICHE:
-    1. HTML: Usa H2 per i titoli, strong per le parole chiave, p per i paragrafi.
-    2. SEO: Migliora il ritmo e la leggibilità senza rimuovere informazioni.
-    3. JSON: Restituisci esclusivamente un oggetto JSON con i campi: keyPhrase, title, description, slug, htmlContent, tags, categories, socialMediaPost, seoChecklist, readability.
+    STRICT INSTRUCTIONS (NO EXCEPTIONS):
+    1. DO NOT SUMMARIZE. DO NOT SHORTEN. DO NOT OMIT.
+    2. VERBATIM REQUIREMENT: Every fact, quote, name, and technical detail from the input must appear in the 'htmlContent' field.
+    3. LENGTH PARITY: If the input has ${wordCount} words, the optimized output MUST have at least ${wordCount} words. 
+    4. STRUCTURE INTEGRITY: Maintain all original information blocks. If the input has multiple detailed sections, keep them detailed.
+    
+    OUTPUT FORMAT:
+    - Return ONLY a JSON object.
+    - Fields: keyPhrase, title, description, slug, htmlContent, tags, categories, socialMediaPost, seoChecklist, readability.
+    - 'htmlContent' must be the full optimized article in HTML (H2, strong, p tags).
 
-    TESTO ORIGINALE DA LAVORARE (MANTIENI TUTTE LE PAROLE):
-    ${articleText}`;
+    SOURCE TEXT TO PROCESS:
+    ${articleText}
+    
+    FINAL CHECK: Is the output as long or longer than the input? If no, rewrite to ensure no detail is lost.`;
 
     try {
-        DebugLogger.log('info', 'Processing with Groq Llama 3.3 (High-Integrity Mode)');
+        DebugLogger.log('info', `Optimization started: Input ${wordCount} words.`);
         const jsonText = await callGroq(prompt);
         return JSON.parse(extractJSON(jsonText));
     } catch (error: any) {
@@ -80,10 +85,12 @@ export const optimizeArticleForSeo = async (articleText: string): Promise<SeoRes
 };
 
 export const enrichArticleDepth = async (currentResult: SeoResult, originalText: string): Promise<SeoResult> => {
-    const prompt = `Analista SEO: Aggiungi tag <a href="..."> nel testo HTML fornito per collegare fonti o software citati.
-    ATTENZIONE: Non rimuovere né modificare una singola parola del testo esistente. Aggiungi solo i link.
+    const prompt = `SEO ANALYST TASK: Add <a href="..."> tags into the provided HTML content.
+    CRITICAL: You must NOT remove or modify a single word of the existing text. 
+    Only wrap existing mentions of software, brands, or sources with appropriate links.
+    If you shorten the article, you FAIL.
     
-    HTML DA NON ACCORCIARE:
+    HTML CONTENT TO PRESERVE (ZERO WORD LOSS):
     ${currentResult.htmlContent}`;
 
     try {
