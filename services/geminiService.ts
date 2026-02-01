@@ -56,12 +56,21 @@ export const optimizeArticleForSeo = async (articleText: string): Promise<SeoRes
 3. **ERRORE SEO: FRASI CONSECUTIVE**: Analizza il testo per trovare 2 o più frasi consecutive che iniziano con la stessa parola. Riscrivi SOLO l'attacco di una delle frasi per variare la struttura.
 4. **HTML SEMANTICO**: Usa H2, H3, p, strong, ul, li.
 5. **ZERO COMMENTI IA**: L'output deve essere SOLO il JSON richiesto.
-6. **ANALISI LEGGIBILITÀ (ITALIANO)**:
-   - "Flesch Reading Ease" -> "Facilità di Lettura"
-   - "Sentence Length" -> "Lunghezza Frasi"
-   - "Paragraph Length" -> "Lunghezza Paragrafi"
-   - "Use of Transition Words" -> "Parole di Transizione"
-   - I messaggi di dettaglio devono essere in italiano perfetto.
+6. **ANALISI LEGGIBILITÀ AVANZATA (YOAST STANDARD)**:
+   Compila l'array 'readability' analizzando il testo generato secondo questi 7 criteri ESATTI (output in ITALIANO):
+   
+   - **Parole di transizione**: Controlla l'uso di connettivi (es: "inoltre", "perciò", "tuttavia"). Target: >30% delle frasi.
+   - **Inizio frasi consecutive**: Controlla se troppe frasi (3 o più) iniziano con la stessa parola. Target: <10%.
+   - **Complessità lessicale**: Identifica parole troppo rare o complesse (>4 sillabe o tecnicismi non spiegati). Scegli sinonimi semplici dove possibile.
+   - **Lunghezza paragrafi**: Nessun paragrafo deve superare le 150 parole.
+   - **Distribuzione sottotitoli**: Nessuna sezione di testo deve superare le 300 parole senza un H2 o H3.
+   - **Lunghezza frasi**: Le frasi devono essere brevi. Target: max 20% delle frasi > 20 parole.
+   - **Forma passiva**: Evita la forma passiva (es: "è stato fatto"). Target: <10% delle frasi.
+
+   Per ogni criterio restituisci:
+   - status: "good" (verde), "average" (giallo), "poor" (rosso)
+   - score: Un valore numerico o descrittivo breve (es: "35% delle frasi", "Ottimo")
+   - message: Un consiglio pratico in ITALIANO su come migliorare (es: "Accorcia i paragrafi", "Usa più parole di transizione").
 
 Testo Sorgente:
 ${articleText}`;
