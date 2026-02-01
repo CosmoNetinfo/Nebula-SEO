@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArticleInput } from './components/ArticleInput';
 import { SeoOutput } from './components/SeoOutput';
-import { optimizeArticleForSeo, enrichArticleDepth } from './services/geminiService';
+import { optimizeArticleForSeo, enrichArticleDepth } from './services/aiService';
 import { SeoResult, SavedSeoResult, BatchItem } from './types';
 import { SparklesIcon, ArchiveBoxIcon, TrashIcon, SunIcon, MoonIcon } from './components/IconComponents';
 import { LoadModal } from './components/LoadModal';
