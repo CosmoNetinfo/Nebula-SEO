@@ -24,12 +24,12 @@ const SeoDataItem: React.FC<{ label: string; value: string; mono?: boolean }> = 
         });
     };
     return (
-        <div className="bg-black/40 p-3 rounded-xl border border-zinc-800/30 group">
-            <label className="block text-[10px] uppercase font-bold text-zinc-500 mb-1">{label}</label>
+        <div className="bg-zinc-950/30 p-3 rounded-lg border border-zinc-800/50 group hover:border-zinc-700 transition-colors">
+            <label className="block text-[9px] uppercase font-bold text-zinc-500 mb-1 tracking-wider">{label}</label>
             <div className="flex justify-between items-center gap-2">
-                <p className={`text-zinc-200 text-sm truncate ${mono ? 'font-mono' : ''}`}>{value}</p>
-                <button onClick={handleCopy} className="text-zinc-500 hover:text-indigo-400 p-1">
-                    {copied ? <CheckIcon className="w-4 h-4 text-green-400" /> : <ClipboardIcon className="w-4 h-4" />}
+                <p className={`text-zinc-300 text-sm truncate ${mono ? 'font-mono' : ''}`}>{value}</p>
+                <button onClick={handleCopy} className="text-zinc-600 hover:text-white p-1 transition-colors">
+                    {copied ? <CheckIcon className="w-3.5 h-3.5" /> : <ClipboardIcon className="w-3.5 h-3.5" />}
                 </button>
             </div>
         </div>
@@ -59,41 +59,42 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
         });
     };
 
-    if (isLoading) return <div className="bg-black/50 p-6 rounded-2xl border border-zinc-800 h-full flex items-center justify-center"><Loader /></div>;
-    if (error) return <div className="bg-black/50 p-6 rounded-2xl border border-red-900/20 text-red-400 flex items-center justify-center text-center">{error}</div>;
+    if (isLoading) return <div className="bg-black/20 p-6 rounded-2xl border border-zinc-800 h-full flex items-center justify-center"><Loader /></div>;
+    if (error) return <div className="bg-black/20 p-6 rounded-2xl border border-red-900/20 text-red-400 flex items-center justify-center text-center font-mono text-xs">{error}</div>;
     if (!result) return (
-        <div className="bg-black/20 p-12 rounded-2xl border border-zinc-800/50 h-full flex flex-col items-center justify-center text-center text-zinc-600">
-            <SparklesIcon className="w-16 h-16 mb-4 opacity-20" />
-            <p className="text-lg font-medium">Nessuna analisi attiva</p>
-            <p className="text-sm">Il testo verrà ottimizzato mantenendo la lunghezza originale.</p>
+        <div className="bg-zinc-900/10 p-12 rounded-2xl border border-zinc-800/50 h-full flex flex-col items-center justify-center text-center text-zinc-600">
+            <div className="p-4 bg-zinc-900/50 rounded-full mb-4 border border-zinc-800">
+                <SparklesIcon className="w-8 h-8 opacity-20" />
+            </div>
+            <p className="text-sm font-bold uppercase tracking-widest text-zinc-500">No active analysis</p>
+            <p className="text-[10px] text-zinc-600 mt-2 font-mono">Select an item from the queue to view details</p>
         </div>
     );
 
     return (
-        <div className="glass-card rounded-2xl shadow-2xl border border-zinc-800/30 flex flex-col h-full overflow-hidden">
-            <div className="flex bg-black/40 p-1 border-b border-zinc-800/50">
+        <div className="glass-card rounded-2xl shadow-2xl border border-zinc-800 flex flex-col h-full overflow-hidden bg-black/40">
+            <div className="flex bg-zinc-950/50 p-1 border-b border-zinc-800">
                 {[
-                    { id: 'seo', icon: DocumentMagnifyingGlassIcon, label: 'SEO' },
-                    { id: 'readability', icon: SparklesIcon, label: 'Qualità' },
-                    { id: 'content', icon: EyeIcon, label: 'Articolo' }
+                    { id: 'seo', icon: DocumentMagnifyingGlassIcon, label: 'SEO Metrics' },
+                    { id: 'readability', icon: SparklesIcon, label: 'Readability' },
+                    { id: 'content', icon: EyeIcon, label: 'Content Preview' }
                 ].map(tab => (
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id as any)}
-                        className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold uppercase transition-all rounded-xl ${
-                            activeTab === tab.id ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-zinc-500 hover:text-zinc-300'
+                        className={`flex-1 flex items-center justify-center gap-2 py-3 text-[10px] font-bold uppercase tracking-widest transition-all rounded-xl ${
+                            activeTab === tab.id ? 'bg-zinc-100 text-black shadow-lg shadow-white/5' : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900'
                         }`}
                     >
-                        <tab.icon className="w-4 h-4" /> {tab.label}
+                        <tab.icon className="w-3.5 h-3.5" /> {tab.label}
                     </button>
                 ))}
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
                 {activeTab === 'seo' && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-6">
                         
-                        {/* Punteggio SEO Tecnico (IA) */}
                         <div className="mb-6">
                             <SeoAnalysisPanel items={result.seoChecklist} />
                         </div>
@@ -102,56 +103,54 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                              <button
                                 onClick={onIncreaseDepth}
                                 disabled={isEnriching}
-                                className="text-[10px] px-4 py-2 rounded-xl font-bold uppercase transition-all bg-indigo-600 text-white hover:bg-indigo-500 shadow-md flex items-center gap-2"
+                                className="text-[10px] px-4 py-2 rounded-lg font-bold uppercase transition-all bg-zinc-100 text-black hover:bg-zinc-300 shadow-sm flex items-center gap-2 tracking-wider"
                             >
-                                <SparklesIcon className="w-3 h-3" />
-                                {isEnriching ? 'Arricchimento...' : 'Cerca Fonti & Approfondimenti'}
+                                <SparklesIcon className="w-3.5 h-3.5" />
+                                {isEnriching ? 'Enriching...' : 'Deep Research & Enrich'}
                             </button>
                         </div>
 
                         <div className="space-y-4">
-                            <div className="bg-black/30 p-4 rounded-xl border border-zinc-800/50">
-                                <label className="text-[10px] uppercase font-bold text-indigo-400 block mb-2">Categorie Editoriali</label>
-                                <p className="text-sm text-zinc-300">{result.categories}</p>
+                            <div className="bg-zinc-950/30 p-4 rounded-xl border border-zinc-800/50">
+                                <label className="text-[9px] uppercase font-bold text-zinc-500 block mb-2 tracking-wider">Editorial Categories</label>
+                                <p className="text-sm text-zinc-300 font-mono">{result.categories}</p>
                             </div>
                             
-                            <div className="bg-black/30 p-4 rounded-xl border border-zinc-800/50">
+                            <div className="bg-zinc-950/30 p-4 rounded-xl border border-zinc-800/50">
                                 <div className="flex justify-between items-center mb-3">
-                                    <label className="text-[10px] uppercase font-bold text-indigo-400">Tag SEO (CSV)</label>
-                                    <button onClick={handleCopyTagsCSV} className="text-[10px] text-zinc-400 hover:text-indigo-400 flex items-center gap-1 font-bold">
-                                        {tagsCopied ? <CheckCircleIcon className="w-3.5 h-3.5 text-green-400" /> : <ClipboardIcon className="w-3.5 h-3.5" />}
-                                        Copia CSV
+                                    <label className="text-[9px] uppercase font-bold text-zinc-500 tracking-wider">SEO Tags (CSV)</label>
+                                    <button onClick={handleCopyTagsCSV} className="text-[9px] text-zinc-500 hover:text-white flex items-center gap-1 font-bold transition-colors">
+                                        {tagsCopied ? <CheckCircleIcon className="w-3.5 h-3.5 text-green-500" /> : <ClipboardIcon className="w-3.5 h-3.5" />}
+                                        COPY CSV
                                     </button>
                                 </div>
-                                <div className="bg-black/50 p-3 rounded-lg border border-zinc-800 font-mono text-[10px] text-indigo-300/90 break-all cursor-pointer hover:border-indigo-500/30 transition-all" onClick={handleCopyTagsCSV}>
+                                <div className="bg-black/50 p-3 rounded-lg border border-zinc-800/80 font-mono text-[10px] text-zinc-400 break-all cursor-pointer hover:border-zinc-600 transition-all hover:text-zinc-200" onClick={handleCopyTagsCSV}>
                                     {result.tags}
                                 </div>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <SeoDataItem label="Parola Chiave" value={result.keyPhrase} mono />
+                            <SeoDataItem label="Focus Keyword" value={result.keyPhrase} mono />
                             <SeoDataItem label="URL Slug" value={result.slug} mono />
                         </div>
-                        <SeoDataItem label="Titolo SEO (Snippet)" value={result.title} />
-                        <SeoDataItem label="Meta Descrizione" value={result.description} />
+                        <SeoDataItem label="SEO Title (Snippet)" value={result.title} />
+                        <SeoDataItem label="Meta Description" value={result.description} />
                     </div>
                 )}
 
                 {activeTab === 'readability' && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-6">
-                        
-                        {/* Punteggio Leggibilità Grafico */}
                         <ReadabilityScorePanel items={result.readability} />
 
-                        <div className="bg-indigo-900/5 p-5 rounded-xl border border-indigo-500/10">
+                        <div className="bg-zinc-900/30 p-5 rounded-xl border border-zinc-800/50">
                             <div className="flex justify-between items-center mb-3">
-                                <span className="text-[10px] uppercase font-bold text-indigo-400 block tracking-wider">Post per Social Media</span>
-                                <button onClick={handleCopySocial} className="text-zinc-500 hover:text-indigo-400 transition-colors p-1 bg-black/40 rounded">
-                                    {socialCopied ? <CheckIcon className="w-4 h-4 text-green-400" /> : <ClipboardIcon className="w-4 h-4" />}
+                                <span className="text-[10px] uppercase font-bold text-zinc-400 block tracking-wider">Social Media Caption</span>
+                                <button onClick={handleCopySocial} className="text-zinc-500 hover:text-white transition-colors p-1 bg-black/40 rounded border border-zinc-800 hover:border-zinc-600">
+                                    {socialCopied ? <CheckIcon className="w-3.5 h-3.5" /> : <ClipboardIcon className="w-3.5 h-3.5" />}
                                 </button>
                             </div>
-                            <p className="text-sm text-zinc-300 leading-relaxed italic">"{result.socialMediaPost}"</p>
+                            <p className="text-sm text-zinc-400 leading-relaxed italic font-serif border-l-2 border-zinc-700 pl-4">"{result.socialMediaPost}"</p>
                         </div>
                     </div>
                 )}
@@ -159,22 +158,22 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                 {activeTab === 'content' && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-6">
                         <div className="flex items-center justify-between">
-                            <div className="flex bg-black/60 p-1 rounded-lg border border-zinc-800">
-                                <button onClick={() => setViewMode('preview')} className={`px-4 py-1.5 text-[10px] font-bold rounded-md transition-all ${viewMode === 'preview' ? 'bg-indigo-600 text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>ANTEPRIMA</button>
-                                <button onClick={() => setViewMode('code')} className={`px-4 py-1.5 text-[10px] font-bold rounded-md transition-all ${viewMode === 'code' ? 'bg-indigo-600 text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>HTML</button>
+                            <div className="flex bg-zinc-950 p-1 rounded-lg border border-zinc-800">
+                                <button onClick={() => setViewMode('preview')} className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all ${viewMode === 'preview' ? 'bg-zinc-200 text-black' : 'text-zinc-500 hover:text-zinc-300'}`}>Preview</button>
+                                <button onClick={() => setViewMode('code')} className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all ${viewMode === 'code' ? 'bg-zinc-200 text-black' : 'text-zinc-500 hover:text-zinc-300'}`}>HTML</button>
                             </div>
                             <div className="flex gap-2">
-                                <button onClick={() => onSave()} className="bg-emerald-600 p-2.5 rounded-xl text-white hover:bg-emerald-500 transition-colors" title="Salva bozza"><BookmarkIcon className="w-5 h-5" /></button>
-                                <button onClick={() => window.print()} className="bg-zinc-800 p-2.5 rounded-xl text-white hover:bg-zinc-700 border border-zinc-700" title="Stampa"><PrinterIcon className="w-5 h-5" /></button>
+                                <button onClick={() => onSave()} className="bg-white text-black p-2 rounded-lg hover:bg-zinc-200 transition-colors border border-transparent shadow-sm" title="Save Draft"><BookmarkIcon className="w-4 h-4" /></button>
+                                <button onClick={() => window.print()} className="bg-zinc-900 p-2 rounded-lg text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-600 transition-colors" title="Print"><PrinterIcon className="w-4 h-4" /></button>
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-2xl overflow-hidden min-h-[600px] border-8 border-slate-900 shadow-inner relative ring-1 ring-slate-700/50">
+                        <div className="bg-white rounded-xl overflow-hidden min-h-[600px] border border-zinc-800 shadow-inner relative">
                             {isEnriching && (
-                                <div className="absolute inset-0 bg-slate-900/10 backdrop-blur-[2px] flex items-center justify-center z-10 transition-all">
-                                    <div className="bg-indigo-600 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-4 animate-pulse border border-indigo-400/30">
-                                        <SparklesIcon className="w-6 h-6" />
-                                        <span className="text-sm font-bold tracking-tight">Perfezionamento articolo...</span>
+                                <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] flex items-center justify-center z-10 transition-all">
+                                    <div className="bg-white text-black px-5 py-3 rounded-xl shadow-2xl flex items-center gap-4 animate-pulse border border-zinc-200">
+                                        <SparklesIcon className="w-5 h-5" />
+                                        <span className="text-xs font-bold tracking-widest uppercase">Refining Content...</span>
                                     </div>
                                 </div>
                             )}
@@ -183,34 +182,40 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                                     srcDoc={`<html><head><style>
                                         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
                                         body{font-family:'Inter', sans-serif; line-height:1.8; color:#334155; padding:40px 30px; max-width:800px; margin:0 auto; font-size: 16px; background: #fff;} 
-                                        h1,h2,h3{color:#0f172a; margin-top:1.6em; margin-bottom: 0.8em; font-family: 'Playfair Display', serif;} 
-                                        h1{font-size: 2.6em; border-bottom: 3px solid #6366f1; padding-bottom: 12px; margin-bottom: 1.1em;}
-                                        h2{font-size: 1.7em; color: #4338ca; border-left: 5px solid #6366f1; padding-left: 15px;}
-                                        h3{font-size: 1.3em; color: #1e293b;}
+                                        h1,h2,h3{color:#09090b; margin-top:1.6em; margin-bottom: 0.8em; font-family: 'Playfair Display', serif;} 
+                                        h1{font-size: 2.6em; border-bottom: 3px solid #000; padding-bottom: 12px; margin-bottom: 1.1em;}
+                                        h2{font-size: 1.7em; color: #18181b; border-left: 4px solid #000; padding-left: 15px;}
+                                        h3{font-size: 1.3em; color: #3f3f46;}
                                         p{margin-bottom: 1.4em;}
-                                        a{color:#4f46e5; text-decoration:none; font-weight:700; border-bottom: 1px solid transparent;}
-                                        a:hover{border-bottom-color: #4f46e5;}
+                                        a{color:#000; text-decoration:underline; font-weight:700;}
+                                        a:hover{text-decoration:none;}
                                         ul, ol{margin-bottom: 1.4em; padding-left: 2em;}
                                         li{margin-bottom: 0.6em;}
+                                        blockquote{border-left: 3px solid #e4e4e7; margin-left: 0; padding-left: 1.5em; font-style: italic; color: #52525b;}
                                     </style></head><body>
                                         <h1>${result.title}</h1>
                                         ${result.htmlContent}
                                     </body></html>`}
-                                    className="w-full h-[600px]"
+                                    className="w-full h-[600px] bg-white"
                                 />
                             ) : (
-                                <div className="p-6 bg-slate-950 h-[600px] overflow-auto font-mono text-[11px] text-cyan-400/90 whitespace-pre-wrap relative leading-relaxed">
-                                    {`<!-- INFO SEO BLOG -->\n<!-- CATEGORIA: ${result.categories} -->\n<!-- TAG: ${result.tags} -->\n\n` + result.htmlContent}
+                                <div className="p-6 bg-zinc-950 h-[600px] overflow-auto font-mono text-[10px] text-zinc-400 whitespace-pre-wrap relative leading-relaxed">
+                                    <div className="text-zinc-600 border-b border-zinc-800 pb-2 mb-4 block">
+                                        &lt;!-- SEO METADATA --&gt;<br/>
+                                        &lt;!-- CATEGORY: {result.categories} --&gt;<br/>
+                                        &lt;!-- TAGS: {result.tags} --&gt;
+                                    </div>
+                                    {result.htmlContent}
                                     <div className="absolute top-4 right-4 flex gap-2">
                                         <button 
                                             onClick={() => {
                                                 const fullCode = `<!-- INFO SEO BLOG -->\n<!-- CATEGORIA: ${result.categories} -->\n<!-- TAG: ${result.tags} -->\n\n` + result.htmlContent;
                                                 navigator.clipboard.writeText(fullCode);
-                                                alert("Codice HTML copiato!");
+                                                alert("HTML copied!");
                                             }}
-                                            className="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-lg text-[10px] font-bold shadow-lg"
+                                            className="bg-white text-black hover:bg-zinc-200 px-3 py-2 rounded-lg text-[10px] font-bold shadow-lg uppercase tracking-wider"
                                         >
-                                            COPIA CODICE
+                                            Copy Code
                                         </button>
                                     </div>
                                 </div>

@@ -26,56 +26,41 @@ export const SeoAnalysisPanel: React.FC<SeoAnalysisPanelProps> = ({ items }) => 
         return Math.round(totalPoints / items.length);
     }, [items]);
 
-    const getScoreColor = (score: number) => {
-        if (score >= 80) return 'text-green-500 border-green-500/50';
-        if (score >= 60) return 'text-yellow-500 border-yellow-500/50';
-        return 'text-red-500 border-red-500/50';
-    };
-    
-    const getBarColor = (score: number) => {
-        if (score >= 80) return 'bg-green-500';
-        if (score >= 60) return 'bg-yellow-500';
-        return 'bg-red-500';
-    };
-
     const getStatusIcon = (status: string) => {
         const s = status.toLowerCase();
-        if (s === 'good' || s === 'ottimo') return <CheckCircleIcon className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />;
-        if (s === 'average' || s === 'medio') return <ExclamationTriangleIcon className="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" />;
-        return <XCircleIcon className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />;
+        if (s === 'good' || s === 'ottimo') return <CheckCircleIcon className="w-4 h-4 text-zinc-200 mt-0.5 shrink-0" />;
+        if (s === 'average' || s === 'medio') return <ExclamationTriangleIcon className="w-4 h-4 text-zinc-500 mt-0.5 shrink-0" />;
+        return <XCircleIcon className="w-4 h-4 text-zinc-600 mt-0.5 shrink-0" />;
     };
 
     return (
-        <div className="bg-black/60 p-5 rounded-2xl border border-zinc-700/50 shadow-lg relative overflow-hidden group mb-6">
+        <div className="bg-zinc-950/30 p-5 rounded-2xl border border-zinc-800/50 shadow-lg relative overflow-hidden group mb-6">
             <div className="flex items-center justify-between mb-4 relative z-10">
-                <h4 className="text-xs uppercase font-bold text-zinc-500 tracking-wider">Analisi SEO Tecnica</h4>
-                <div className={`px-3 py-1 rounded-full border ${getScoreColor(score)} bg-opacity-10 backdrop-blur-sm font-black text-sm`}>
-                    SEO: {score}/100
+                <h4 className="text-xs uppercase font-bold text-zinc-500 tracking-wider">Technical Analysis</h4>
+                <div className="px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm font-black text-sm text-zinc-300">
+                    SCORE: {score}/100
                 </div>
             </div>
             
             {/* Progress Bar */}
-            <div className="h-1.5 w-full bg-zinc-800 rounded-full mb-6 relative z-10 overflow-hidden">
+            <div className="h-1.5 w-full bg-zinc-900 rounded-full mb-6 relative z-10 overflow-hidden border border-zinc-800/30">
                  <div 
-                    className={`h-full ${getBarColor(score)} transition-all duration-1000 ease-out`} 
+                    className="h-full bg-zinc-200 transition-all duration-1000 ease-out" 
                     style={{ width: `${score}%` }}
                 ></div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
                 {items && items.map((r, i) => (
-                     <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-zinc-800/20 transition-colors">
+                     <div key={i} className="flex items-start gap-3 p-3 rounded-xl border border-zinc-800/30 bg-black/20 hover:bg-zinc-900/40 transition-colors group/item">
                         {getStatusIcon(r.status)}
                         <div>
-                            <p className="text-[10px] uppercase font-bold text-zinc-500">{r.item}</p>
-                            <p className="text-[10px] text-zinc-300 leading-tight mt-1">{r.details}</p>
+                            <p className="text-[10px] uppercase font-bold text-zinc-500 group-hover/item:text-zinc-400 transition-colors">{r.item}</p>
+                            <p className="text-[10px] text-zinc-400 leading-tight mt-1 font-mono">{r.details}</p>
                         </div>
                     </div>
                 ))}
             </div>
-            
-            {/* Background Glow */}
-            <div className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-[50px] opacity-10 ${getBarColor(score)}`}></div>
         </div>
     );
 };

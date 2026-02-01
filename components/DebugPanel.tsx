@@ -60,8 +60,8 @@ export const DebugPanel: React.FC = () => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg shadow-lg border border-slate-600 text-xs font-bold z-50"
-        title="Apri Debug Panel"
+        className="fixed bottom-4 right-4 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white px-4 py-2 rounded-lg shadow-lg border border-zinc-800 text-xs font-bold z-50 transition-all font-mono uppercase tracking-wider"
+        title="Open Debug Panel"
       >
         🐛 Debug ({logs.filter(l => l.level === 'error').length})
       </button>
@@ -69,60 +69,63 @@ export const DebugPanel: React.FC = () => {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 w-96 max-h-96 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden z-50">
-      <div className="bg-slate-800 p-3 flex justify-between items-center border-b border-slate-700">
-        <h3 className="text-xs font-bold text-white flex items-center gap-2">
-          🐛 Debug Panel
-          <span className="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-[10px]">
-            {logs.filter(l => l.level === 'error').length} errori
+    <div className="fixed bottom-4 right-4 w-96 max-h-[500px] bg-black/95 backdrop-blur-xl border border-zinc-800 rounded-xl shadow-2xl overflow-hidden z-50 flex flex-col animate-in fade-in slide-in-from-bottom-5">
+      <div className="bg-zinc-900/80 p-3 flex justify-between items-center border-b border-zinc-800">
+        <h3 className="text-xs font-bold text-zinc-300 flex items-center gap-2 uppercase tracking-wider font-mono">
+          System Logs
+          <span className="bg-red-950/30 text-red-500 border border-red-900/30 px-2 py-0.5 rounded text-[9px]">
+            {logs.filter(l => l.level === 'error').length} Errors
           </span>
         </h3>
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button
             onClick={() => DebugLogger.clear()}
-            className="text-slate-400 hover:text-white text-xs"
+            className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 hover:text-white transition-colors"
           >
-            Pulisci
+            Clear
           </button>
           <button
             onClick={() => setIsOpen(false)}
-            className="text-slate-400 hover:text-white text-xs"
+            className="text-zinc-500 hover:text-white transition-colors"
           >
             ✕
           </button>
         </div>
       </div>
       
-      <div className="overflow-y-auto max-h-80 p-3 space-y-2 bg-slate-950">
+      <div className="overflow-y-auto p-3 space-y-2 custom-scrollbar bg-black/50 flex-1">
         {logs.length === 0 ? (
-          <p className="text-slate-500 text-xs text-center py-4">Nessun log disponibile</p>
+          <div className="flex flex-col items-center justify-center h-40 text-zinc-600">
+             <p className="text-xs font-mono">System normal.</p>
+             <p className="text-[10px] uppercase font-bold tracking-widest mt-1 opacity-50">No logs recorded</p>
+          </div>
         ) : (
           logs.slice().reverse().map((log, idx) => (
             <div
               key={idx}
-              className={`p-2 rounded text-xs border ${
+              className={`p-2.5 rounded-lg border text-xs font-mono transition-all ${
                 log.level === 'error' 
-                  ? 'bg-red-900/20 border-red-500/30 text-red-300' 
+                  ? 'bg-red-950/10 border-red-900/20 text-red-400' 
                   : log.level === 'warn'
-                  ? 'bg-yellow-900/20 border-yellow-500/30 text-yellow-300'
-                  : 'bg-slate-800/50 border-slate-700 text-slate-300'
+                  ? 'bg-amber-950/10 border-amber-900/20 text-amber-500'
+                  : 'bg-zinc-900/30 border-zinc-800/50 text-zinc-400'
               }`}
             >
-              <div className="flex justify-between items-start mb-1">
-                <span className="font-bold uppercase text-[10px]">
-                  {log.level === 'error' ? '❌' : log.level === 'warn' ? '⚠️' : 'ℹ️'} {log.level}
+              <div className="flex justify-between items-start mb-1.5 opacity-70">
+                <span className="font-bold uppercase text-[9px] tracking-wider">
+                  {log.level === 'error' ? 'CRITICAL' : log.level === 'warn' ? 'WARNING' : 'INFO'}
                 </span>
-                <span className="text-[9px] text-slate-500">
-                  {new Date(log.timestamp).toLocaleTimeString('it-IT')}
+                <span className="text-[9px]">
+                  {new Date(log.timestamp).toLocaleTimeString('en-US', { hour12: false })}
                 </span>
               </div>
-              <p className="font-mono text-[11px] leading-tight">{log.message}</p>
+              <p className="leading-relaxed break-words text-[11px]">{log.message}</p>
               {log.details && (
-                <details className="mt-1">
-                  <summary className="cursor-pointer text-[10px] text-slate-400 hover:text-slate-200">
-                    Dettagli
+                <details className="mt-2 group">
+                  <summary className="cursor-pointer text-[9px] font-bold uppercase tracking-wider text-zinc-600 hover:text-zinc-300 transition-colors list-none flex items-center gap-1">
+                    <span className="group-open:rotate-90 transition-transform">▸</span> Details
                   </summary>
-                  <pre className="mt-1 text-[9px] bg-black/30 p-2 rounded overflow-x-auto">
+                  <pre className="mt-2 text-[9px] bg-black p-2 rounded border border-zinc-800 overflow-x-auto text-zinc-500">
                     {typeof log.details === 'string' 
                       ? log.details 
                       : JSON.stringify(log.details, null, 2)}

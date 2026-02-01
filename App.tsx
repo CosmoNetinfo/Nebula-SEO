@@ -183,56 +183,54 @@ const App: React.FC = () => {
     const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {};
 
     return (
-        <div className="bg-black min-h-screen text-zinc-200 font-sans pb-12 relative">
+        <div className="bg-black min-h-screen text-zinc-300 font-sans pb-12 relative selection:bg-white selection:text-black">
             <div className="container mx-auto max-w-7xl px-4 py-4 md:px-6 md:py-6 relative z-10">
-                <header className="glass-card p-3 md:p-4 rounded-xl mb-4 shadow-lg slide-in-up">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-2">
-                        <div className="flex items-center gap-2">
-                            <div className="relative">
-                                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-md blur-sm opacity-30 animate-pulse"></div>
-                                <div className="relative bg-gradient-to-br from-indigo-600 to-cyan-600 p-1.5 rounded-md shadow-md">
-                                    <SparklesIcon className="w-5 h-5 text-white breathe-animation" />
+                <header className="glass-card px-6 py-4 rounded-xl mb-6 shadow-2xl slide-in-up border border-zinc-800">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                            <div className="relative group">
+                                <div className="absolute inset-0 bg-white/10 rounded-full blur-lg opacity-0 group-hover:opacity-50 transition-opacity"></div>
+                                <div className="relative bg-zinc-950/80 p-2 rounded-lg border border-zinc-800">
+                                    <SparklesIcon className="w-5 h-5 text-white" />
                                 </div>
                             </div>
                             <div>
-                                <h1 className="text-xl md:text-2xl font-black tracking-tight">
-                                    <span className="bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-[shimmer_3s_linear_infinite]">
-                                        Nebula SEO
-                                    </span>
+                                <h1 className="text-2xl md:text-3xl font-bold tracking-tighter text-white font-display">
+                                    Nebula<span className="text-zinc-500">SEO</span>
                                 </h1>
-                                <p className="text-[10px] text-slate-500 mt-0 font-medium">AI Content Optimizer</p>
+                                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-0.5">Professional AI Workbench</p>
                             </div>
                         </div>
-                        <div className="flex gap-2 items-center">
+                        <div className="flex gap-3 items-center">
                             <button 
                                 onClick={() => setIsLoadModalOpen(true)}
-                                className="glass-card px-3 py-2 rounded-lg text-[11px] font-bold uppercase border border-slate-600/50
-                                         hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/20
-                                         transition-all duration-300 hover:-translate-y-0.5
-                                         flex items-center gap-1.5 group"
+                                className="px-4 py-2 rounded-lg text-[11px] font-bold uppercase border border-zinc-800 bg-zinc-900/50
+                                         text-zinc-400 hover:text-white hover:border-zinc-600 hover:bg-zinc-800
+                                         transition-all duration-300
+                                         flex items-center gap-2 group shadow-sm hover:shadow-md"
                             >
-                                <ArchiveBoxIcon className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform" />
-                                <span className="text-zinc-300 group-hover:text-white">Archivio</span>
-                                <span className="ml-0.5 bg-indigo-500/20 text-indigo-400 px-1.5 py-0.5 rounded-full text-[9px] font-black">
+                                <ArchiveBoxIcon className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors" />
+                                Archive
+                                <span className="ml-1 bg-zinc-800 text-zinc-300 px-1.5 py-0.5 rounded text-[9px]">
                                     {savedArticles.length}
                                 </span>
                             </button>
                             <button 
                                 onClick={handleLogout}
-                                className="glass-card px-2.5 py-2 rounded-lg text-[11px] font-bold uppercase
-                                         border border-red-500/30 hover:border-red-500/50
-                                         text-red-400 hover:text-red-300
-                                         hover:shadow-lg hover:shadow-red-500/20
-                                         transition-all duration-300 hover:-translate-y-0.5"
+                                className="px-4 py-2 rounded-lg text-[11px] font-bold uppercase
+                                         border border-zinc-800 hover:border-red-900/50
+                                         text-zinc-500 hover:text-red-400
+                                         hover:bg-red-950/10
+                                         transition-all duration-300"
                             >
-                                Esci
+                                Logout
                             </button>
                         </div>
                     </div>
                 </header>
 
-                <main className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-                    <div className="lg:col-span-5 space-y-4">
+                <main className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div className="lg:col-span-5 space-y-6">
                         <ArticleInput
                             value={articleText}
                             onChange={setArticleText}
@@ -245,82 +243,82 @@ const App: React.FC = () => {
                             onImportDB={handleImport}
                         />
 
-                        <div className="glass-card-intense p-4 rounded-xl shadow-lg slide-in-up" style={{animationDelay: '0.1s'}}>
-                            <div className="flex justify-between items-center mb-3">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-indigo-400 to-cyan-400 animate-pulse"></div>
-                                    <h3 className="text-sm font-bold uppercase tracking-wider bg-gradient-to-r from-indigo-400 to-cyan-400 text-transparent bg-clip-text">
-                                        Coda di Elaborazione
+                        <div className="glass-card-intense p-5 rounded-xl shadow-xl slide-in-up border border-zinc-800 bg-black/40" style={{animationDelay: '0.1s'}}>
+                            <div className="flex justify-between items-center mb-4 pb-2 border-b border-zinc-800">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></div>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">
+                                        Processing Queue
                                     </h3>
                                 </div>
                                 {batchQueue.some(b => b.status === 'pending') && (
                                     <button 
                                         onClick={processBatch}
                                         disabled={isLoading}
-                                        className="btn-gradient px-5 py-2.5 rounded-xl text-xs font-bold
-                                                 text-white shadow-lg shadow-indigo-600/30
-                                                 hover:shadow-xl hover:shadow-indigo-500/40
+                                        className="btn-primary px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider
+                                                 shadow-lg
                                                  transition-all duration-300
                                                  disabled:opacity-50 disabled:cursor-not-allowed
-                                                 hover:-translate-y-0.5"
+                                                 hover:-translate-y-0.5 flex items-center gap-2"
                                     >
-                                        {isLoading ? '⚡ In corso...' : '🚀 OTTIMIZZA TUTTI (x4)'}
+                                        {isLoading ? 'Processing...' : 'Run Batch'}
                                     </button>
                                 )}
                             </div>
                             
-                            <div className="space-y-2.5 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                            <div className="space-y-1 max-h-[400px] overflow-y-auto custom-scrollbar pr-1">
                                 {batchQueue.length === 0 ? (
-                                    <div className="text-center py-12">
-                                        <div className="inline-block p-4 rounded-2xl bg-zinc-900/50 mb-3">
-                                            <ArchiveBoxIcon className="w-12 h-12 text-zinc-600" />
+                                    <div className="text-center py-16 border border-dashed border-zinc-800/50 rounded-xl bg-zinc-900/20">
+                                        <div className="inline-block p-4 rounded-full bg-zinc-900 mb-3 text-zinc-700">
+                                            <ArchiveBoxIcon className="w-8 h-8" />
                                         </div>
-                                        <p className="text-sm text-zinc-500 font-medium">Nessuna analisi attiva</p>
-                                        <p className="text-xs text-zinc-600 mt-1">Il tuo output ottimizzato apparirà qui quando è pronto</p>
+                                        <p className="text-xs text-zinc-500 font-bold uppercase tracking-wider">Queue Empty</p>
+                                        <p className="text-[10px] text-zinc-600 mt-1">Waiting for input...</p>
                                     </div>
                                 ) : (
                                     batchQueue.map((item, index) => (
                                         <div 
                                             key={item.id}
                                             onClick={() => setSelectedBatchId(item.id)}
-                                            className={`p-4 rounded-2xl border cursor-pointer transition-all duration-300 flex items-center justify-between group ${
+                                            className={`p-3 rounded-lg border cursor-pointer transition-all duration-200 flex items-center justify-between group relative overflow-hidden ${
                                                 selectedBatchId === item.id 
-                                                ? 'bg-gradient-to-r from-indigo-600/20 to-cyan-600/10 border-indigo-500/50 shadow-lg shadow-indigo-500/20' 
-                                                : 'bg-zinc-900/40 border-zinc-800/50 hover:border-zinc-600 hover:bg-zinc-900/60'
+                                                ? 'bg-zinc-900 border-zinc-700 shadow-md' 
+                                                : 'bg-transparent border-transparent hover:bg-zinc-900/50 hover:border-zinc-800'
                                             }`}
                                             style={{animationDelay: `${index * 0.05}s`}}
-                                        >
-                                            <div className="flex-1 truncate mr-4">
+                                        >   
+                                            {selectedBatchId === item.id && (
+                                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-white"></div>
+                                            )}
+                                            
+                                            <div className="flex-1 truncate pl-2">
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    {selectedBatchId === item.id && (
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></div>
-                                                    )}
-                                                    <p className="text-sm font-bold text-zinc-100 truncate">
-                                                        {item.result?.title || item.text.substring(0, 45) + '...'}
+                                                    <p className={`text-xs font-bold truncate ${selectedBatchId === item.id ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-300'}`}>
+                                                        {item.result?.title || item.text.substring(0, 50) + '...'}
                                                     </p>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <span className={`text-[10px] font-black uppercase px-2 py-1 rounded-full ${
-                                                        item.status === 'completed' ? 'bg-green-500/20 text-green-400' : 
-                                                        item.status === 'processing' ? 'bg-indigo-500/20 text-indigo-400 animate-pulse' : 
-                                                        item.status === 'error' ? 'bg-red-500/20 text-red-400' : 
-                                                        'bg-zinc-800/50 text-zinc-400'
+                                                    <span className={`text-[9px] font-mono uppercase tracking-tight py-0.5 px-1.5 rounded ${
+                                                        item.status === 'completed' ? 'text-green-400 bg-green-900/10' : 
+                                                        item.status === 'processing' ? 'text-white bg-white/10 animate-pulse' : 
+                                                        item.status === 'error' ? 'text-red-400 bg-red-900/10' : 
+                                                        'text-zinc-600 bg-zinc-900'
                                                     }`}>
-                                                        {item.status === 'completed' ? '✓ Completato' :
-                                                         item.status === 'processing' ? '⚡ Elaborazione' :
-                                                         item.status === 'error' ? '✕ Errore' :
-                                                         '⏱ In attesa'}
+                                                        {item.status === 'completed' ? 'Done' :
+                                                         item.status === 'processing' ? 'Working' :
+                                                         item.status === 'error' ? 'Error' :
+                                                         'Queued'}
                                                     </span>
                                                 </div>
                                             </div>
                                             <button 
                                                 onClick={(e) => { e.stopPropagation(); removeFromQueue(item.id); }}
-                                                className="opacity-0 group-hover:opacity-100 p-2 rounded-lg
-                                                         text-slate-500 hover:text-red-400 hover:bg-red-500/10
-                                                         transition-all duration-200 hover:scale-110"
-                                                title="Rimuovi dalla coda"
+                                                className="opacity-0 group-hover:opacity-100 p-2 rounded-md
+                                                         text-zinc-600 hover:text-red-400 hover:bg-red-950/20
+                                                         transition-all duration-200"
+                                                title="Remove"
                                             >
-                                                <TrashIcon className="w-4 h-4" />
+                                                <TrashIcon className="w-3.5 h-3.5" />
                                             </button>
                                         </div>
                                     ))
@@ -329,7 +327,7 @@ const App: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="lg:col-span-7">
+                    <div className="lg:col-span-7 h-full">
                         <SeoOutput
                             result={currentResult}
                             isLoading={isLoading && batchQueue.find(b => b.id === selectedBatchId)?.status === 'processing'}
