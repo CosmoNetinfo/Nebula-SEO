@@ -9,12 +9,18 @@ interface SettingsModalProps {
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     const [geminiKey, setGeminiKey] = useState('');
     const [groqKey, setGroqKey] = useState('');
+    const [openaiKey, setOpenaiKey] = useState('');
+    const [anthropicKey, setAnthropicKey] = useState('');
+    const [preferredAI, setPreferredAI] = useState('gemini');
     const [saved, setSaved] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
             setGeminiKey(localStorage.getItem('user_gemini_key') || '');
             setGroqKey(localStorage.getItem('user_groq_key') || '');
+            setOpenaiKey(localStorage.getItem('user_openai_key') || '');
+            setAnthropicKey(localStorage.getItem('user_anthropic_key') || '');
+            setPreferredAI(localStorage.getItem('user_preferred_ai') || 'gemini');
             setSaved(false);
         }
     }, [isOpen]);
@@ -22,6 +28,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     const handleSave = () => {
         localStorage.setItem('user_gemini_key', geminiKey);
         localStorage.setItem('user_groq_key', groqKey);
+        localStorage.setItem('user_openai_key', openaiKey);
+        localStorage.setItem('user_anthropic_key', anthropicKey);
+        localStorage.setItem('user_preferred_ai', preferredAI);
         setSaved(true);
         setTimeout(() => {
             setSaved(false);
@@ -53,12 +62,48 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
                     <div className="space-y-4">
                         <div className="space-y-1.5">
+                            <label className="text-[10px] uppercase font-black text-zinc-400 dark:text-zinc-500 ml-1">Preferred AI Engine</label>
+                            <select
+                                value={preferredAI}
+                                onChange={(e) => setPreferredAI(e.target.value)}
+                                className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-black dark:focus:ring-white outline-none transition-all dark:text-white"
+                            >
+                                <option value="gemini">Google Gemini (Flash 1.5 - Best Expansion)</option>
+                                <option value="openai">OpenAI (GPT-4o)</option>
+                                <option value="anthropic">Anthropic (Claude 3.5 Sonnet)</option>
+                                <option value="groq">Groq (Llama 3.3 - Fastest)</option>
+                            </select>
+                        </div>
+
+                        <div className="space-y-1.5">
                             <label className="text-[10px] uppercase font-black text-zinc-400 dark:text-zinc-500 ml-1">Google Gemini Key</label>
                             <input
                                 type="password"
                                 value={geminiKey}
                                 onChange={(e) => setGeminiKey(e.target.value)}
                                 placeholder="AIzaSy..."
+                                className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-black dark:focus:ring-white outline-none transition-all dark:text-white font-mono"
+                            />
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] uppercase font-black text-zinc-400 dark:text-zinc-500 ml-1">OpenAI Key</label>
+                            <input
+                                type="password"
+                                value={openaiKey}
+                                onChange={(e) => setOpenaiKey(e.target.value)}
+                                placeholder="sk-..."
+                                className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-black dark:focus:ring-white outline-none transition-all dark:text-white font-mono"
+                            />
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] uppercase font-black text-zinc-400 dark:text-zinc-500 ml-1">Anthropic (Claude) Key</label>
+                            <input
+                                type="password"
+                                value={anthropicKey}
+                                onChange={(e) => setAnthropicKey(e.target.value)}
+                                placeholder="sk-ant-..."
                                 className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-black dark:focus:ring-white outline-none transition-all dark:text-white font-mono"
                             />
                         </div>

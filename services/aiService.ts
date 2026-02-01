@@ -3,6 +3,9 @@ import DebugLogger from '../components/DebugPanel';
 
 const getGeminiKey = () => localStorage.getItem('user_gemini_key') || process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY;
 const getGroqKey = () => localStorage.getItem('user_groq_key') || process.env.VITE_GROQ_API_KEY || process.env.GROQ_API_KEY || (import.meta as any).env?.VITE_GROQ_API_KEY;
+const getOpenAIKey = () => localStorage.getItem('user_openai_key') || process.env.VITE_OPENAI_API_KEY || (import.meta as any).env?.VITE_OPENAI_API_KEY;
+const getAnthropicKey = () => localStorage.getItem('user_anthropic_key') || process.env.VITE_ANTHROPIC_API_KEY || (import.meta as any).env?.VITE_ANTHROPIC_API_KEY;
+const getPreferredAI = () => localStorage.getItem('user_preferred_ai') || 'gemini';
 
 const extractJSON = (text: string): string => {
     const firstOpen = text.indexOf('{');
@@ -13,12 +16,11 @@ const extractJSON = (text: string): string => {
     return text;
 };
 
-// --- GEMINI ENGINE (Zero-Loss Specialist) ---
+// --- ENGINES ---
+
 const callGemini = async (systemPrompt: string, userPrompt: string): Promise<string> => {
     const key = getGeminiKey();
-    if (!key) {
-        throw new Error("GEMINI_API_KEY mancante. Configurala nelle impostazioni dell'app.");
-    }
+    if (!key) throw new Error("GEMINI_API_KEY mancante nelle impostazioni.");
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
         method: 'POST',
@@ -27,7 +29,7 @@ const callGemini = async (systemPrompt: string, userPrompt: string): Promise<str
             system_instruction: { parts: [{ text: systemPrompt }] },
             contents: [{ parts: [{ text: userPrompt }] }],
             generationConfig: {
-                temperature: 0.9, // Higher temperature for better expansion
+                temperature: 0.9,
                 maxOutputTokens: 8192,
                 responseMimeType: "application/json"
             }
@@ -43,7 +45,66 @@ const callGemini = async (systemPrompt: string, userPrompt: string): Promise<str
     return data.candidates[0].content.parts[0].text;
 };
 
-// --- GROQ ENGINE (Fallback) ---
+const callOpenAI = async (systemPrompt: string, userPrompt: string): Promise<string> => {
+    const key = getOpenAIKey();
+    if (!key) throw new Error("OPENAI_API_KEY mancante nelle impostazioni.");
+
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${key}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            model: "gpt-4o",
+            messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userPrompt }
+            ],
+            temperature: 0.7,
+            response_format: { type: "json_object" }
+        })
+    });
+
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(`Errore OpenAI: ${err.error?.message || response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.choices[0].message.content;
+};
+
+const callAnthropic = async (systemPrompt: string, userPrompt: string): Promise<string> => {
+    const key = getAnthropicKey();
+    if (!key) throw new Error("ANTHROPIC_API_KEY mancante nelle impostazioni.");
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+            'x-api-key': key,
+            'anthropic-version': '2023-06-01',
+            'Content-Type': 'application/json',
+            'dangerouslyAllowBrowser': 'true'
+        },
+        body: JSON.stringify({
+            model: "claude-3-5-sonnet-20241022",
+            max_tokens: 8192,
+            system: systemPrompt,
+            messages: [{ role: "user", content: userPrompt }],
+            temperature: 0.7
+        })
+    });
+
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(`Errore Anthropic: ${err.error?.message || response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.content[0].text;
+};
+
 const callGroq = async (systemPrompt: string, userPrompt: string): Promise<string> => {
     const key = getGroqKey();
     if (!key) throw new Error("GROQ_API_KEY mancante nelle impostazioni.");
@@ -75,7 +136,20 @@ const callGroq = async (systemPrompt: string, userPrompt: string): Promise<strin
     return data.choices[0].message.content;
 };
 
-// --- FUNZIONA PRINCIPALE ---
+const callAI = async (systemPrompt: string, userPrompt: string): Promise<string> => {
+    const preferred = getPreferredAI();
+    DebugLogger.log('info', `Using AI Engine: ${preferred}`);
+
+    switch (preferred) {
+        case 'gemini': return callGemini(systemPrompt, userPrompt);
+        case 'openai': return callOpenAI(systemPrompt, userPrompt);
+        case 'anthropic': return callAnthropic(systemPrompt, userPrompt);
+        case 'groq': return callGroq(systemPrompt, userPrompt);
+        default: return callGemini(systemPrompt, userPrompt);
+    }
+};
+
+// --- CORE LOGIC ---
 
 export const optimizeArticleForSeo = async (articleText: string): Promise<SeoResult> => {
     const wordCount = articleText.trim().split(/\s+/).filter(w => w.length > 0).length;
@@ -125,17 +199,16 @@ export const optimizeArticleForSeo = async (articleText: string): Promise<SeoRes
     3. EXPANSE: If word count is ${wordCount}, target is ${Math.round(wordCount * 1.3)}.`;
 
     try {
-        DebugLogger.log('info', `Optimization started with Gemini: Input ${wordCount} words.`);
-        const jsonText = await callGemini(systemPrompt, prompt);
+        const jsonText = await callAI(systemPrompt, prompt);
         return JSON.parse(extractJSON(jsonText));
     } catch (error: any) {
-        DebugLogger.log('error', 'Optimization failed with Gemini, trying Groq fallback', { error: error.message });
+        DebugLogger.log('error', 'Primary AI choice failed, trying Groq fallback if available', { error: error.message });
         try {
+            // Groq is the ultimate fallback
             const jsonText = await callGroq(systemPrompt, prompt);
             return JSON.parse(extractJSON(jsonText));
         } catch (groqError: any) {
-            DebugLogger.log('error', 'Groq fallback also failed', { error: groqError.message });
-            throw error;
+            throw error; // Re-throw original error if fallback also fails
         }
     }
 };
@@ -152,12 +225,11 @@ export const enrichArticleDepth = async (currentResult: SeoResult, originalText:
     const systemPrompt = "You are a Link Enrichment Expert. Add links without removing any original text.";
 
     try {
-        DebugLogger.log('info', 'Enriching with Gemini (Zero-Loss Mode)');
-        const jsonText = await callGemini(systemPrompt, prompt);
+        const jsonText = await callAI(systemPrompt, prompt);
         const result = JSON.parse(extractJSON(jsonText));
         return { ...currentResult, ...result };
     } catch (error: any) {
-        DebugLogger.log('error', 'Enrichment failed with Gemini, trying Groq fallback', { error: error.message });
+        DebugLogger.log('error', 'Enrichment failed with primary AI, trying Groq fallback', { error: error.message });
         try {
             const jsonText = await callGroq(systemPrompt, prompt);
             const result = JSON.parse(extractJSON(jsonText));
