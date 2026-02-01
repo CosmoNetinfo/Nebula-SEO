@@ -168,29 +168,35 @@ ${articleText}`;
 
 export const enrichArticleDepth = async (currentResult: SeoResult, originalText: string): Promise<SeoResult> => {
     try {
-        const prompt = `Agisci come un SEO Specialist. Il tuo obiettivo è aggiungere LINK ipertestuali (<a>) verso fonti ufficiali, documentazione o siti di download pertinenti all'interno del contenuto HTML fornito.
+        const prompt = `SEO Specialist: aggiungi LINK (<a>) a fonti ufficiali/download nel HTML fornito.
 
-**REGOLE**:
-1. **NON TAGLIARE IL TESTO**: Il contenuto deve rimanere identico in lunghezza, aggiungi solo i tag <a> dove opportuno.
-2. **FONTI REALI**: Usa Google Search per trovare i link corretti ai software, servizi o notizie citate.
-3. **MANTIENI TUTTO**: Non toccare i tag H2, H3 o la struttura esistente.
-4. **FORMATO JSON**: Restituisci STRETTAMENTE un oggetto JSON valido che rispetta lo schema dei dati precedente. NON aggiungere markdown o testo prima/dopo.
+REGOLE:
+1. NON TAGLIARE: Lunghezza identica, aggiungi solo <a>
+2. FONTI REALI: Usa Google Search
+3. STRUTTURA: Mantieni H2, H3, p
+4. FORMATO: JSON identico allo schema originale.
 
-CONTENUTO HTML ATTUALE:
+HTML:
 ${currentResult.htmlContent}`;
 
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
             contents: prompt,
             config: {
-                // responseMimeType: "application/json", // Removed to allow tools
-                // responseSchema: responseSchema,      // Removed to allow tools
                 tools: [{ googleSearch: {} }],
                 maxOutputTokens: 8192,
+                candidateCount: 1,
+                temperature: 0.1,
             },
         });
 
         let jsonText = response.text.trim();
+        
+        DebugLogger.log('info', 'Enrich Step Response', {
+            originalLength: currentResult.htmlContent.length,
+            responseLength: jsonText.length,
+            isTruncated: !jsonText.trim().endsWith('}')
+        });
         
         // Helper to extract JSON
         const extractJSON = (text: string): string => {
@@ -206,6 +212,7 @@ ${currentResult.htmlContent}`;
         jsonText = extractJSON(jsonText);
 
         const result: SeoResult = JSON.parse(jsonText);
+        DebugLogger.log('info', 'Enrich Step Parsed Successfully');
         
         const newSources = extractSources(response);
         const allSources = [...(currentResult.groundingSources || []), ...newSources];
