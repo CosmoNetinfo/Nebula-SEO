@@ -62,10 +62,11 @@ export const optimizeArticleForSeo = async (articleText: string): Promise<SeoRes
    - **Parole di transizione**: Controlla l'uso di connettivi (es: "inoltre", "perciò", "tuttavia"). Target: >30% delle frasi.
    - **Inizio frasi consecutive**: Controlla se troppe frasi (3 o più) iniziano con la stessa parola. Target: <10%.
    - **Complessità lessicale**: Identifica parole troppo rare o complesse (>4 sillabe o tecnicismi non spiegati). Scegli sinonimi semplici dove possibile.
-   - **Lunghezza paragrafi**: Nessun paragrafo deve superare le 150 parole.
+   - **Lunghezza paragrafi**: Nessun paragrafo deve superare le 150 parole. Evita i "muri di testo".
    - **Distribuzione sottotitoli**: Nessuna sezione di testo deve superare le 300 parole senza un H2 o H3.
    - **Lunghezza frasi**: Le frasi devono essere brevi. Target: max 20% delle frasi > 20 parole.
-   - **Forma passiva**: Evita la forma passiva (es: "è stato fatto"). Target: <10% delle frasi.
+   - **Forma passiva**: Evita la forma passiva (es: "è stato fatto"). Usa la forma attiva. Target: <10% delle frasi.
+   - **Liste ed Elenchi**: Includi almeno una lista (ordinata o non) per migliorare la scansionabilità (scan-ability) del contenuto.
 
    Per ogni criterio restituisci:
    - status: "good" (verde), "average" (giallo), "poor" (rosso)
