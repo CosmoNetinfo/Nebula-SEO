@@ -77,10 +77,16 @@ export const ArticleInput: React.FC<ArticleInputProps> = ({
                 </span>
             </button>
             
-            <div className="flex justify-between items-center pt-1 px-1">
-                <span className="text-[9px] text-zinc-400 dark:text-zinc-600 font-mono">
-                    MAX CONCURRENCY: 4 THREADS • {value.trim().split(/\s+/).filter(w => w.length > 0).length} WORDS
-                </span>
+            <div className="flex justify-between items-center pt-2 px-1">
+                <div className="flex gap-4 items-center">
+                    <span className="text-[10px] text-zinc-600 dark:text-zinc-400 font-bold tracking-tighter uppercase flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-zinc-100 animate-pulse"></span>
+                        Threads: 4
+                    </span>
+                    <span className="text-[10px] text-zinc-900 dark:text-zinc-200 font-black tracking-tight uppercase bg-zinc-100 dark:bg-white/10 px-2 py-0.5 rounded border border-zinc-200 dark:border-white/10">
+                        {value.trim().split(/\s+/).filter(w => w.length > 0).length} Words Count
+                    </span>
+                </div>
                 {lastAutoSave && (
                     <span className="text-[9px] text-zinc-400 dark:text-zinc-600 font-mono flex items-center gap-1">
                         <CheckCircleIcon className="w-3 h-3 text-zinc-500" />

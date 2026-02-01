@@ -85,24 +85,29 @@ const callGroq = async (prompt: string): Promise<string> => {
 // --- MAIN FUNCTIONS ---
 
 export const optimizeArticleForSeo = async (articleText: string): Promise<SeoResult> => {
-    const prompt = `SEO Editor ITALIANO. Output JSON strictly.
-    CRITICAL: Keep FULL length of input. No summarizing.
+    const prompt = `Sei un Senior SEO Editor. Il tuo compito è ottimizzare l'articolo fornito senza MAI ridurne la lunghezza.
     
-    Format:
+    REGOLE MANDATORIE:
+    1. INTEGRITÀ: Se l'input ha 2000 parole, l'output deve avere ALMENO 2000 parole. Non riassumere, non tagliare paragrafi.
+    2. OTTIMIZZAZIONE: Migliora la leggibilità, correggi la grammatica e aggiungi tag HTML (H2, H3, p, strong, ul, li).
+    3. LINGUA: Tutto l'output deve essere in ITALIANO.
+    4. FORMATO: Restituisci STRETTAMENTE un oggetto JSON.
+    
+    STRUTTURA JSON:
     {
-        "keyPhrase": "...",
-        "title": "...",
-        "description": "...",
-        "slug": "...",
-        "htmlContent": "HTML using H2, H3, p, strong, ul, li. MUST BE FULL LENGTH.",
-        "tags": "...",
-        "categories": "...",
-        "socialMediaPost": "...",
-        "seoChecklist": [{"item": "...", "status": "good/average/poor", "details": "..."}],
-        "readability": [{"criteria": "...", "status": "good/average/poor", "score": "...", "message": "..."}]
+        "keyPhrase": "parola chiave principale",
+        "title": "titolo SEO accattivante",
+        "description": "meta descrizione di 120-156 caratteri",
+        "slug": "url-amichevole",
+        "htmlContent": "L'ARTICOLO COMPLETO IN HTML. NON TAGLIARE NULLA.",
+        "tags": "tag separati da virgola",
+        "categories": "categorie",
+        "socialMediaPost": "post per i social",
+        "seoChecklist": [{"item": "nome controllo", "status": "good/average/poor", "details": "spiegazione"}],
+        "readability": [{"criteria": "nome criterio", "status": "good/average/poor", "score": "valore", "message": "consiglio"}]
     }
 
-    Source:
+    TESTO DA OTTIMIZZARE:
     ${articleText}`;
 
     try {
@@ -130,10 +135,15 @@ export const optimizeArticleForSeo = async (articleText: string): Promise<SeoRes
 };
 
 export const enrichArticleDepth = async (currentResult: SeoResult, originalText: string): Promise<SeoResult> => {
-    const prompt = `SEO Linker: Add <a> tags to official sources/downloads in the HTML.
-    Don't change content length. Use real URLs.
+    const prompt = `Analista SEO: Il tuo compito è UNICAMENTE aggiungere tag <a href="..."> nel testo HTML fornito per collegare fonti ufficiali, documentazione o siti di download.
     
-    HTML:
+    REGOLE CRITICHE:
+    1. NON TOCCARE IL TESTO: La lunghezza e il contenuto devono rimanere IDENTICI. Aggiungi solo i tag <a>.
+    2. FONTI REALI: Inserisci link reali e pertinenti ai software o servizi citati.
+    3. STRUTTURA: Mantieni tutti i tag H2, H3, p, strong, ul, li esistenti.
+    4. FORMATO: Restituisci il JSON aggiornato con gli stessi campi dell'input.
+
+    CONTENUTO HTML:
     ${currentResult.htmlContent}`;
 
     try {
