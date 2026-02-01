@@ -13,6 +13,7 @@ interface SeoOutputProps {
     onIncreaseDepth?: () => void;
     error: string | null;
     onSave: (finalHtml?: string) => void;
+    originalText?: string;
 }
 
 const SeoDataItem: React.FC<{ label: string; value: string; mono?: boolean }> = ({ label, value, mono = false }) => {
@@ -36,7 +37,7 @@ const SeoDataItem: React.FC<{ label: string; value: string; mono?: boolean }> = 
     );
 };
 
-export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnriching, onIncreaseDepth, error, onSave }) => {
+export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnriching, onIncreaseDepth, error, onSave, originalText }) => {
     const [activeTab, setActiveTab] = useState<'seo' | 'readability' | 'content'>('seo');
     const [viewMode, setViewMode] = useState<'preview' | 'code'>('preview');
     const [socialCopied, setSocialCopied] = useState(false);
@@ -138,12 +139,57 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <SeoDataItem label="SEO Title (Snippet)" value={result.title} />
                             <div className="bg-zinc-100 dark:bg-zinc-950/30 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/50 flex flex-col justify-center">
-                                <label className="text-[9px] uppercase font-bold text-zinc-600 dark:text-zinc-500 block mb-1 tracking-wider">Optimized Word Count</label>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-lg font-black text-black dark:text-white">
-                                        {result.htmlContent.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter(w => w.length > 0).length}
-                                    </span>
-                                    <span className="text-[10px] text-zinc-600 dark:text-zinc-500 font-bold uppercase tracking-tighter">Words</span>
+                                <label className="text-[9px] uppercase font-bold text-zinc-600 dark:text-zinc-500 block mb-3 tracking-wider">Content Metrics Comparison</label>
+                                <div className="flex items-center justify-between gap-2">
+                                    <div className="flex-1 text-center py-2 bg-white dark:bg-black/20 rounded-lg border border-zinc-200 dark:border-zinc-800/50">
+                                        <p className="text-[8px] text-zinc-500 uppercase font-black tracking-tighter">Source Text</p>
+                                        <div className="flex flex-col items-center">
+                                            <span className="text-sm font-black text-zinc-700 dark:text-zinc-300">
+                                                {originalText ? originalText.trim().split(/\s+/).filter(w => w.length > 0).length : 0}
+                                            </span>
+                                            <span className="text-[8px] text-zinc-400 uppercase font-bold">Words</span>
+                                            <span className="text-[8px] text-zinc-400 mt-0.5">({originalText?.length || 0} chars)</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center px-2">
+                                        <div className="w-4 h-px bg-zinc-300 dark:bg-zinc-800"></div>
+                                        <SparklesIcon className="w-4 h-4 text-zinc-400 mx-1" />
+                                        <div className="w-4 h-px bg-zinc-300 dark:bg-zinc-800"></div>
+                                    </div>
+
+                                    <div className="flex-1 text-center py-2 bg-black text-white dark:bg-white dark:text-black rounded-lg shadow-md">
+                                        <p className="text-[8px] opacity-70 uppercase font-black tracking-tighter">Optimized Text</p>
+                                        <div className="flex flex-col items-center">
+                                            <span className="text-sm font-black">
+                                                {result.htmlContent.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter(w => w.length > 0).length}
+                                            </span>
+                                            <span className="text-[8px] opacity-70 uppercase font-bold">Words</span>
+                                            <span className="text-[8px] opacity-60 mt-0.5">({result.htmlContent.replace(/<[^>]*>/g, '').length} chars)</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex-1 text-center py-2 bg-zinc-50 dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-800/50">
+                                        <p className="text-[8px] text-zinc-500 uppercase font-black tracking-tighter">Efficiency</p>
+                                        <div className="flex flex-col items-center">
+                                            {(() => {
+                                                const inCount = originalText ? originalText.trim().split(/\s+/).filter(w => w.length > 0).length : 0;
+                                                const outCount = result.htmlContent.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter(w => w.length > 0).length;
+                                                const diff = outCount - inCount;
+                                                const perc = inCount > 0 ? Math.round((diff / inCount) * 100) : 0;
+                                                return (
+                                                    <>
+                                                        <span className={`text-sm font-black ${diff >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+                                                            {diff >= 0 ? `+${diff}` : diff}
+                                                        </span>
+                                                        <span className={`text-[8px] font-bold ${diff >= 0 ? 'text-green-700' : 'text-red-600'}`}>
+                                                            ({perc}%)
+                                                        </span>
+                                                    </>
+                                                );
+                                            })()}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -377,6 +377,7 @@ const App: React.FC = () => {
                             onIncreaseDepth={handleEnrich}
                             error={currentError}
                             onSave={handleSaveArticle}
+                            originalText={batchQueue.find(b => b.id === selectedBatchId)?.text}
                         />
                     </div>
                 </main>
