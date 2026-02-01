@@ -185,41 +185,41 @@ const App: React.FC = () => {
     return (
         <div className="bg-slate-900 min-h-screen text-slate-200 font-sans pb-20 relative">
             <div className="container mx-auto p-4 md:p-8 relative z-10">
-                <header className="glass-card p-6 rounded-3xl mb-10 shadow-2xl slide-in-up">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
+                <header className="glass-card p-5 rounded-2xl mb-8 shadow-xl slide-in-up">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
                             <div className="relative">
-                                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-xl blur-lg opacity-50 animate-pulse"></div>
-                                <div className="relative bg-gradient-to-br from-indigo-600 to-cyan-600 p-3 rounded-xl shadow-xl">
-                                    <SparklesIcon className="w-8 h-8 text-white breathe-animation" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-lg blur-md opacity-40 animate-pulse"></div>
+                                <div className="relative bg-gradient-to-br from-indigo-600 to-cyan-600 p-2.5 rounded-lg shadow-lg">
+                                    <SparklesIcon className="w-6 h-6 text-white breathe-animation" />
                                 </div>
                             </div>
                             <div>
-                                <h1 className="text-4xl font-black tracking-tight">
+                                <h1 className="text-2xl md:text-3xl font-black tracking-tight">
                                     <span className="bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-[shimmer_3s_linear_infinite]">
                                         Nebula SEO
                                     </span>
                                 </h1>
-                                <p className="text-xs text-slate-500 mt-1 font-medium">AI-Powered Content Optimizer</p>
+                                <p className="text-[11px] text-slate-500 mt-0.5 font-medium">AI-Powered Content Optimizer</p>
                             </div>
                         </div>
-                        <div className="flex gap-3 items-center">
+                        <div className="flex gap-2 items-center">
                             <button 
                                 onClick={() => setIsLoadModalOpen(true)}
-                                className="glass-card px-5 py-3 rounded-xl text-sm font-bold uppercase border border-slate-600/50
+                                className="glass-card px-4 py-2.5 rounded-xl text-xs font-bold uppercase border border-slate-600/50
                                          hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/20
                                          transition-all duration-300 hover:-translate-y-0.5
                                          flex items-center gap-2 group"
                             >
                                 <ArchiveBoxIcon className="w-4 h-4 text-indigo-400 group-hover:scale-110 transition-transform" />
                                 <span className="text-slate-300 group-hover:text-white">Archivio</span>
-                                <span className="ml-1 bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full text-xs font-black">
+                                <span className="ml-1 bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full text-[10px] font-black">
                                     {savedArticles.length}
                                 </span>
                             </button>
                             <button 
                                 onClick={handleLogout}
-                                className="glass-card px-4 py-3 rounded-xl text-sm font-bold uppercase
+                                className="glass-card px-3 py-2.5 rounded-xl text-xs font-bold uppercase
                                          border border-red-500/30 hover:border-red-500/50
                                          text-red-400 hover:text-red-300
                                          hover:shadow-lg hover:shadow-red-500/20
@@ -232,7 +232,7 @@ const App: React.FC = () => {
                 </header>
 
                 <main className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <div className="lg:col-span-5 space-y-6">
+                    <div className="lg:col-span-5 space-y-5">
                         <ArticleInput
                             value={articleText}
                             onChange={setArticleText}
@@ -245,7 +245,7 @@ const App: React.FC = () => {
                             onImportDB={handleImport}
                         />
 
-                        <div className="glass-card-intense p-7 rounded-3xl shadow-xl slide-in-up" style={{animationDelay: '0.1s'}}>
+                        <div className="glass-card-intense p-6 rounded-2xl shadow-xl slide-in-up" style={{animationDelay: '0.1s'}}>
                             <div className="flex justify-between items-center mb-5">
                                 <div className="flex items-center gap-3">
                                     <div className="w-2 h-2 rounded-full bg-gradient-to-r from-indigo-400 to-cyan-400 animate-pulse"></div>
