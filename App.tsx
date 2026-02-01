@@ -338,24 +338,21 @@ const App: React.FC = () => {
                                             
                                             <div className="flex-1 truncate pl-2">
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <p className={`text-xs font-bold truncate ${selectedBatchId === item.id ? 'text-zinc-900 dark:text-white' : 'text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-300'}`}>
-                                                        {item.result?.title || item.text.substring(0, 50) + '...'}
-                                                    </p>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <span className={`text-[9px] font-mono uppercase tracking-tight py-0.5 px-1.5 rounded ${
-                                                        item.status === 'completed' ? 'text-green-700 bg-green-100 dark:text-green-400 dark:bg-green-900/10' : 
-                                                        item.status === 'processing' ? 'text-zinc-800 bg-zinc-200 dark:text-white dark:bg-white/10 animate-pulse' : 
-                                                        item.status === 'error' ? 'text-red-700 bg-red-100 dark:text-red-400 dark:bg-red-900/10' : 
-                                                        'text-zinc-500 bg-zinc-100 dark:text-zinc-600 dark:bg-zinc-900'
+                                                    <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-sm ${
+                                                        item.status === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' :
+                                                        item.status === 'processing' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 animate-pulse' :
+                                                        item.status === 'pending' ? 'bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400' :
+                                                        'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
                                                     }`}>
-                                                        {item.status === 'completed' ? 'Done' :
-                                                         item.status === 'processing' ? 'Working' :
-                                                         item.status === 'error' ? 'Error' :
-                                                         'Queued'}
+                                                        {item.status}
                                                     </span>
+                                                    <span className="text-[10px] text-zinc-400 dark:text-zinc-600 font-mono">#{item.id.slice(-4)}</span>
                                                 </div>
+                                                <p className={`text-xs font-medium truncate ${selectedBatchId === item.id ? 'text-zinc-900 dark:text-white' : 'text-zinc-700 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200'}`}>
+                                                    {item.result?.title || (item.text.length > 50 ? item.text.substring(0, 50) + '...' : item.text)}
+                                                </p>
                                             </div>
+
                                             <button 
                                                 onClick={(e) => { e.stopPropagation(); removeFromQueue(item.id); }}
                                                 className="opacity-0 group-hover:opacity-100 p-2 rounded-md

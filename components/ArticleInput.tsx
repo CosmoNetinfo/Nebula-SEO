@@ -52,9 +52,9 @@ export const ArticleInput: React.FC<ArticleInputProps> = ({
                     className="w-full h-48 p-4 bg-zinc-50 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800 rounded-lg 
                              focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-700 focus:border-zinc-400 dark:focus:border-zinc-700 
                              focus:bg-white dark:focus:bg-zinc-950
-                             transition-all duration-300 text-zinc-700 dark:text-zinc-300 text-xs leading-relaxed 
+                             transition-all duration-300 text-zinc-900 dark:text-zinc-300 text-xs leading-relaxed 
                              custom-scrollbar resize-none
-                             placeholder:text-zinc-400 dark:placeholder:text-zinc-700 font-mono"
+                             placeholder:text-zinc-500 dark:placeholder:text-zinc-600 font-mono"
                     disabled={isLoading}
                 />
             </div>

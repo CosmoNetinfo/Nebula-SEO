@@ -59,21 +59,21 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
         });
     };
 
-    if (isLoading) return <div className="bg-black/20 p-6 rounded-2xl border border-zinc-800 h-full flex items-center justify-center"><Loader /></div>;
-    if (error) return <div className="bg-black/20 p-6 rounded-2xl border border-red-900/20 text-red-400 flex items-center justify-center text-center font-mono text-xs">{error}</div>;
+    if (isLoading) return <div className="bg-zinc-50 dark:bg-black/20 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 h-full flex items-center justify-center transition-colors duration-300"><Loader /></div>;
+    if (error) return <div className="bg-zinc-50 dark:bg-black/20 p-6 rounded-2xl border border-red-200 dark:border-red-900/20 text-red-600 dark:text-red-400 flex items-center justify-center text-center font-mono text-xs transition-colors duration-300">{error}</div>;
     if (!result) return (
-        <div className="bg-zinc-900/10 p-12 rounded-2xl border border-zinc-800/50 h-full flex flex-col items-center justify-center text-center text-zinc-600">
-            <div className="p-4 bg-zinc-900/50 rounded-full mb-4 border border-zinc-800">
-                <SparklesIcon className="w-8 h-8 opacity-20" />
+        <div className="bg-zinc-100 dark:bg-zinc-900/10 p-12 rounded-2xl border border-zinc-200 dark:border-zinc-800/50 h-full flex flex-col items-center justify-center text-center text-zinc-600 transition-colors duration-300">
+            <div className="p-4 bg-zinc-200 dark:bg-zinc-900/50 rounded-full mb-4 border border-zinc-300 dark:border-zinc-800">
+                <SparklesIcon className="w-8 h-8 opacity-20 text-zinc-900 dark:text-white" />
             </div>
-            <p className="text-sm font-bold uppercase tracking-widest text-zinc-500">No active analysis</p>
-            <p className="text-[10px] text-zinc-600 mt-2 font-mono">Select an item from the queue to view details</p>
+            <p className="text-sm font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-500">No active analysis</p>
+            <p className="text-[10px] text-zinc-500 dark:text-zinc-600 mt-2 font-mono">Select an item from the queue to view details</p>
         </div>
     );
 
     return (
-        <div className="glass-card rounded-2xl shadow-2xl border border-zinc-800 flex flex-col h-full overflow-hidden bg-black/40">
-            <div className="flex bg-zinc-950/50 p-1 border-b border-zinc-800">
+        <div className="glass-card rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 flex flex-col h-full overflow-hidden bg-white dark:bg-black/40 transition-colors duration-300">
+            <div className="flex bg-zinc-50 dark:bg-zinc-950/50 p-1 border-b border-zinc-200 dark:border-zinc-800">
                 {[
                     { id: 'seo', icon: DocumentMagnifyingGlassIcon, label: 'SEO Metrics' },
                     { id: 'readability', icon: SparklesIcon, label: 'Readability' },
@@ -83,7 +83,9 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id as any)}
                         className={`flex-1 flex items-center justify-center gap-2 py-3 text-[10px] font-bold uppercase tracking-widest transition-all rounded-xl ${
-                            activeTab === tab.id ? 'bg-zinc-100 text-black shadow-lg shadow-white/5' : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900'
+                            activeTab === tab.id 
+                                ? 'bg-white dark:bg-zinc-100 text-zinc-900 dark:text-black shadow-lg shadow-zinc-200/50 dark:shadow-white/5 border border-zinc-200 dark:border-transparent' 
+                                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900'
                         }`}
                     >
                         <tab.icon className="w-3.5 h-3.5" /> {tab.label}
