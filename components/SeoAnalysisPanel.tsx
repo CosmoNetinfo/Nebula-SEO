@@ -17,7 +17,7 @@ export const SeoAnalysisPanel: React.FC<SeoAnalysisPanelProps> = ({ items }) => 
         if (!items || items.length === 0) return 0;
         
         const totalPoints = items.reduce((acc, item) => {
-            const s = item.status.toLowerCase();
+            const s = (item.status || 'poor').toLowerCase();
             if (s === 'good' || s === 'ottimo') return acc + 100;
             if (s === 'average' || s === 'medio') return acc + 60;
             return acc + 30; // poor
@@ -27,7 +27,7 @@ export const SeoAnalysisPanel: React.FC<SeoAnalysisPanelProps> = ({ items }) => 
     }, [items]);
 
     const getStatusIcon = (status: string) => {
-        const s = status.toLowerCase();
+        const s = (status || 'poor').toLowerCase();
         if (s === 'good' || s === 'ottimo') return <CheckCircleIcon className="w-4 h-4 text-zinc-900 dark:text-zinc-200 mt-0.5 shrink-0" />;
         if (s === 'average' || s === 'medio') return <ExclamationTriangleIcon className="w-4 h-4 text-zinc-600 dark:text-zinc-500 mt-0.5 shrink-0" />;
         return <XCircleIcon className="w-4 h-4 text-zinc-400 dark:text-zinc-600 mt-0.5 shrink-0" />;
