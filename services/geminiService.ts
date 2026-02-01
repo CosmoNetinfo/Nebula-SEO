@@ -92,12 +92,30 @@ ${articleText}`;
 
         let jsonText = response.text.trim();
         
+        // DETAILED DEBUG LOGGING
+        DebugLogger.log('info', 'API Response Received', {
+            inputLength: articleText.length,
+            inputWords: articleText.split(/\s+/).length,
+            responseLength: jsonText.length,
+            responseFirst500: jsonText.substring(0, 500),
+            responseLast500: jsonText.substring(Math.max(0, jsonText.length - 500)),
+            hasOpenBrace: jsonText.includes('{'),
+            hasCloseBrace: jsonText.includes('}'),
+            braceBalance: (jsonText.match(/{/g) || []).length - (jsonText.match(/}/g) || []).length,
+        });
+        
         // Helper to extract JSON
         const extractJSON = (text: string): string => {
             const firstOpen = text.indexOf('{');
             const lastClose = text.lastIndexOf('}');
             if (firstOpen !== -1 && lastClose !== -1 && lastClose > firstOpen) {
-                return text.substring(firstOpen, lastClose + 1);
+                const extracted = text.substring(firstOpen, lastClose + 1);
+                DebugLogger.log('info', 'JSON Extraction', {
+                    originalLength: text.length,
+                    extractedLength: extracted.length,
+                    trimmedChars: text.length - extracted.length
+                });
+                return extracted;
             }
             return text;
         };
@@ -106,9 +124,15 @@ ${articleText}`;
         let result: SeoResult;
         try {
             result = JSON.parse(jsonText);
+            DebugLogger.log('info', 'JSON parsed successfully on first attempt');
         } catch (parseError) {
             // First attempt failed, try rigorous cleaning
-            DebugLogger.log('warn', 'Initial JSON parse failed, attempting to clean response...', parseError);
+            DebugLogger.log('warn', 'Initial JSON parse failed, attempting to clean response...', {
+                error: parseError,
+                jsonLength: jsonText.length,
+                firstChars: jsonText.substring(0, 200),
+                lastChars: jsonText.substring(Math.max(0, jsonText.length - 200))
+            });
             
             jsonText = extractJSON(jsonText);
             
@@ -119,7 +143,10 @@ ${articleText}`;
             } catch (secondError) {
                 DebugLogger.log('error', 'JSON Parse Error (second attempt)', {
                     error: secondError,
-                    problematicJSON: jsonText.substring(0, 500)
+                    jsonLength: jsonText.length,
+                    first500: jsonText.substring(0, 500),
+                    last500: jsonText.substring(Math.max(0, jsonText.length - 500)),
+                    isTruncated: !jsonText.trim().endsWith('}')
                 });
                 throw new Error(`Impossibile parsare la risposta dell'IA. L'IA potrebbe aver restituito un formato non valido.`);
             }
