@@ -1,51 +1,8 @@
 
-import { GoogleGenAI, Type } from "@google/genai";
 import { SeoResult, GroundingSource } from '../types';
 import DebugLogger from '../components/DebugPanel';
 
-const genAI = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
-
-// Schema for Gemini (fallback)
-const responseSchema = {
-    type: Type.OBJECT,
-    properties: {
-        keyPhrase: { type: Type.STRING },
-        title: { type: Type.STRING },
-        description: { type: Type.STRING },
-        slug: { type: Type.STRING },
-        htmlContent: { type: Type.STRING },
-        tags: { type: Type.STRING },
-        categories: { type: Type.STRING },
-        socialMediaPost: { type: Type.STRING },
-        seoChecklist: {
-            type: Type.ARRAY,
-            items: {
-                type: Type.OBJECT,
-                properties: {
-                    item: { type: Type.STRING },
-                    status: { type: Type.STRING },
-                    details: { type: Type.STRING }
-                },
-                required: ["item", "status", "details"]
-            }
-        },
-        readability: {
-            type: Type.ARRAY,
-            items: {
-                type: Type.OBJECT,
-                properties: {
-                    criteria: { type: Type.STRING },
-                    status: { type: Type.STRING },
-                    score: { type: Type.STRING },
-                    message: { type: Type.STRING }
-                },
-                required: ["criteria", "status", "score", "message"]
-            }
-        }
-    },
-    required: ["keyPhrase", "title", "description", "slug", "htmlContent", "tags", "categories", "seoChecklist", "socialMediaPost", "readability"],
-};
 
 const extractJSON = (text: string): string => {
     const firstOpen = text.indexOf('{');
@@ -58,6 +15,10 @@ const extractJSON = (text: string): string => {
 
 // --- GROQ INTEGRATION ---
 const callGroq = async (prompt: string): Promise<string> => {
+    if (!GROQ_API_KEY) {
+        throw new Error("GROQ_API_KEY non configurata. Aggiungila alle variabili di ambiente.");
+    }
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -67,7 +28,7 @@ const callGroq = async (prompt: string): Promise<string> => {
         body: JSON.stringify({
             model: "llama-3.3-70b-versatile",
             messages: [{ role: "user", content: prompt }],
-            temperature: 0.2,
+            temperature: 0.1, // Lower temperature for maximum precision
             max_tokens: 8192,
             response_format: { type: "json_object" }
         })
@@ -85,88 +46,66 @@ const callGroq = async (prompt: string): Promise<string> => {
 // --- MAIN FUNCTIONS ---
 
 export const optimizeArticleForSeo = async (articleText: string): Promise<SeoResult> => {
-    const prompt = `Sei un Senior SEO Editor. Il tuo compito è ottimizzare l'articolo fornito senza MAI ridurne la lunghezza.
-    
-    REGOLE MANDATORIE:
-    1. INTEGRITÀ: Se l'input ha 2000 parole, l'output deve avere ALMENO 2000 parole. Non riassumere, non tagliare paragrafi.
-    2. OTTIMIZZAZIONE: Migliora la leggibilità, correggi la grammatica e aggiungi tag HTML (H2, H3, p, strong, ul, li).
-    3. LINGUA: Tutto l'output deve essere in ITALIANO.
-    4. FORMATO: Restituisci STRETTAMENTE un oggetto JSON.
-    
+    const prompt = `Sei un Senior SEO Editor. Il tuo compito è ottimizzare l'articolo fornito SENZA MAI RIDURNE LA LUNGHEZZA. 
+
+    DIRETTIVA CRITICA DI INTEGRITÀ: 
+    - NON RIASSUMERE MAI. 
+    - NON TAGLIARE PARAGRAFI O DETTAGLI. 
+    - L'output deve essere un ESPANSIONE o una REDAZIONE identica in lunghezza. 
+    - Se ricevi 1600 parole, devi restituire 1600+ parole.
+    - Mantieni ogni singola informazione, dato tecnico e concetto.
+
+    COMPITI:
+    1. OTTIMIZZAZIONE SEO: Inserisci la keyword in modo naturale.
+    2. LEGGIBILITÀ: Migliora la prosa senza eliminare contenuti.
+    3. FORMATTAZIONE: HTML semantico (H2, H3, p, strong, ul, li).
+    4. LINGUA: 100% ITALIANO.
+
     STRUTTURA JSON:
     {
-        "keyPhrase": "parola chiave principale",
-        "title": "titolo SEO accattivante",
-        "description": "meta descrizione di 120-156 caratteri",
-        "slug": "url-amichevole",
-        "htmlContent": "L'ARTICOLO COMPLETO IN HTML. NON TAGLIARE NULLA.",
-        "tags": "tag separati da virgola",
-        "categories": "categorie",
-        "socialMediaPost": "post per i social",
-        "seoChecklist": [{"item": "nome controllo", "status": "good/average/poor", "details": "spiegazione"}],
-        "readability": [{"criteria": "nome criterio", "status": "good/average/poor", "score": "valore", "message": "consiglio"}]
+        "keyPhrase": "string",
+        "title": "string",
+        "description": "string",
+        "slug": "string",
+        "htmlContent": "HTML INTEGRALE - NON TAGLIATO",
+        "tags": "string",
+        "categories": "string",
+        "socialMediaPost": "string",
+        "seoChecklist": [{"item": "string", "status": "good/average/poor", "details": "string"}],
+        "readability": [{"criteria": "string", "status": "good/average/poor", "score": "string", "message": "string"}]
     }
 
-    TESTO DA OTTIMIZZARE:
+    TESTO ORIGINALE (MANTIENI TUTTO):
     ${articleText}`;
 
     try {
-        let jsonText: string;
-
-        if (GROQ_API_KEY) {
-            DebugLogger.log('info', 'Using Groq for Optimization', { model: 'llama-3.3-70b' });
-            jsonText = await callGroq(prompt);
-        } else {
-            DebugLogger.log('info', 'Using Gemini for Optimization (Fallback)');
-            const response = await genAI.models.generateContent({ 
-                model: "gemini-2.0-flash",
-                contents: prompt,
-                config: { responseMimeType: "application/json" }
-            });
-            jsonText = response.text;
-        }
-
+        DebugLogger.log('info', 'Optimizing with Groq (Llama 3.3 70B)');
+        const jsonText = await callGroq(prompt);
         const cleanJson = extractJSON(jsonText);
         return JSON.parse(cleanJson);
     } catch (error: any) {
-        DebugLogger.log('error', 'AI Optimization Error', { message: error.message });
+        DebugLogger.log('error', 'Groq optimization failed', { message: error.message });
         throw error;
     }
 };
 
 export const enrichArticleDepth = async (currentResult: SeoResult, originalText: string): Promise<SeoResult> => {
-    const prompt = `Analista SEO: Il tuo compito è UNICAMENTE aggiungere tag <a href="..."> nel testo HTML fornito per collegare fonti ufficiali, documentazione o siti di download.
-    
-    REGOLE CRITICHE:
-    1. NON TOCCARE IL TESTO: La lunghezza e il contenuto devono rimanere IDENTICI. Aggiungi solo i tag <a>.
-    2. FONTI REALI: Inserisci link reali e pertinenti ai software o servizi citati.
-    3. STRUTTURA: Mantieni tutti i tag H2, H3, p, strong, ul, li esistenti.
-    4. FORMATO: Restituisci il JSON aggiornato con gli stessi campi dell'input.
+    const prompt = `Analista SEO: aggiungi tag <a href="..."> nel testo HTML fornito per collegare fonti ufficiali o download.
+    REGOLE:
+    1. NON TOCCARE IL TESTO: Lunghezza IDENTICA.
+    2. LINK REALI: Solo link pertinenti.
+    3. FORMATO: JSON identico all'input.
 
-    CONTENUTO HTML:
+    HTML:
     ${currentResult.htmlContent}`;
 
     try {
-        let jsonText: string;
-
-        if (GROQ_API_KEY) {
-            DebugLogger.log('info', 'Using Groq for Enrichment');
-            const groqPrompt = `${prompt}\n\nReturn EXACT SAME JSON structure as input but with <a> tags in htmlContent.`;
-            jsonText = await callGroq(groqPrompt);
-            const result = JSON.parse(extractJSON(jsonText));
-            return { ...currentResult, ...result };
-        } else {
-            DebugLogger.log('info', 'Using Gemini for Enrichment (Fallback)');
-            const response = await genAI.models.generateContent({ 
-                model: "gemini-2.0-flash",
-                contents: prompt
-            });
-            jsonText = response.text;
-            const parsed = JSON.parse(extractJSON(jsonText));
-            return { ...currentResult, ...parsed };
-        }
+        DebugLogger.log('info', 'Enriching with Groq (Llama 3.3 70B)');
+        const jsonText = await callGroq(prompt);
+        const parsed = JSON.parse(extractJSON(jsonText));
+        return { ...currentResult, ...parsed };
     } catch (error: any) {
-        DebugLogger.log('error', 'AI Enrichment Error', { message: error.message });
+        DebugLogger.log('error', 'Groq enrichment failed', { message: error.message });
         throw error;
     }
 };

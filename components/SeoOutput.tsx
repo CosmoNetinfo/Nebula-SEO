@@ -136,7 +136,18 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                             <SeoDataItem label="Focus Keyword" value={result.keyPhrase} mono />
                             <SeoDataItem label="URL Slug" value={result.slug} mono />
                         </div>
-                        <SeoDataItem label="SEO Title (Snippet)" value={result.title} />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <SeoDataItem label="SEO Title (Snippet)" value={result.title} />
+                            <div className="bg-zinc-950/30 p-4 rounded-xl border border-zinc-800/50 flex flex-col justify-center">
+                                <label className="text-[9px] uppercase font-bold text-zinc-500 block mb-1 tracking-wider">Optimized Word Count</label>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-lg font-black text-white">
+                                        {result.htmlContent.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter(w => w.length > 0).length}
+                                    </span>
+                                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-tighter">Words</span>
+                                </div>
+                            </div>
+                        </div>
                         <SeoDataItem label="Meta Description" value={result.description} />
                     </div>
                 )}
