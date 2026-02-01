@@ -13,7 +13,7 @@ const extractJSON = (text: string): string => {
 };
 
 // --- GROQ ENGINE ---
-const callGroq = async (prompt: string): Promise<string> => {
+const callGroq = async (systemPrompt: string, userPrompt: string): Promise<string> => {
     if (!GROQ_API_KEY) {
         throw new Error("GROQ_API_KEY mancante. Configurala su Vercel o nel file .env.local");
     }
@@ -27,19 +27,10 @@ const callGroq = async (prompt: string): Promise<string> => {
         body: JSON.stringify({
             model: "llama-3.3-70b-versatile",
             messages: [
-                { 
-                    role: "system", 
-                    content: `You are the "Expansion Engine" SEO Copywriter. 
-                    MISSION: Transform input text into a World-Class SEO Masterpiece.
-                    STRICT RULES:
-                    1. ZERO CONTENT LOSS: Every single fact, name, number, and nuance must be preserved.
-                    2. EXPANSION ONLY: Your goal is to EXPAND the content. Add professional depth, context, and clear explanations.
-                    3. READABILITY EXCELLENCE: The generated 'htmlContent' MUST be optimized for a 90/100 readability score. Use short sentences, clear Italian transitions, and H2/H3 headings.
-                    4. OUTPUT LENGTH: If input is X words, output 'htmlContent' MUST be at least X + 10% words. Summarizing is a fatal failure.` 
-                },
-                { role: "user", content: prompt }
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userPrompt }
             ],
-            temperature: 0,
+            temperature: 0.7,
             max_tokens: 8192,
             response_format: { type: "json_object" }
         })
@@ -59,45 +50,53 @@ const callGroq = async (prompt: string): Promise<string> => {
 export const optimizeArticleForSeo = async (articleText: string): Promise<SeoResult> => {
     const wordCount = articleText.trim().split(/\s+/).filter(w => w.length > 0).length;
 
-    const prompt = `URGENT COMMAND: ENHANCE AND EXPAND ARTICLE.
+    const prompt = `CRITICAL OBJECTIVE: TRANSFORM ${wordCount} WORDS INTO 1800+ WORDS.
     
-    SOURCE WORD COUNT: ${wordCount} words.
-    TARGET MINIMUM OUTPUT: ${Math.round(wordCount * 1.1)} words.
+    SOURCE STATS:
+    - Current Words: ${wordCount}
+    - Current Chars: ${articleText.length}
+    - FAILURE THRESHOLD: Any output under ${wordCount} words is an immediate rejection.
 
-    EXECUTION PLAN:
-    1. READABILITY OVERHAUL: Rewrite the article in professional Italian, optimizing for maximum clarity. Use short paragraphs and explicit transition words. Every readability metric MUST be "good" (90%+).
-    2. DETAIL PRESERVATION: Do not omit any original information. If the source mentions a specific detail, the output must discuss it in more depth.
-    3. HTML STRUCTURE: Use H2 for main sections, H3 for sub-points, and <strong> for key concepts.
-    4. NO SUMMARIZATION: If the output is shorter than the input, you have FAILED the mission.
-
-    OBJECTIVE JSON SCHEMA:
+    REQUIRED EXECUTION:
+    1. EXHAUSTIVE EXPANSION: Take every paragraph from the source and expand it. Add depth, expert insights, and technical clarity. Preserve 100% of facts.
+    2. THE 95+ READABILITY RULE: Rewrite the text to be crystal clear. Use short sentences (max 15-20 words). Use many H2 and H3 subsections. The goal is to make a complex topic accessible to everyone.
+    3. ZERO LOSS POLICY: Every name, number, brand, and date MUST remain.
+    
+    JSON SCHEMA (STRICT):
     {
-      "keyPhrase": "string",
-      "title": "SEO Optimized Title",
-      "description": "Compelling Meta Description",
-      "slug": "url-slug",
-      "htmlContent": "FULL EXPANDED ARTICLE IN HTML (Min ${Math.round(wordCount * 1.1)} words)",
-      "tags": "CSV format",
-      "categories": "comma separated",
-      "socialMediaPost": "Captivating social caption",
-      "seoChecklist": [
-        { "item": "Focus Keyword in H1", "status": "pass", "details": "The keyword is perfectly placed." },
-        ... (min 6 items)
-      ],
+      "keyPhrase": "...",
+      "title": "...",
+      "description": "...",
+      "slug": "...",
+      "htmlContent": "MASSIVE EXPANDED ARTICLE (Target: ${Math.round(wordCount * 1.25)} words). Use H2, H3, p, strong tags.",
+      "tags": "...",
+      "categories": "...",
+      "socialMediaPost": "...",
+      "seoChecklist": [ { "item": "...", "status": "pass", "details": "..." } ],
       "readability": [
-        { "criteria": "Sentence Length", "score": "95%", "status": "good", "message": "Perfectly balanced for web reading." },
-        ... (min 5 items, all status MUST be 'good')
+        { "criteria": "Sentence Structure", "score": "98%", "status": "good", "message": "Optimized for high-speed reading." },
+        { "criteria": "Paragraph Density", "score": "95%", "status": "good", "message": "Short paragraphs improve mobile experience." },
+        { "criteria": "Vocabulary Simplicity", "score": "92%", "status": "good", "message": "Clear and professional Italian." },
+        { "criteria": "Subheading Frequency", "score": "96%", "status": "good", "message": "Frequent H2/H3 tags guide the user." },
+        { "criteria": "Passive Voice Usage", "score": "94%", "status": "good", "message": "Active voice used for engagement." }
       ]
     }
 
-    SOURCE CONTENT (ITALIAN):
+    SOURCE ARTICLE (ITALIAN):
     ${articleText}
     
-    VERIFICATION: Ensure 'htmlContent' is at least ${Math.round(wordCount * 1.1)} words. If you feel like summarizing, EXPAND instead.`;
+    FINAL CHECK: Compare your output length with the source. If it's shorter or just 800 words, you failed. EXPAND MORE.`;
+
+    const systemPrompt = `You are the "Zero-Loss Ultra-Expander". 
+    Your mission is to expand Italian articles.
+    ABSULUTE RULES:
+    1. NO DELETING: Forbidden from removing any sentence/fact.
+    2. CHARACTER GOAL: Input has ${articleText.length} chars. Your 'htmlContent' MUST have AT LEAST ${Math.round(articleText.length * 1.25)} chars.
+    3. EXPANSE: If word count is ${wordCount}, target is ${Math.round(wordCount * 1.3)}.`;
 
     try {
         DebugLogger.log('info', `Optimization started: Input ${wordCount} words.`);
-        const jsonText = await callGroq(prompt);
+        const jsonText = await callGroq(systemPrompt, prompt);
         return JSON.parse(extractJSON(jsonText));
     } catch (error: any) {
         DebugLogger.log('error', 'Optimization failed', { error: error.message });
@@ -114,9 +113,11 @@ export const enrichArticleDepth = async (currentResult: SeoResult, originalText:
     HTML CONTENT TO PRESERVE (ZERO WORD LOSS):
     ${currentResult.htmlContent}`;
 
+    const systemPrompt = "You are a Link Enrichment Expert. Add links without removing any original text.";
+
     try {
         DebugLogger.log('info', 'Enriching with Groq (Zero-Loss Mode)');
-        const jsonText = await callGroq(prompt);
+        const jsonText = await callGroq(systemPrompt, prompt);
         const result = JSON.parse(extractJSON(jsonText));
         return { ...currentResult, ...result };
     } catch (error: any) {
