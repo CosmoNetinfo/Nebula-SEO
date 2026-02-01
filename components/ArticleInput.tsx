@@ -79,7 +79,7 @@ export const ArticleInput: React.FC<ArticleInputProps> = ({
             
             <div className="flex justify-between items-center pt-1 px-1">
                 <span className="text-[9px] text-zinc-400 dark:text-zinc-600 font-mono">
-                    MAX CONCURRENCY: 4 THREADS
+                    MAX CONCURRENCY: 4 THREADS • {value.trim().split(/\s+/).filter(w => w.length > 0).length} WORDS
                 </span>
                 {lastAutoSave && (
                     <span className="text-[9px] text-zinc-400 dark:text-zinc-600 font-mono flex items-center gap-1">
