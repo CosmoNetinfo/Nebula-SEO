@@ -1,7 +1,8 @@
 import { SeoResult, GroundingSource } from '../types';
 import DebugLogger from '../components/DebugPanel';
 
-const GEMINI_API_KEY = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
+const getGeminiKey = () => localStorage.getItem('user_gemini_key') || process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY;
+const getGroqKey = () => localStorage.getItem('user_groq_key') || process.env.VITE_GROQ_API_KEY || process.env.GROQ_API_KEY || (import.meta as any).env?.VITE_GROQ_API_KEY;
 
 const extractJSON = (text: string): string => {
     const firstOpen = text.indexOf('{');
@@ -14,11 +15,12 @@ const extractJSON = (text: string): string => {
 
 // --- GEMINI ENGINE (Zero-Loss Specialist) ---
 const callGemini = async (systemPrompt: string, userPrompt: string): Promise<string> => {
-    if (!GEMINI_API_KEY) {
-        throw new Error("GEMINI_API_KEY mancante. Configurala nel file .env.local");
+    const key = getGeminiKey();
+    if (!key) {
+        throw new Error("GEMINI_API_KEY mancante. Configurala nelle impostazioni dell'app.");
     }
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -43,13 +45,13 @@ const callGemini = async (systemPrompt: string, userPrompt: string): Promise<str
 
 // --- GROQ ENGINE (Fallback) ---
 const callGroq = async (systemPrompt: string, userPrompt: string): Promise<string> => {
-    const KEY = process.env.VITE_GROQ_API_KEY || process.env.GROQ_API_KEY || import.meta.env.VITE_GROQ_API_KEY;
-    if (!KEY) throw new Error("API KEY Mancante");
+    const key = getGroqKey();
+    if (!key) throw new Error("GROQ_API_KEY mancante nelle impostazioni.");
     
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${KEY}`,
+            'Authorization': `Bearer ${key}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({

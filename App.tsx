@@ -4,8 +4,9 @@ import { ArticleInput } from './components/ArticleInput';
 import { SeoOutput } from './components/SeoOutput';
 import { optimizeArticleForSeo, enrichArticleDepth } from './services/aiService';
 import { SeoResult, SavedSeoResult, BatchItem } from './types';
-import { SparklesIcon, ArchiveBoxIcon, TrashIcon, SunIcon, MoonIcon } from './components/IconComponents';
+import { SparklesIcon, ArchiveBoxIcon, TrashIcon, SunIcon, MoonIcon, Cog6ToothIcon } from './components/IconComponents';
 import { LoadModal } from './components/LoadModal';
+import { SettingsModal } from './components/SettingsModal';
 import { saveArticleToDb, loadArticlesFromDb, deleteArticleFromDb, supabase } from './services/supabaseService';
 import { Login } from './components/Login';
 import { DebugPanel } from './components/DebugPanel';
@@ -27,6 +28,7 @@ const App: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [savedArticles, setSavedArticles] = useState<SavedSeoResult[]>([]);
     const [isLoadModalOpen, setIsLoadModalOpen] = useState(false);
+    const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
     
     const CONCURRENCY_LIMIT = 4;
     // @ts-ignore
@@ -244,6 +246,16 @@ const App: React.FC = () => {
                                     <MoonIcon className="w-4 h-4" />
                                 )}
                             </button>
+
+                            <button
+                                onClick={() => setIsSettingsModalOpen(true)}
+                                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800
+                                         bg-white dark:bg-zinc-950 text-black dark:text-white
+                                         hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all shadow-sm group"
+                            >
+                                <Cog6ToothIcon className="w-4 h-4 group-hover:rotate-90 transition-transform duration-500" />
+                                <span className="text-[10px] font-black uppercase tracking-tighter">Impostazioni API</span>
+                            </button>
                             
                             <button 
                                 onClick={() => setIsLoadModalOpen(true)}
@@ -389,6 +401,11 @@ const App: React.FC = () => {
                 articles={savedArticles}
                 onLoad={handleLoadArticle}
                 onDelete={handleDeleteArticle}
+            />
+
+            <SettingsModal 
+                isOpen={isSettingsModalOpen}
+                onClose={() => setIsSettingsModalOpen(false)}
             />
             
             <DebugPanel />
