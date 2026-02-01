@@ -4,7 +4,7 @@ import { ArticleInput } from './components/ArticleInput';
 import { SeoOutput } from './components/SeoOutput';
 import { optimizeArticleForSeo, enrichArticleDepth } from './services/geminiService';
 import { SeoResult, SavedSeoResult, BatchItem } from './types';
-import { SparklesIcon, ArchiveBoxIcon, TrashIcon } from './components/IconComponents';
+import { SparklesIcon, ArchiveBoxIcon, TrashIcon, SunIcon, MoonIcon } from './components/IconComponents';
 import { LoadModal } from './components/LoadModal';
 import { saveArticleToDb, loadArticlesFromDb, deleteArticleFromDb, supabase } from './services/supabaseService';
 import { Login } from './components/Login';
@@ -14,6 +14,9 @@ import DebugLogger from './components/DebugPanel';
 const App: React.FC = () => {
     // Auth State
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    
+    // Theme State
+    const [theme, setTheme] = useState<'dark' | 'light'>('dark');
     
     // App State
     const [articleText, setArticleText] = useState<string>('');
@@ -40,6 +43,19 @@ const App: React.FC = () => {
         // Load saved local
         const stored = localStorage.getItem('seo-optimizer-saved-articles');
         if (stored) setSavedArticles(JSON.parse(stored));
+        
+        // Load Theme
+        const storedTheme = localStorage.getItem('cosmonet_theme') as 'dark' | 'light';
+        if (storedTheme) {
+            setTheme(storedTheme);
+            if (storedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        } else {
+            document.documentElement.classList.add('dark');
+        }
 
         // Sync with DB if available
         if (supabase) {
@@ -54,6 +70,17 @@ const App: React.FC = () => {
             });
         }
     }, []);
+
+    const toggleTheme = () => {
+        const newTheme = theme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+        localStorage.setItem('cosmonet_theme', newTheme);
+        if (newTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    };
 
     const handleLogin = (pwd: string) => {
         if (pwd === APP_PASSWORD) {
@@ -72,6 +99,8 @@ const App: React.FC = () => {
     if (!isAuthenticated) {
         return <Login onLogin={handleLogin} />;
     }
+    
+    // ... (rest of logic methods stay same)
 
     const addToQueue = () => {
         if (!articleText.trim()) return;
@@ -178,49 +207,64 @@ const App: React.FC = () => {
         }
     };
 
-    // Dummy handlers for now
     const handleExport = () => {};
     const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {};
 
     return (
-        <div className="bg-black min-h-screen text-zinc-300 font-sans pb-12 relative selection:bg-white selection:text-black">
+        <div className="bg-zinc-50 dark:bg-black min-h-screen text-zinc-900 dark:text-zinc-300 font-sans pb-12 relative selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black transition-colors duration-300">
             <div className="container mx-auto max-w-7xl px-4 py-4 md:px-6 md:py-6 relative z-10">
-                <header className="glass-card px-6 py-4 rounded-xl mb-6 shadow-2xl slide-in-up border border-zinc-800">
+                <header className="glass-card px-6 py-4 rounded-xl mb-6 shadow-xl slide-in-up border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/40">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
                             <div className="relative group">
-                                <div className="absolute inset-0 bg-white/10 rounded-full blur-lg opacity-0 group-hover:opacity-50 transition-opacity"></div>
-                                <div className="relative bg-zinc-950/80 p-2 rounded-lg border border-zinc-800">
-                                    <SparklesIcon className="w-5 h-5 text-white" />
+                                <div className="absolute inset-0 bg-zinc-900/10 dark:bg-white/10 rounded-full blur-lg opacity-0 group-hover:opacity-50 transition-opacity"></div>
+                                <div className="relative bg-white dark:bg-zinc-950/80 p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                                    <SparklesIcon className="w-5 h-5 text-zinc-800 dark:text-white" />
                                 </div>
                             </div>
                             <div>
-                                <h1 className="text-2xl md:text-3xl font-bold tracking-tighter text-white font-display">
-                                    Nebula<span className="text-zinc-500">SEO</span>
+                                <h1 className="text-2xl md:text-3xl font-bold tracking-tighter text-zinc-900 dark:text-white font-display">
+                                    Nebula<span className="text-zinc-400 dark:text-zinc-500">SEO</span>
                                 </h1>
                                 <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-0.5">Professional AI Workbench</p>
                             </div>
                         </div>
                         <div className="flex gap-3 items-center">
+                             <button
+                                onClick={toggleTheme}
+                                className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800
+                                         bg-white dark:bg-zinc-900/50 text-zinc-600 dark:text-zinc-400
+                                         hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-900 dark:hover:text-white
+                                         transition-all duration-300 shadow-sm"
+                                aria-label="Toggle Theme"
+                            >
+                                {theme === 'dark' ? (
+                                    <SunIcon className="w-4 h-4" />
+                                ) : (
+                                    <MoonIcon className="w-4 h-4" />
+                                )}
+                            </button>
+                            
                             <button 
                                 onClick={() => setIsLoadModalOpen(true)}
-                                className="px-4 py-2 rounded-lg text-[11px] font-bold uppercase border border-zinc-800 bg-zinc-900/50
-                                         text-zinc-400 hover:text-white hover:border-zinc-600 hover:bg-zinc-800
+                                className="px-4 py-2 rounded-lg text-[11px] font-bold uppercase border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50
+                                         text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800
                                          transition-all duration-300
                                          flex items-center gap-2 group shadow-sm hover:shadow-md"
                             >
-                                <ArchiveBoxIcon className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors" />
+                                <ArchiveBoxIcon className="w-4 h-4 text-zinc-500 group-hover:text-zinc-800 dark:group-hover:text-white transition-colors" />
                                 Archive
-                                <span className="ml-1 bg-zinc-800 text-zinc-300 px-1.5 py-0.5 rounded text-[9px]">
+                                <span className="ml-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 px-1.5 py-0.5 rounded text-[9px]">
                                     {savedArticles.length}
                                 </span>
                             </button>
                             <button 
                                 onClick={handleLogout}
                                 className="px-4 py-2 rounded-lg text-[11px] font-bold uppercase
-                                         border border-zinc-800 hover:border-red-900/50
-                                         text-zinc-500 hover:text-red-400
-                                         hover:bg-red-950/10
+                                         border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 dark:hover:border-red-900/50
+                                         text-zinc-500 hover:text-red-500 dark:hover:text-red-400
+                                         hover:bg-red-50 dark:hover:bg-red-950/10
+                                         bg-white dark:bg-transparent
                                          transition-all duration-300"
                             >
                                 Logout
@@ -243,11 +287,11 @@ const App: React.FC = () => {
                             onImportDB={handleImport}
                         />
 
-                        <div className="glass-card-intense p-5 rounded-xl shadow-xl slide-in-up border border-zinc-800 bg-black/40" style={{animationDelay: '0.1s'}}>
-                            <div className="flex justify-between items-center mb-4 pb-2 border-b border-zinc-800">
+                        <div className="glass-card-intense p-5 rounded-xl shadow-xl slide-in-up border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black/40 transition-colors duration-300" style={{animationDelay: '0.1s'}}>
+                            <div className="flex justify-between items-center mb-4 pb-2 border-b border-zinc-100 dark:border-zinc-800">
                                 <div className="flex items-center gap-2">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></div>
-                                    <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white animate-pulse"></div>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
                                         Processing Queue
                                     </h3>
                                 </div>
@@ -259,7 +303,8 @@ const App: React.FC = () => {
                                                  shadow-lg
                                                  transition-all duration-300
                                                  disabled:opacity-50 disabled:cursor-not-allowed
-                                                 hover:-translate-y-0.5 flex items-center gap-2"
+                                                 hover:-translate-y-0.5 flex items-center gap-2
+                                                 bg-zinc-900 text-white dark:bg-white dark:text-black border-zinc-900 dark:border-white"
                                     >
                                         {isLoading ? 'Processing...' : 'Run Batch'}
                                     </button>
@@ -268,12 +313,12 @@ const App: React.FC = () => {
                             
                             <div className="space-y-1 max-h-[400px] overflow-y-auto custom-scrollbar pr-1">
                                 {batchQueue.length === 0 ? (
-                                    <div className="text-center py-16 border border-dashed border-zinc-800/50 rounded-xl bg-zinc-900/20">
-                                        <div className="inline-block p-4 rounded-full bg-zinc-900 mb-3 text-zinc-700">
+                                    <div className="text-center py-16 border border-dashed border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-zinc-50/50 dark:bg-zinc-900/20">
+                                        <div className="inline-block p-4 rounded-full bg-zinc-100 dark:bg-zinc-900 mb-3 text-zinc-400 dark:text-zinc-700">
                                             <ArchiveBoxIcon className="w-8 h-8" />
                                         </div>
-                                        <p className="text-xs text-zinc-500 font-bold uppercase tracking-wider">Queue Empty</p>
-                                        <p className="text-[10px] text-zinc-600 mt-1">Waiting for input...</p>
+                                        <p className="text-xs text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-wider">Queue Empty</p>
+                                        <p className="text-[10px] text-zinc-500 dark:text-zinc-600 mt-1">Waiting for input...</p>
                                     </div>
                                 ) : (
                                     batchQueue.map((item, index) => (
@@ -282,27 +327,27 @@ const App: React.FC = () => {
                                             onClick={() => setSelectedBatchId(item.id)}
                                             className={`p-3 rounded-lg border cursor-pointer transition-all duration-200 flex items-center justify-between group relative overflow-hidden ${
                                                 selectedBatchId === item.id 
-                                                ? 'bg-zinc-900 border-zinc-700 shadow-md' 
-                                                : 'bg-transparent border-transparent hover:bg-zinc-900/50 hover:border-zinc-800'
+                                                ? 'bg-zinc-100 dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700 shadow-md' 
+                                                : 'bg-transparent border-transparent hover:bg-zinc-100 dark:hover:bg-zinc-900/50 hover:border-zinc-200 dark:hover:border-zinc-800'
                                             }`}
                                             style={{animationDelay: `${index * 0.05}s`}}
                                         >   
                                             {selectedBatchId === item.id && (
-                                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-white"></div>
+                                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-zinc-900 dark:bg-white"></div>
                                             )}
                                             
                                             <div className="flex-1 truncate pl-2">
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <p className={`text-xs font-bold truncate ${selectedBatchId === item.id ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-300'}`}>
+                                                    <p className={`text-xs font-bold truncate ${selectedBatchId === item.id ? 'text-zinc-900 dark:text-white' : 'text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-300'}`}>
                                                         {item.result?.title || item.text.substring(0, 50) + '...'}
                                                     </p>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <span className={`text-[9px] font-mono uppercase tracking-tight py-0.5 px-1.5 rounded ${
-                                                        item.status === 'completed' ? 'text-green-400 bg-green-900/10' : 
-                                                        item.status === 'processing' ? 'text-white bg-white/10 animate-pulse' : 
-                                                        item.status === 'error' ? 'text-red-400 bg-red-900/10' : 
-                                                        'text-zinc-600 bg-zinc-900'
+                                                        item.status === 'completed' ? 'text-green-700 bg-green-100 dark:text-green-400 dark:bg-green-900/10' : 
+                                                        item.status === 'processing' ? 'text-zinc-800 bg-zinc-200 dark:text-white dark:bg-white/10 animate-pulse' : 
+                                                        item.status === 'error' ? 'text-red-700 bg-red-100 dark:text-red-400 dark:bg-red-900/10' : 
+                                                        'text-zinc-500 bg-zinc-100 dark:text-zinc-600 dark:bg-zinc-900'
                                                     }`}>
                                                         {item.status === 'completed' ? 'Done' :
                                                          item.status === 'processing' ? 'Working' :
@@ -314,7 +359,7 @@ const App: React.FC = () => {
                                             <button 
                                                 onClick={(e) => { e.stopPropagation(); removeFromQueue(item.id); }}
                                                 className="opacity-0 group-hover:opacity-100 p-2 rounded-md
-                                                         text-zinc-600 hover:text-red-400 hover:bg-red-950/20
+                                                         text-zinc-400 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20
                                                          transition-all duration-200"
                                                 title="Remove"
                                             >

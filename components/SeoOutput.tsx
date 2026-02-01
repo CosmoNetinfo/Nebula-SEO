@@ -158,20 +158,20 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                 {activeTab === 'content' && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-6">
                         <div className="flex items-center justify-between">
-                            <div className="flex bg-zinc-950 p-1 rounded-lg border border-zinc-800">
-                                <button onClick={() => setViewMode('preview')} className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all ${viewMode === 'preview' ? 'bg-zinc-200 text-black' : 'text-zinc-500 hover:text-zinc-300'}`}>Preview</button>
-                                <button onClick={() => setViewMode('code')} className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all ${viewMode === 'code' ? 'bg-zinc-200 text-black' : 'text-zinc-500 hover:text-zinc-300'}`}>HTML</button>
+                            <div className="flex bg-zinc-100 dark:bg-zinc-950 p-1 rounded-lg border border-zinc-200 dark:border-zinc-800">
+                                <button onClick={() => setViewMode('preview')} className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all ${viewMode === 'preview' ? 'bg-white dark:bg-zinc-200 text-zinc-900 dark:text-black shadow-sm' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300'}`}>Preview</button>
+                                <button onClick={() => setViewMode('code')} className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all ${viewMode === 'code' ? 'bg-white dark:bg-zinc-200 text-zinc-900 dark:text-black shadow-sm' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300'}`}>HTML</button>
                             </div>
                             <div className="flex gap-2">
-                                <button onClick={() => onSave()} className="bg-white text-black p-2 rounded-lg hover:bg-zinc-200 transition-colors border border-transparent shadow-sm" title="Save Draft"><BookmarkIcon className="w-4 h-4" /></button>
-                                <button onClick={() => window.print()} className="bg-zinc-900 p-2 rounded-lg text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-600 transition-colors" title="Print"><PrinterIcon className="w-4 h-4" /></button>
+                                <button onClick={() => onSave()} className="bg-zinc-900 text-white dark:bg-white dark:text-black p-2 rounded-lg hover:bg-zinc-700 dark:hover:bg-zinc-200 transition-colors border border-transparent shadow-sm" title="Save Draft"><BookmarkIcon className="w-4 h-4" /></button>
+                                <button onClick={() => window.print()} className="bg-zinc-100 dark:bg-zinc-900 p-2 rounded-lg text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors" title="Print"><PrinterIcon className="w-4 h-4" /></button>
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-xl overflow-hidden min-h-[600px] border border-zinc-800 shadow-inner relative">
+                        <div className="bg-white dark:bg-black rounded-xl overflow-hidden min-h-[600px] border border-zinc-200 dark:border-zinc-800 shadow-inner relative transition-colors duration-300">
                             {isEnriching && (
-                                <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] flex items-center justify-center z-10 transition-all">
-                                    <div className="bg-white text-black px-5 py-3 rounded-xl shadow-2xl flex items-center gap-4 animate-pulse border border-zinc-200">
+                                <div className="absolute inset-0 bg-white/50 dark:bg-black/20 backdrop-blur-[2px] flex items-center justify-center z-10 transition-all">
+                                    <div className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-4 animate-pulse border border-zinc-200 dark:border-zinc-800">
                                         <SparklesIcon className="w-5 h-5" />
                                         <span className="text-xs font-bold tracking-widest uppercase">Refining Content...</span>
                                     </div>
@@ -196,11 +196,11 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                                         <h1>${result.title}</h1>
                                         ${result.htmlContent}
                                     </body></html>`}
-                                    className="w-full h-[600px] bg-white"
+                                    className="w-full h-[600px] bg-white border-0"
                                 />
                             ) : (
-                                <div className="p-6 bg-zinc-950 h-[600px] overflow-auto font-mono text-[10px] text-zinc-400 whitespace-pre-wrap relative leading-relaxed">
-                                    <div className="text-zinc-600 border-b border-zinc-800 pb-2 mb-4 block">
+                                <div className="p-6 bg-zinc-50 dark:bg-zinc-950 h-[600px] overflow-auto font-mono text-[10px] text-zinc-600 dark:text-zinc-400 whitespace-pre-wrap relative leading-relaxed transition-colors duration-300">
+                                    <div className="text-zinc-400 dark:text-zinc-600 border-b border-zinc-200 dark:border-zinc-800 pb-2 mb-4 block">
                                         &lt;!-- SEO METADATA --&gt;<br/>
                                         &lt;!-- CATEGORY: {result.categories} --&gt;<br/>
                                         &lt;!-- TAGS: {result.tags} --&gt;
@@ -213,7 +213,7 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                                                 navigator.clipboard.writeText(fullCode);
                                                 alert("HTML copied!");
                                             }}
-                                            className="bg-white text-black hover:bg-zinc-200 px-3 py-2 rounded-lg text-[10px] font-bold shadow-lg uppercase tracking-wider"
+                                            className="bg-zinc-900 text-white dark:bg-white dark:text-black hover:bg-zinc-700 dark:hover:bg-zinc-200 px-3 py-2 rounded-lg text-[10px] font-bold shadow-lg uppercase tracking-wider transition-colors"
                                         >
                                             Copy Code
                                         </button>

@@ -298,9 +298,10 @@ git push             # Deploy automatico su Vercel
 **Progetto:** Nebula SEO  
 **Sviluppato per:** CosmoNet (https://www.cosmonet.info/)  
 **Data Creazione:** Gennaio 2026  
-**Versione:** 2.0.0 (Modern Premium UI - 31 Gennaio 2026)
+**Versione:** 2.1.0 (Monochrome Theme & Dark/Light Mode - 1 Febbraio 2026)
 
 ### Changelog:
+- **v2.1.0** - **Monochrome UI & Light Mode Support**: Totale riscrittura del tema grafico. Abbandonato lo schema colori "indigo/slate" per un approccio professionale "Monochrome/OLED" (Zinc/Black/White). Aggiunto supporto completo per Light Mode e Dark Mode con toggle dinamico. Aggiornati tutti i componenti per supportare il doppio tema.
 - **v2.0.0** - UI Modernization completa con glassmorphism, nuove animazioni, design premium e layout ultra-compatto. Aggiunta documentazione completa (README.md) per uso editoriale.
 - **v1.1.0** - Aggiunto Debug Panel
 - **v1.0.0** - Release iniziale

@@ -20,8 +20,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4 font-sans text-white">
-      <div className="max-w-md w-full glass-card p-10 rounded-2xl border border-zinc-800/60 shadow-2xl relative overflow-hidden animate-fade-in-up">
+    <div className="min-h-screen bg-zinc-50 dark:bg-black flex items-center justify-center p-4 font-sans text-zinc-900 dark:text-white transition-colors duration-300">
+      <div className="max-w-md w-full glass-card p-10 rounded-2xl border border-zinc-200 dark:border-zinc-800/60 shadow-2xl relative overflow-hidden animate-fade-in-up bg-white dark:bg-zinc-900/40">
         
         {/* Minimal Decorative Top Bar */}
         <div className="absolute top-0 left-0 w-full h-0.5 bg-zinc-800"></div>
