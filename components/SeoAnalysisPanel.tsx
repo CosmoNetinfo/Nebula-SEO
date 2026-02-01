@@ -37,7 +37,7 @@ export const SeoAnalysisPanel: React.FC<SeoAnalysisPanelProps> = ({ items }) => 
     return (
         <div className="bg-white dark:bg-zinc-950/30 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800/50 shadow-lg relative overflow-hidden group mb-6 transition-colors duration-300">
             <div className="flex items-center justify-between mb-4 relative z-10">
-                <h4 className="text-xs uppercase font-bold text-zinc-800 dark:text-zinc-500 tracking-wider">Technical Analysis</h4>
+                <h4 className="text-xs uppercase font-bold text-black dark:text-zinc-500 tracking-wider">Technical Analysis</h4>
                 <div className="px-3 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900/50 backdrop-blur-sm font-black text-sm text-black dark:text-zinc-300 transition-colors">
                     SCORE: {score}/100
                 </div>
@@ -57,7 +57,7 @@ export const SeoAnalysisPanel: React.FC<SeoAnalysisPanelProps> = ({ items }) => 
                         {getStatusIcon(r.status)}
                         <div>
                             <p className="text-[10px] uppercase font-bold text-black dark:text-zinc-500 group-hover/item:text-black dark:group-hover/item:text-zinc-400 transition-colors">{r.item}</p>
-                            <p className="text-[10px] text-zinc-800 dark:text-zinc-400 leading-tight mt-1 font-mono">{r.details}</p>
+                            <p className="text-[10px] text-black dark:text-zinc-400 leading-tight mt-1 font-mono">{r.details}</p>
                         </div>
                     </div>
                 ))}

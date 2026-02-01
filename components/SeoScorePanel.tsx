@@ -62,9 +62,9 @@ export const SeoScorePanel: React.FC<SeoScorePanelProps> = ({ htmlContent, focus
     }, [htmlContent, focusKeyword]);
 
     const getScoreColor = (score: number) => {
-        if (score >= 80) return 'text-green-500 border-green-500/50';
-        if (score >= 50) return 'text-yellow-500 border-yellow-500/50';
-        return 'text-red-500 border-red-500/50';
+        if (score >= 80) return 'text-green-700 dark:text-green-400 border-green-700/50 dark:border-green-500/50';
+        if (score >= 50) return 'text-amber-700 dark:text-amber-400 border-amber-700/50 dark:border-amber-500/50';
+        return 'text-red-700 dark:text-red-400 border-red-700/50 dark:border-red-500/50';
     };
     
     const getBarColor = (score: number) => {
@@ -76,7 +76,7 @@ export const SeoScorePanel: React.FC<SeoScorePanelProps> = ({ htmlContent, focus
     return (
         <div className="bg-white dark:bg-zinc-950/30 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800/50 shadow-lg relative overflow-hidden group transition-colors duration-300">
             <div className="flex items-center justify-between mb-4 relative z-10">
-                <h4 className="text-xs uppercase font-bold text-zinc-800 dark:text-zinc-500 tracking-wider">Analisi SEO Real-Time</h4>
+                <h4 className="text-xs uppercase font-bold text-black dark:text-zinc-500 tracking-wider">Analisi SEO Real-Time</h4>
                 <div className={`px-3 py-1 rounded-full border ${getScoreColor(metrics.score)} bg-opacity-10 backdrop-blur-sm font-black text-sm`}>
                     TOP SCORE: {metrics.score}/100
                 </div>
@@ -94,50 +94,50 @@ export const SeoScorePanel: React.FC<SeoScorePanelProps> = ({ htmlContent, focus
                 {/* Keyword Density */}
                 <div className="flex items-start gap-2">
                     {Number(metrics.density) >= 0.5 && Number(metrics.density) <= 2.5 
-                        ? <CheckCircleIcon className="w-4 h-4 text-green-500 mt-0.5" />
-                        : <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500 mt-0.5" />
+                        ? <CheckCircleIcon className="w-4 h-4 text-green-700 dark:text-green-500 mt-0.5" />
+                        : <ExclamationTriangleIcon className="w-4 h-4 text-amber-600 dark:text-amber-500 mt-0.5" />
                     }
                     <div>
-                        <p className="text-[10px] uppercase font-bold text-zinc-800 dark:text-zinc-500">Keyword Density</p>
+                        <p className="text-[10px] uppercase font-bold text-black dark:text-zinc-500">Keyword Density</p>
                         <p className="text-xs font-medium text-black dark:text-zinc-200">{metrics.density}% ({metrics.keywordCount} volte)</p>
-                        <p className="text-[9px] text-zinc-500 dark:text-zinc-600">Target: 0.5% - 2.5%</p>
+                        <p className="text-[9px] text-zinc-600 dark:text-zinc-600">Target: 0.5% - 2.5%</p>
                     </div>
                 </div>
                 
                 {/* Word Count */}
                 <div className="flex items-start gap-2">
                     {metrics.wordCount >= 600 
-                        ? <CheckCircleIcon className="w-4 h-4 text-green-500 mt-0.5" />
-                        : <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500 mt-0.5" />
+                        ? <CheckCircleIcon className="w-4 h-4 text-green-700 dark:text-green-500 mt-0.5" />
+                        : <ExclamationTriangleIcon className="w-4 h-4 text-amber-600 dark:text-amber-500 mt-0.5" />
                     }
                     <div>
-                        <p className="text-[10px] uppercase font-bold text-zinc-800 dark:text-zinc-500">Lunghezza</p>
+                        <p className="text-[10px] uppercase font-bold text-black dark:text-zinc-500">Lunghezza</p>
                         <p className="text-xs font-medium text-black dark:text-zinc-200">{metrics.wordCount} parole</p>
-                        <p className="text-[9px] text-zinc-500 dark:text-zinc-600">Target: &gt;600</p>
+                        <p className="text-[9px] text-zinc-600 dark:text-zinc-600">Target: &gt;600</p>
                     </div>
                 </div>
                 
                 {/* Headings */}
                 <div className="flex items-start gap-2">
                     {metrics.h2Count >= 2 
-                        ? <CheckCircleIcon className="w-4 h-4 text-green-500 mt-0.5" />
-                        : <XCircleIcon className="w-4 h-4 text-red-500 mt-0.5" />
+                        ? <CheckCircleIcon className="w-4 h-4 text-green-700 dark:text-green-500 mt-0.5" />
+                        : <XCircleIcon className="w-4 h-4 text-red-700 dark:text-red-500 mt-0.5" />
                     }
                     <div>
-                        <p className="text-[10px] uppercase font-bold text-zinc-800 dark:text-zinc-500">Struttura H2</p>
+                        <p className="text-[10px] uppercase font-bold text-black dark:text-zinc-500">Struttura H2</p>
                         <p className="text-xs font-medium text-black dark:text-zinc-200">{metrics.h2Count} sottotitoli</p>
-                        <p className="text-[9px] text-zinc-500 dark:text-zinc-600">Minimo 2 sezioni</p>
+                        <p className="text-[9px] text-zinc-600 dark:text-zinc-600">Minimo 2 sezioni</p>
                     </div>
                 </div>
                 
                 {/* Rich Content */}
                 <div className="flex items-start gap-2">
                     {metrics.hasLists && metrics.hasBold
-                        ? <CheckCircleIcon className="w-4 h-4 text-green-600 mt-0.5" />
-                        : <ExclamationTriangleIcon className="w-4 h-4 text-yellow-600 mt-0.5" />
+                        ? <CheckCircleIcon className="w-4 h-4 text-green-700 dark:text-green-600 mt-0.5" />
+                        : <ExclamationTriangleIcon className="w-4 h-4 text-amber-700 dark:text-amber-600 mt-0.5" />
                     }
                     <div>
-                        <p className="text-[10px] uppercase font-bold text-zinc-800 dark:text-zinc-500">Leggibilità</p>
+                        <p className="text-[10px] uppercase font-bold text-black dark:text-zinc-500">Leggibilità</p>
                         <p className="text-xs font-medium text-black dark:text-zinc-200">
                             {metrics.hasLists ? 'Liste OK' : 'No Liste'} • {metrics.hasBold ? 'Grassetti OK' : 'No Grassetti'}
                         </p>

@@ -318,7 +318,7 @@ const App: React.FC = () => {
                                             <ArchiveBoxIcon className="w-8 h-8" />
                                         </div>
                                         <p className="text-xs text-black dark:text-zinc-500 font-bold uppercase tracking-wider">Queue Empty</p>
-                                        <p className="text-[10px] text-zinc-800 dark:text-zinc-600 mt-1">Waiting for input...</p>
+                                        <p className="text-[10px] text-black dark:text-zinc-600 mt-1">Waiting for input...</p>
                                     </div>
                                 ) : (
                                     batchQueue.map((item, index) => (

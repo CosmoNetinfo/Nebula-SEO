@@ -24,10 +24,10 @@ const SeoDataItem: React.FC<{ label: string; value: string; mono?: boolean }> = 
         });
     };
     return (
-        <div className="bg-zinc-950/30 p-3 rounded-lg border border-zinc-800/50 group hover:border-zinc-700 transition-colors">
+        <div className="bg-zinc-100 dark:bg-zinc-950/30 p-3 rounded-lg border border-zinc-200 dark:border-zinc-800/50 group hover:border-zinc-300 transition-colors">
             <label className="block text-[9px] uppercase font-bold text-zinc-500 mb-1 tracking-wider">{label}</label>
             <div className="flex justify-between items-center gap-2">
-                <p className={`text-zinc-300 text-sm truncate ${mono ? 'font-mono' : ''}`}>{value}</p>
+                <p className={`text-black dark:text-zinc-300 text-sm truncate ${mono ? 'font-mono' : ''}`}>{value}</p>
                 <button onClick={handleCopy} className="text-zinc-600 hover:text-white p-1 transition-colors">
                     {copied ? <CheckIcon className="w-3.5 h-3.5" /> : <ClipboardIcon className="w-3.5 h-3.5" />}
                 </button>
@@ -113,20 +113,19 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                         </div>
 
                         <div className="space-y-4">
-                            <div className="bg-zinc-950/30 p-4 rounded-xl border border-zinc-800/50">
+                            <div className="bg-zinc-100 dark:bg-zinc-950/30 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/50">
                                 <label className="text-[9px] uppercase font-bold text-zinc-500 block mb-2 tracking-wider">Editorial Categories</label>
-                                <p className="text-sm text-zinc-300 font-mono">{result.categories}</p>
+                                <p className="text-sm text-black dark:text-zinc-300 font-mono">{result.categories}</p>
                             </div>
-                            
-                            <div className="bg-zinc-950/30 p-4 rounded-xl border border-zinc-800/50">
+                                                        <div className="bg-zinc-100 dark:bg-zinc-950/30 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/50">
                                 <div className="flex justify-between items-center mb-3">
-                                    <label className="text-[9px] uppercase font-bold text-zinc-500 tracking-wider">SEO Tags (CSV)</label>
-                                    <button onClick={handleCopyTagsCSV} className="text-[9px] text-zinc-500 hover:text-white flex items-center gap-1 font-bold transition-colors">
+                                    <label className="text-[9px] uppercase font-bold text-zinc-600 dark:text-zinc-500 tracking-wider">SEO Tags (CSV)</label>
+                                    <button onClick={handleCopyTagsCSV} className="text-[9px] text-zinc-500 hover:text-black dark:hover:text-white flex items-center gap-1 font-bold transition-colors">
                                         {tagsCopied ? <CheckCircleIcon className="w-3.5 h-3.5 text-green-500" /> : <ClipboardIcon className="w-3.5 h-3.5" />}
                                         COPY CSV
                                     </button>
                                 </div>
-                                <div className="bg-black/50 p-3 rounded-lg border border-zinc-800/80 font-mono text-[10px] text-zinc-400 break-all cursor-pointer hover:border-zinc-600 transition-all hover:text-zinc-200" onClick={handleCopyTagsCSV}>
+                                <div className="bg-white dark:bg-black/50 p-3 rounded-lg border border-zinc-200 dark:border-zinc-800/80 font-mono text-[10px] text-black dark:text-zinc-400 break-all cursor-pointer hover:border-zinc-400 transition-all" onClick={handleCopyTagsCSV}>
                                     {result.tags}
                                 </div>
                             </div>
@@ -138,13 +137,13 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <SeoDataItem label="SEO Title (Snippet)" value={result.title} />
-                            <div className="bg-zinc-950/30 p-4 rounded-xl border border-zinc-800/50 flex flex-col justify-center">
-                                <label className="text-[9px] uppercase font-bold text-zinc-500 block mb-1 tracking-wider">Optimized Word Count</label>
+                            <div className="bg-zinc-100 dark:bg-zinc-950/30 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800/50 flex flex-col justify-center">
+                                <label className="text-[9px] uppercase font-bold text-zinc-600 dark:text-zinc-500 block mb-1 tracking-wider">Optimized Word Count</label>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-lg font-black text-white">
+                                    <span className="text-lg font-black text-black dark:text-white">
                                         {result.htmlContent.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter(w => w.length > 0).length}
                                     </span>
-                                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-tighter">Words</span>
+                                    <span className="text-[10px] text-zinc-600 dark:text-zinc-500 font-bold uppercase tracking-tighter">Words</span>
                                 </div>
                             </div>
                         </div>
@@ -156,14 +155,14 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-6">
                         <ReadabilityScorePanel items={Array.isArray(result.readability) ? result.readability : []} />
 
-                        <div className="bg-zinc-900/30 p-5 rounded-xl border border-zinc-800/50">
+                        <div className="bg-zinc-100 dark:bg-zinc-900/30 p-5 rounded-xl border border-zinc-200 dark:border-zinc-800/50 shadow-sm">
                             <div className="flex justify-between items-center mb-3">
-                                <span className="text-[10px] uppercase font-bold text-zinc-400 block tracking-wider">Social Media Caption</span>
-                                <button onClick={handleCopySocial} className="text-zinc-500 hover:text-white transition-colors p-1 bg-black/40 rounded border border-zinc-800 hover:border-zinc-600">
+                                <span className="text-[10px] uppercase font-bold text-zinc-500 dark:text-zinc-400 block tracking-wider">Social Media Caption</span>
+                                <button onClick={handleCopySocial} className="text-zinc-500 hover:text-black dark:hover:text-white transition-colors p-1 bg-white dark:bg-black/40 rounded border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600">
                                     {socialCopied ? <CheckIcon className="w-3.5 h-3.5" /> : <ClipboardIcon className="w-3.5 h-3.5" />}
                                 </button>
                             </div>
-                            <p className="text-sm text-zinc-400 leading-relaxed italic font-serif border-l-2 border-zinc-700 pl-4">"{result.socialMediaPost}"</p>
+                            <p className="text-sm text-black dark:text-zinc-400 leading-relaxed italic font-serif border-l-2 border-black dark:border-zinc-700 pl-4">"{result.socialMediaPost}"</p>
                         </div>
                     </div>
                 )}
@@ -194,10 +193,10 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                                 <iframe 
                                     srcDoc={`<html><head><style>
                                         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
-                                        body{font-family:'Inter', sans-serif; line-height:1.8; color:#334155; padding:40px 30px; max-width:800px; margin:0 auto; font-size: 16px; background: #fff;} 
-                                        h1,h2,h3{color:#09090b; margin-top:1.6em; margin-bottom: 0.8em; font-family: 'Playfair Display', serif;} 
+                                        body{font-family:'Inter', sans-serif; line-height:1.8; color:#000; padding:40px 30px; max-width:800px; margin:0 auto; font-size: 16px; background: #fff;} 
+                                        h1,h2,h3{color:#000; margin-top:1.6em; margin-bottom: 0.8em; font-family: 'Playfair Display', serif;} 
                                         h1{font-size: 2.6em; border-bottom: 3px solid #000; padding-bottom: 12px; margin-bottom: 1.1em;}
-                                        h2{font-size: 1.7em; color: #18181b; border-left: 4px solid #000; padding-left: 15px;}
+                                        h2{font-size: 1.7em; color: #000; border-left: 4px solid #000; padding-left: 15px;}
                                         h3{font-size: 1.3em; color: #3f3f46;}
                                         p{margin-bottom: 1.4em;}
                                         a{color:#000; text-decoration:underline; font-weight:700;}
@@ -212,7 +211,7 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                                     className="w-full h-[600px] bg-white border-0"
                                 />
                             ) : (
-                                <div className="p-6 bg-zinc-50 dark:bg-zinc-950 h-[600px] overflow-auto font-mono text-[10px] text-zinc-600 dark:text-zinc-400 whitespace-pre-wrap relative leading-relaxed transition-colors duration-300">
+                                <div className="p-6 bg-zinc-50 dark:bg-zinc-950 h-[600px] overflow-auto font-mono text-[10px] text-black dark:text-zinc-400 whitespace-pre-wrap relative leading-relaxed transition-colors duration-300">
                                     <div className="text-zinc-400 dark:text-zinc-600 border-b border-zinc-200 dark:border-zinc-800 pb-2 mb-4 block">
                                         &lt;!-- SEO METADATA --&gt;<br/>
                                         &lt;!-- CATEGORY: {result.categories} --&gt;<br/>
