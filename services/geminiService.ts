@@ -84,8 +84,9 @@ ${articleText}`;
             contents: prompt,
             config: {
                 responseMimeType: "application/json",
-                responseSchema: responseSchema,
+                // responseSchema removed to allow complete generation without structural constraints
                 maxOutputTokens: 8192,
+                temperature: 0.1, // Low temperature for consistent structured output
             },
         });
 
