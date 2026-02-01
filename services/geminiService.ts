@@ -73,6 +73,24 @@ export const optimizeArticleForSeo = async (articleText: string): Promise<SeoRes
    - score: Un valore numerico o descrittivo breve (es: "35% delle frasi", "Ottimo")
    - message: Un consiglio pratico in ITALIANO su come migliorare (es: "Accorcia i paragrafi", "Usa più parole di transizione").
 
+7. **ANALISI SEO TECNICA (YOAST STANDARD)**:
+   Compila l'array 'seoChecklist' verificando questi punti (assicurati di RISPETTARLI nel testo generato):
+   - **Keyword in ALT img**: Se non ci sono immagini, suggerisci di aggiungerne. Se ci sono, verifica ALT tag.
+   - **Link interni/esterni**: Verifica presenza di link.
+   - **Keyword in Intro**: La focus keyword deve apparire nel primo paragrafo.
+   - **Keyword Density**: Densità ideale 0.5% - 2.5%.
+   - **Keyword in Title SEO**: Il tag <title> deve iniziare con la keyword.
+   - **Lunghezza Meta Desc**: Tra 120 e 156 caratteri.
+   - **Keyword in Slug**: Lo slug URL deve contenere la keyword.
+   - **Keyword in H2/H3**: Almeno un sottotitolo deve contenere la keyword.
+   - **Lunghezza Testo**: Minimo 300 parole (consigliato >600).
+   - **Titolo H1 singolo**: Deve esserci un solo H1.
+
+   Formato array seoChecklist:
+   - item: Nome del controllo (es. "Densità Frase Chiave")
+   - status: "good", "average", "poor"
+   - details: Messaggio esplicativo in ITALIANO (es. "Ottimo! La densità è 1.2%").
+
 Testo Sorgente:
 ${articleText}`;
 

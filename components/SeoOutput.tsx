@@ -1,8 +1,8 @@
-
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { SeoResult, SeoChecklistItem, ReadabilityItem, GroundingSource } from '../types';
 import { Loader } from './Loader';
 import { SeoScorePanel } from './SeoScorePanel';
+import { SeoAnalysisPanel } from './SeoAnalysisPanel';
 import { ReadabilityScorePanel } from './ReadabilityScorePanel';
 import { ClipboardIcon, CheckIcon, EyeIcon, CodeBracketIcon, CheckCircleIcon, ExclamationTriangleIcon, BookmarkIcon, PhotoIcon, SparklesIcon, DocumentMagnifyingGlassIcon, PrinterIcon, ArchiveBoxIcon } from './IconComponents';
 
@@ -93,9 +93,9 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                 {activeTab === 'seo' && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-6">
                         
-                        {/* Real-time SEO Score Panel */}
+                        {/* Punteggio SEO Tecnico (IA) */}
                         <div className="mb-6">
-                            <SeoScorePanel htmlContent={result.htmlContent} focusKeyword={result.keyPhrase} />
+                            <SeoAnalysisPanel items={result.seoChecklist} />
                         </div>
 
                         <div className="flex justify-end">
