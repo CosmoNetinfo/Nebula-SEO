@@ -2,6 +2,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { SeoResult, SeoChecklistItem, ReadabilityItem, GroundingSource } from '../types';
 import { Loader } from './Loader';
+import { SeoScorePanel } from './SeoScorePanel';
 import { ClipboardIcon, CheckIcon, EyeIcon, CodeBracketIcon, CheckCircleIcon, ExclamationTriangleIcon, BookmarkIcon, PhotoIcon, SparklesIcon, DocumentMagnifyingGlassIcon, PrinterIcon, ArchiveBoxIcon } from './IconComponents';
 
 interface SeoOutputProps {
@@ -39,12 +40,6 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
     const [viewMode, setViewMode] = useState<'preview' | 'code'>('preview');
     const [socialCopied, setSocialCopied] = useState(false);
     const [tagsCopied, setTagsCopied] = useState(false);
-
-    const wordCount = useMemo(() => {
-        if (!result) return 0;
-        const text = result.htmlContent.replace(/<[^>]*>/g, ' ');
-        return text.trim().split(/\s+/).length;
-    }, [result]);
 
     const handleCopySocial = () => {
         if (!result) return;
@@ -96,17 +91,20 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 {activeTab === 'seo' && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-6">
-                        <div className="flex justify-between items-center bg-indigo-900/20 p-4 rounded-xl border border-indigo-500/20">
-                            <div>
-                                <h4 className="text-[10px] uppercase font-bold text-indigo-300">Dati Articolo</h4>
-                                <p className="text-2xl font-bold text-white">{wordCount} <span className="text-sm font-normal text-slate-400">parole</span></p>
-                            </div>
-                            <button
+                        
+                        {/* Real-time SEO Score Panel */}
+                        <div className="mb-6">
+                            <SeoScorePanel htmlContent={result.htmlContent} focusKeyword={result.keyPhrase} />
+                        </div>
+
+                        <div className="flex justify-end">
+                             <button
                                 onClick={onIncreaseDepth}
                                 disabled={isEnriching}
-                                className="text-[10px] px-4 py-2 rounded-xl font-bold uppercase transition-all bg-indigo-600 text-white hover:bg-indigo-500 shadow-md"
+                                className="text-[10px] px-4 py-2 rounded-xl font-bold uppercase transition-all bg-indigo-600 text-white hover:bg-indigo-500 shadow-md flex items-center gap-2"
                             >
-                                {isEnriching ? 'Arricchimento...' : 'Cerca Fonti/Link'}
+                                <SparklesIcon className="w-3 h-3" />
+                                {isEnriching ? 'Arricchimento...' : 'Cerca Fonti & Approfondimenti'}
                             </button>
                         </div>
 
