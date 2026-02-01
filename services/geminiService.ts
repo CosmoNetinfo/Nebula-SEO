@@ -48,50 +48,35 @@ const responseSchema = {
 
 export const optimizeArticleForSeo = async (articleText: string): Promise<SeoResult> => {
     try {
-    const prompt = `Sei un Senior Editor e SEO Specialist per il mercato ITALIANO. Formatta il testo seguente in HTML mantenendo la LUNGHEZZA ORIGINALE e correggendo gli errori SEO.
+    const prompt = `SEO Editor per mercato ITALIANO. Formatta in HTML mantenendo TUTTA la lunghezza originale.
 
-**REGOLE MANDATORIE**:
-1. **LINGUA**: Tutto l'output (inclusi analisi leggibilità, messaggi, criteri) DEVE ESSERE IN ITALIANO.
-2. **INTEGRITÀ AL 100%**: Non riassumere. Non tagliare. Non omettere nomi, link, dati o dettagli tecnici. L'articolo deve contenere TUTTE le informazioni fornite nell'input.
-3. **ERRORE SEO: FRASI CONSECUTIVE**: Analizza il testo per trovare 2 o più frasi consecutive che iniziano con la stessa parola. Riscrivi SOLO l'attacco di una delle frasi per variare la struttura.
-4. **HTML SEMANTICO**: Usa H2, H3, p, strong, ul, li.
-5. **ZERO COMMENTI IA**: L'output deve essere SOLO il JSON richiesto.
-6. **ANALISI LEGGIBILITÀ AVANZATA (YOAST STANDARD)**:
-   Compila l'array 'readability' analizzando il testo generato secondo questi 7 criteri ESATTI (output in ITALIANO):
+REGOLE:
+1. LINGUA: Output 100% ITALIANO
+2. INTEGRITÀ: Non riassumere/tagliare. Mantieni TUTTI i dettagli tecnici, nomi, link, dati
+3. HTML: H2, H3, p, strong, ul, li
+4. ZERO testo extra: SOLO JSON
+
+5. READABILITY (7 criteri, output ITALIANO):
+   - Parole transizione (>30%)
+   - Inizio frasi consecutive (<10%)
+   - Complessità lessicale
+   - Lunghezza paragrafi (<150 parole)
+   - Distribuzione sottotitoli (<300 parole per sezione)
+   - Lunghezza frasi (<20% oltre 20 parole)
+   - Forma passiva (<10%)
+   - Liste (almeno 1)
    
-   - **Parole di transizione**: Controlla l'uso di connettivi (es: "inoltre", "perciò", "tuttavia"). Target: >30% delle frasi.
-   - **Inizio frasi consecutive**: Controlla se troppe frasi (3 o più) iniziano con la stessa parola. Target: <10%.
-   - **Complessità lessicale**: Identifica parole troppo rare o complesse (>4 sillabe o tecnicismi non spiegati). Scegli sinonimi semplici dove possibile.
-   - **Lunghezza paragrafi**: Nessun paragrafo deve superare le 150 parole. Evita i "muri di testo".
-   - **Distribuzione sottotitoli**: Nessuna sezione di testo deve superare le 300 parole senza un H2 o H3.
-   - **Lunghezza frasi**: Le frasi devono essere brevi. Target: max 20% delle frasi > 20 parole.
-   - **Forma passiva**: Evita la forma passiva (es: "è stato fatto"). Usa la forma attiva. Target: <10% delle frasi.
-   - **Liste ed Elenchi**: Includi almeno una lista (ordinata o non) per migliorare la scansionabilità (scan-ability) del contenuto.
+   Format: {status: "good"/"average"/"poor", score: "X%", message: "consiglio pratico"}
 
-   Per ogni criterio restituisci:
-   - status: "good" (verde), "average" (giallo), "poor" (rosso)
-   - score: Un valore numerico o descrittivo breve (es: "35% delle frasi", "Ottimo")
-   - message: Un consiglio pratico in ITALIANO su come migliorare (es: "Accorcia i paragrafi", "Usa più parole di transizione").
+6. SEO CHECKLIST (10 punti):
+   - Keyword in ALT img, Link interni/esterni, Keyword in Intro
+   - Keyword Density (0.5-2.5%), Keyword in Title SEO
+   - Meta Desc (120-156 char), Keyword in Slug
+   - Keyword in H2/H3, Lunghezza (>300 parole), H1 singolo
+   
+   Format: {item: "nome", status: "good"/"average"/"poor", details: "msg ITA"}
 
-7. **ANALISI SEO TECNICA (YOAST STANDARD)**:
-   Compila l'array 'seoChecklist' verificando questi punti (assicurati di RISPETTARLI nel testo generato):
-   - **Keyword in ALT img**: Se non ci sono immagini, suggerisci di aggiungerne. Se ci sono, verifica ALT tag.
-   - **Link interni/esterni**: Verifica presenza di link.
-   - **Keyword in Intro**: La focus keyword deve apparire nel primo paragrafo.
-   - **Keyword Density**: Densità ideale 0.5% - 2.5%.
-   - **Keyword in Title SEO**: Il tag <title> deve iniziare con la keyword.
-   - **Lunghezza Meta Desc**: Tra 120 e 156 caratteri.
-   - **Keyword in Slug**: Lo slug URL deve contenere la keyword.
-   - **Keyword in H2/H3**: Almeno un sottotitolo deve contenere la keyword.
-   - **Lunghezza Testo**: Minimo 300 parole (consigliato >600).
-   - **Titolo H1 singolo**: Deve esserci un solo H1.
-
-   Formato array seoChecklist:
-   - item: Nome del controllo (es. "Densità Frase Chiave")
-   - status: "good", "average", "poor"
-   - details: Messaggio esplicativo in ITALIANO (es. "Ottimo! La densità è 1.2%").
-
-Testo Sorgente:
+Testo:
 ${articleText}`;
 
         const response = await ai.models.generateContent({
