@@ -3,6 +3,7 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { SeoResult, SeoChecklistItem, ReadabilityItem, GroundingSource } from '../types';
 import { Loader } from './Loader';
 import { SeoScorePanel } from './SeoScorePanel';
+import { ReadabilityScorePanel } from './ReadabilityScorePanel';
 import { ClipboardIcon, CheckIcon, EyeIcon, CodeBracketIcon, CheckCircleIcon, ExclamationTriangleIcon, BookmarkIcon, PhotoIcon, SparklesIcon, DocumentMagnifyingGlassIcon, PrinterIcon, ArchiveBoxIcon } from './IconComponents';
 
 interface SeoOutputProps {
@@ -129,36 +130,28 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <SeoDataItem label="Focus Keyword" value={result.keyPhrase} mono />
-                            <SeoDataItem label="Permalink (Slug)" value={result.slug} mono />
+                            <SeoDataItem label="Parola Chiave" value={result.keyPhrase} mono />
+                            <SeoDataItem label="URL Slug" value={result.slug} mono />
                         </div>
-                        <SeoDataItem label="Snippet Title" value={result.title} />
-                        <SeoDataItem label="Meta Description" value={result.description} />
+                        <SeoDataItem label="Titolo SEO (Snippet)" value={result.title} />
+                        <SeoDataItem label="Meta Descrizione" value={result.description} />
                     </div>
                 )}
 
                 {activeTab === 'readability' && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 space-y-6">
+                        
+                        {/* Punteggio Leggibilità Grafico */}
+                        <ReadabilityScorePanel items={result.readability} />
+
                         <div className="bg-indigo-900/10 p-5 rounded-xl border border-indigo-500/10">
                             <div className="flex justify-between items-center mb-3">
-                                <span className="text-[10px] uppercase font-bold text-indigo-400 block tracking-wider">Social Marketing Post</span>
+                                <span className="text-[10px] uppercase font-bold text-indigo-400 block tracking-wider">Post per Social Media</span>
                                 <button onClick={handleCopySocial} className="text-slate-400 hover:text-indigo-400 transition-colors p-1 bg-slate-800/50 rounded">
                                     {socialCopied ? <CheckIcon className="w-4 h-4 text-green-400" /> : <ClipboardIcon className="w-4 h-4" />}
                                 </button>
                             </div>
                             <p className="text-sm text-slate-300 leading-relaxed italic">"{result.socialMediaPost}"</p>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {result.readability.map((r, i) => (
-                                <div key={i} className="bg-slate-900/30 p-4 rounded-xl border border-slate-700/30">
-                                    <div className="flex justify-between items-center mb-1">
-                                        <span className="text-xs font-bold text-slate-200">{r.criteria}</span>
-                                        <span className={`text-[10px] font-bold ${r.status === 'good' ? 'text-green-400' : 'text-yellow-400'}`}>{r.score}</span>
-                                    </div>
-                                    <p className="text-xs text-slate-400 leading-snug">{r.message}</p>
-                                </div>
-                            ))}
                         </div>
                     </div>
                 )}

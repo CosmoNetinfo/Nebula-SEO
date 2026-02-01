@@ -48,14 +48,20 @@ const responseSchema = {
 
 export const optimizeArticleForSeo = async (articleText: string): Promise<SeoResult> => {
     try {
-        const prompt = `Sei un Senior Editor e SEO Specialist. Formatta il testo seguente in HTML mantenendo la LUNGHEZZA ORIGINALE e correggendo gli errori SEO.
+    const prompt = `Sei un Senior Editor e SEO Specialist per il mercato ITALIANO. Formatta il testo seguente in HTML mantenendo la LUNGHEZZA ORIGINALE e correggendo gli errori SEO.
 
 **REGOLE MANDATORIE**:
-1. **INTEGRITÀ AL 100%**: Non riassumere. Non tagliare. Non omettere nomi, link, dati o dettagli tecnici. L'articolo deve contenere TUTTE le informazioni fornite nell'input.
-2. **ERRORE SEO: FRASI CONSECUTIVE**: Analizza il testo per trovare 2 o più frasi consecutive che iniziano con la stessa parola (es: "Il prodotto...", "Il prodotto..."). Riscrivi SOLO l'attacco di una delle frasi per variare la struttura, mantenendo intatto il significato e la lunghezza.
-3. **HTML SEMANTICO**: Usa H2, H3, p, strong, ul, li.
-4. **ZERO COMMENTI IA**: L'output deve essere SOLO il JSON richiesto.
-5. **SEO & SOCIAL**: Genera metadati ottimizzati e un post social.
+1. **LINGUA**: Tutto l'output (inclusi analisi leggibilità, messaggi, criteri) DEVE ESSERE IN ITALIANO.
+2. **INTEGRITÀ AL 100%**: Non riassumere. Non tagliare. Non omettere nomi, link, dati o dettagli tecnici. L'articolo deve contenere TUTTE le informazioni fornite nell'input.
+3. **ERRORE SEO: FRASI CONSECUTIVE**: Analizza il testo per trovare 2 o più frasi consecutive che iniziano con la stessa parola. Riscrivi SOLO l'attacco di una delle frasi per variare la struttura.
+4. **HTML SEMANTICO**: Usa H2, H3, p, strong, ul, li.
+5. **ZERO COMMENTI IA**: L'output deve essere SOLO il JSON richiesto.
+6. **ANALISI LEGGIBILITÀ (ITALIANO)**:
+   - "Flesch Reading Ease" -> "Facilità di Lettura"
+   - "Sentence Length" -> "Lunghezza Frasi"
+   - "Paragraph Length" -> "Lunghezza Paragrafi"
+   - "Use of Transition Words" -> "Parole di Transizione"
+   - I messaggi di dettaglio devono essere in italiano perfetto.
 
 Testo Sorgente:
 ${articleText}`;
