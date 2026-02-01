@@ -95,7 +95,7 @@ Testo Sorgente:
 ${articleText}`;
 
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-1.5-pro",
             contents: prompt,
             config: {
                 responseMimeType: "application/json",
@@ -106,16 +106,25 @@ ${articleText}`;
 
         let jsonText = response.text.trim();
         
+        // Helper to extract JSON
+        const extractJSON = (text: string): string => {
+            const firstOpen = text.indexOf('{');
+            const lastClose = text.lastIndexOf('}');
+            if (firstOpen !== -1 && lastClose !== -1 && lastClose > firstOpen) {
+                return text.substring(firstOpen, lastClose + 1);
+            }
+            return text;
+        };
+
         // Try to parse the JSON response
         let result: SeoResult;
         try {
             result = JSON.parse(jsonText);
         } catch (parseError) {
-            // If parsing fails, try to clean the response
+            // First attempt failed, try rigorous cleaning
             DebugLogger.log('warn', 'Initial JSON parse failed, attempting to clean response...', parseError);
             
-            // Remove markdown code blocks if present
-            jsonText = jsonText.replace(/```json\s*/g, '').replace(/```\s*/g, '');
+            jsonText = extractJSON(jsonText);
             
             // Try parsing again
             try {
@@ -157,7 +166,7 @@ CONTENUTO HTML ATTUALE:
 ${currentResult.htmlContent}`;
 
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-1.5-pro",
             contents: prompt,
             config: {
                 // responseMimeType: "application/json", // Removed to allow tools
@@ -168,12 +177,19 @@ ${currentResult.htmlContent}`;
         });
 
         let jsonText = response.text.trim();
-        // Clean markdown code blocks if present
-        if (jsonText.startsWith("```json")) {
-            jsonText = jsonText.replace(/^```json\s*/, "").replace(/\s*```$/, "");
-        } else if (jsonText.startsWith("```")) {
-             jsonText = jsonText.replace(/^```\s*/, "").replace(/\s*```$/, "");
-        }
+        
+        // Helper to extract JSON
+        const extractJSON = (text: string): string => {
+            const firstOpen = text.indexOf('{');
+            const lastClose = text.lastIndexOf('}');
+            if (firstOpen !== -1 && lastClose !== -1 && lastClose > firstOpen) {
+                return text.substring(firstOpen, lastClose + 1);
+            }
+            return text;
+        };
+
+        // Aggressive cleaning for the enrich step which is prone to conversational output
+        jsonText = extractJSON(jsonText);
 
         const result: SeoResult = JSON.parse(jsonText);
         
