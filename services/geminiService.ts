@@ -100,6 +100,7 @@ ${articleText}`;
             config: {
                 responseMimeType: "application/json",
                 responseSchema: responseSchema,
+                maxOutputTokens: 8192,
             },
         });
 
@@ -162,6 +163,7 @@ ${currentResult.htmlContent}`;
                 // responseMimeType: "application/json", // Removed to allow tools
                 // responseSchema: responseSchema,      // Removed to allow tools
                 tools: [{ googleSearch: {} }],
+                maxOutputTokens: 8192,
             },
         });
 
