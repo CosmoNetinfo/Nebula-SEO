@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { XMarkIcon, KeyIcon } from './IconComponents';
+import { XMarkIcon, KeyIcon, CloudArrowUpIcon, CheckCircleIcon } from './IconComponents';
+import { saveUserSettingsToDb, loadUserSettingsFromDb } from '../services/supabaseService';
 
 interface SettingsModalProps {
     isOpen: boolean;
@@ -13,29 +14,76 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     const [anthropicKey, setAnthropicKey] = useState('');
     const [preferredAI, setPreferredAI] = useState('gemini');
     const [saved, setSaved] = useState(false);
+    const [isSyncing, setIsSyncing] = useState(false);
 
     useEffect(() => {
-        if (isOpen) {
-            setGeminiKey(localStorage.getItem('user_gemini_key') || '');
-            setGroqKey(localStorage.getItem('user_groq_key') || '');
-            setOpenaiKey(localStorage.getItem('user_openai_key') || '');
-            setAnthropicKey(localStorage.getItem('user_anthropic_key') || '');
-            setPreferredAI(localStorage.getItem('user_preferred_ai') || 'gemini');
-            setSaved(false);
-        }
-    }, [isOpen]);
+        const loadSettings = async () => {
+            if (isOpen) {
+                // First load from local
+                setGeminiKey(localStorage.getItem('user_gemini_key') || '');
+                setGroqKey(localStorage.getItem('user_groq_key') || '');
+                setOpenaiKey(localStorage.getItem('user_openai_key') || '');
+                setAnthropicKey(localStorage.getItem('user_anthropic_key') || '');
+                setPreferredAI(localStorage.getItem('user_preferred_ai') || 'gemini');
+                setSaved(false);
 
-    const handleSave = () => {
+                // Then try to sync from cloud
+                setIsSyncing(true);
+                try {
+                    const cloudSettings = await loadUserSettingsFromDb();
+                    if (cloudSettings) {
+                        setGeminiKey(cloudSettings.geminiKey || '');
+                        setGroqKey(cloudSettings.groqKey || '');
+                        setOpenaiKey(cloudSettings.openaiKey || '');
+                        setAnthropicKey(cloudSettings.anthropicKey || '');
+                        setPreferredAI(cloudSettings.preferredAI || 'gemini');
+                        
+                        // Also update local for offline use
+                        localStorage.setItem('user_gemini_key', cloudSettings.geminiKey || '');
+                        localStorage.setItem('user_groq_key', cloudSettings.groqKey || '');
+                        localStorage.setItem('user_openai_key', cloudSettings.openaiKey || '');
+                        localStorage.setItem('user_anthropic_key', cloudSettings.anthropicKey || '');
+                        localStorage.setItem('user_preferred_ai', cloudSettings.preferredAI || 'gemini');
+                    }
+                } catch (e) {
+                    console.error("Cloud sync failed", e);
+                } finally {
+                    setIsSyncing(false);
+                }
+            }
+        };
+        loadSettings();
+    }, [isOpen]);
+    const handleSave = async () => {
+        const settings = {
+            geminiKey,
+            groqKey,
+            openaiKey,
+            anthropicKey,
+            preferredAI
+        };
+
+        // Save local
         localStorage.setItem('user_gemini_key', geminiKey);
         localStorage.setItem('user_groq_key', groqKey);
         localStorage.setItem('user_openai_key', openaiKey);
         localStorage.setItem('user_anthropic_key', anthropicKey);
         localStorage.setItem('user_preferred_ai', preferredAI);
-        setSaved(true);
-        setTimeout(() => {
-            setSaved(false);
-            onClose();
-        }, 1500);
+
+        // Save to Cloud
+        setIsSyncing(true);
+        try {
+            await saveUserSettingsToDb(settings);
+            setSaved(true);
+            setTimeout(() => {
+                setSaved(false);
+                onClose();
+            }, 1500);
+        } catch (e) {
+            alert("Errore durante il salvataggio in cloud. Le chiavi sono state comunque salvate localmente.");
+        } finally {
+            setIsSyncing(false);
+        }
     };
 
     if (!isOpen) return null;
@@ -48,7 +96,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                         <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg">
                             <KeyIcon className="w-5 h-5 text-black dark:text-white" />
                         </div>
-                        <h2 className="text-xl font-black text-black dark:text-white uppercase tracking-tight">API Settings</h2>
+                        <div>
+                            <h2 className="text-xl font-black text-black dark:text-white uppercase tracking-tight">API Settings</h2>
+                            {isSyncing && <span className="text-[9px] text-zinc-500 font-bold uppercase animate-pulse">Syncing with cloud...</span>}
+                        </div>
                     </div>
                     <button onClick={onClose} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
                         <XMarkIcon className="w-5 h-5 text-zinc-500" />

@@ -88,6 +88,8 @@ const App: React.FC = () => {
         if (pwd === APP_PASSWORD) {
             setIsAuthenticated(true);
             localStorage.setItem('cosmonet_auth', 'true');
+            // Use a simple identifier for the account (hash of password)
+            localStorage.setItem('cosmonet_user_id', btoa(pwd).substring(0, 10));
             return true;
         }
         return false;

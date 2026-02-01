@@ -19,6 +19,7 @@ export const supabase = dbClient;
 export const saveArticleToDb = async (article: SavedSeoResult) => {
     if (!supabase) return null;
     
+    const user_id = localStorage.getItem('cosmonet_user_id');
     const { data, error } = await supabase
         .from('articles')
         .upsert([
@@ -27,7 +28,8 @@ export const saveArticleToDb = async (article: SavedSeoResult) => {
                 title: article.title,
                 original_text: article.originalArticleText,
                 full_json: article,
-                created_at: new Date().toISOString()
+                created_at: new Date().toISOString(),
+                user_id: user_id
             }
         ])
         .select();
@@ -39,13 +41,58 @@ export const saveArticleToDb = async (article: SavedSeoResult) => {
     return data;
 };
 
+export const saveUserSettingsToDb = async (settings: any) => {
+    if (!supabase) return null;
+    const user_id = localStorage.getItem('cosmonet_user_id');
+    if (!user_id) return null;
+
+    const { data, error } = await supabase
+        .from('user_settings')
+        .upsert([
+            { 
+                user_id: user_id,
+                settings: settings,
+                updated_at: new Date().toISOString()
+            }
+        ])
+        .select();
+
+    if (error) {
+        console.error('Error saving settings to Supabase:', error);
+        throw error;
+    }
+    return data;
+};
+
+export const loadUserSettingsFromDb = async () => {
+    if (!supabase) return null;
+    const user_id = localStorage.getItem('cosmonet_user_id');
+    if (!user_id) return null;
+
+    const { data, error } = await supabase
+        .from('user_settings')
+        .select('settings')
+        .eq('user_id', user_id)
+        .single();
+
+    if (error && error.code !== 'PGRST116') { // PGRST116 is "no rows returned"
+        console.error('Error loading settings from Supabase:', error);
+        return null;
+    }
+    return data?.settings || null;
+};
+
 export const loadArticlesFromDb = async (): Promise<SavedSeoResult[]> => {
     if (!supabase) return [];
 
-    const { data, error } = await supabase
-        .from('articles')
-        .select('*')
-        .order('created_at', { ascending: false });
+    const user_id = localStorage.getItem('cosmonet_user_id');
+    let query = supabase.from('articles').select('*');
+    
+    if (user_id) {
+        query = query.eq('user_id', user_id);
+    }
+
+    const { data, error } = await query.order('created_at', { ascending: false });
 
     if (error) {
         console.error('Error loading from Supabase:', error);
