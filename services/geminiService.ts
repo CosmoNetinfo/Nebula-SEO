@@ -48,46 +48,26 @@ const responseSchema = {
 
 export const optimizeArticleForSeo = async (articleText: string): Promise<SeoResult> => {
     try {
-    const prompt = `SEO Editor per mercato ITALIANO. Formatta in HTML mantenendo TUTTA la lunghezza originale.
+    const prompt = `SEO Editor per mercato ITALIANO. 
+
+CRITICO: L'articolo deve essere LUNGO e COMPLETO. Se l'input è di 2000 parole, l'output DEVE essere di 2000 parole. Non riassumere MAI.
 
 REGOLE:
 1. LINGUA: Output 100% ITALIANO
-2. INTEGRITÀ: Non riassumere/tagliare. Mantieni TUTTI i dettagli tecnici, nomi, link, dati
-3. HTML: H2, H3, p, strong, ul, li
-4. ZERO testo extra: SOLO JSON
-
-5. READABILITY (7 criteri, output ITALIANO):
-   - Parole transizione (>30%)
-   - Inizio frasi consecutive (<10%)
-   - Complessità lessicale
-   - Lunghezza paragrafi (<150 parole)
-   - Distribuzione sottotitoli (<300 parole per sezione)
-   - Lunghezza frasi (<20% oltre 20 parole)
-   - Forma passiva (<10%)
-   - Liste (almeno 1)
-   
-   Format: {status: "good"/"average"/"poor", score: "X%", message: "consiglio pratico"}
-
-6. SEO CHECKLIST (10 punti):
-   - Keyword in ALT img, Link interni/esterni, Keyword in Intro
-   - Keyword Density (0.5-2.5%), Keyword in Title SEO
-   - Meta Desc (120-156 char), Keyword in Slug
-   - Keyword in H2/H3, Lunghezza (>300 parole), H1 singolo
-   
-   Format: {item: "nome", status: "good"/"average"/"poor", details: "msg ITA"}
+2. INTEGRITÀ: Mantieni TUTTI i dettagli, nomi, dati, paragrafi. 
+3. HTML: Usa tags semantici (H2, H3, p, strong, ul, li).
+4. FORMATO: JSON con i campi: keyPhrase, title, description, slug, htmlContent, tags, categories, socialMediaPost, seoChecklist, readability.
 
 Testo:
 ${articleText}`;
 
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-1.5-flash",
             contents: prompt,
             config: {
                 responseMimeType: "application/json",
-                responseSchema: responseSchema,
                 maxOutputTokens: 8192,
-                temperature: 0.1,
-                candidateCount: 1, // Force single complete candidate
+                temperature: 0.2,
             },
         });
 
@@ -180,7 +160,7 @@ HTML:
 ${currentResult.htmlContent}`;
 
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-1.5-flash",
             contents: prompt,
             config: {
                 tools: [{ googleSearch: {} }],
