@@ -33,7 +33,7 @@ export const LoadModal: React.FC<LoadModalProps> = ({ isOpen, onClose, articles,
                          </div>
                          <div>
                             <h2 className="text-lg font-bold text-white tracking-tight">Saved Articles</h2>
-                            <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Local Archive</p>
+                            <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">Local Archive</p>
                          </div>
                     </div>
                     <button onClick={onClose} className="p-2 rounded-lg hover:bg-zinc-900 text-zinc-500 hover:text-white transition-colors" aria-label="Close modal">

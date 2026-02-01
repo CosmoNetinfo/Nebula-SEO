@@ -20,7 +20,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black flex items-center justify-center p-4 font-sans text-zinc-900 dark:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-zinc-50 dark:bg-black flex items-center justify-center p-4 font-sans text-black dark:text-white transition-colors duration-300">
       <div className="max-w-md w-full glass-card p-10 rounded-2xl border border-zinc-200 dark:border-zinc-800/60 shadow-2xl relative overflow-hidden animate-fade-in-up bg-white dark:bg-zinc-900/40">
         
         {/* Minimal Decorative Top Bar */}
@@ -30,7 +30,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
             <div className="inline-flex items-center justify-center p-4 bg-zinc-900/50 rounded-2xl mb-6 border border-zinc-800 shadow-xl">
                 <SparklesIcon className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-white tracking-tight mb-3 font-display">
+            <h1 className="text-4xl font-bold text-black dark:text-white tracking-tight mb-3 font-display">
                 Nebula
             </h1>
             <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.3em] font-mono">Secure Access Terminal</p>
@@ -38,7 +38,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
         <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
             <div className="group">
-                <label className="block text-[10px] font-bold uppercase text-zinc-500 mb-2 ml-1 tracking-wider group-focus-within:text-white transition-colors">Access Code</label>
+                <label className="block text-[10px] font-bold uppercase text-zinc-800 dark:text-zinc-500 mb-2 ml-1 tracking-wider group-focus-within:text-black dark:group-focus-within:text-white transition-colors">Access Code</label>
                 <input 
                     type="password" 
                     value={password}

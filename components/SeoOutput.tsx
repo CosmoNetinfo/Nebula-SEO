@@ -62,12 +62,12 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
     if (isLoading) return <div className="bg-zinc-50 dark:bg-black/20 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 h-full flex items-center justify-center transition-colors duration-300"><Loader /></div>;
     if (error) return <div className="bg-zinc-50 dark:bg-black/20 p-6 rounded-2xl border border-red-200 dark:border-red-900/20 text-red-600 dark:text-red-400 flex items-center justify-center text-center font-mono text-xs transition-colors duration-300">{error}</div>;
     if (!result) return (
-        <div className="bg-zinc-100 dark:bg-zinc-900/10 p-12 rounded-2xl border border-zinc-200 dark:border-zinc-800/50 h-full flex flex-col items-center justify-center text-center text-zinc-600 transition-colors duration-300">
+        <div className="bg-zinc-100 dark:bg-zinc-900/10 p-12 rounded-2xl border border-zinc-200 dark:border-zinc-800/50 h-full flex flex-col items-center justify-center text-center text-black transition-colors duration-300">
             <div className="p-4 bg-zinc-200 dark:bg-zinc-900/50 rounded-full mb-4 border border-zinc-300 dark:border-zinc-800">
-                <SparklesIcon className="w-8 h-8 opacity-20 text-zinc-900 dark:text-white" />
+                <SparklesIcon className="w-8 h-8 opacity-20 text-black dark:text-white" />
             </div>
-            <p className="text-sm font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-500">No active analysis</p>
-            <p className="text-[10px] text-zinc-500 dark:text-zinc-600 mt-2 font-mono">Select an item from the queue to view details</p>
+            <p className="text-sm font-bold uppercase tracking-widest text-black dark:text-zinc-500">No active analysis</p>
+            <p className="text-[10px] text-zinc-900 dark:text-zinc-600 mt-2 font-mono">Select an item from the queue to view details</p>
         </div>
     );
 
@@ -84,8 +84,8 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                         onClick={() => setActiveTab(tab.id as any)}
                         className={`flex-1 flex items-center justify-center gap-2 py-3 text-[10px] font-bold uppercase tracking-widest transition-all rounded-xl ${
                             activeTab === tab.id 
-                                ? 'bg-white dark:bg-zinc-100 text-zinc-900 dark:text-black shadow-lg shadow-zinc-200/50 dark:shadow-white/5 border border-zinc-200 dark:border-transparent' 
-                                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900'
+                                ? 'bg-white dark:bg-zinc-100 text-black shadow-lg shadow-zinc-200/50 dark:shadow-white/5 border border-zinc-200 dark:border-transparent' 
+                                : 'text-zinc-600 hover:text-black dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900'
                         }`}
                     >
                         <tab.icon className="w-3.5 h-3.5" /> {tab.label}
@@ -105,7 +105,7 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                              <button
                                 onClick={onIncreaseDepth}
                                 disabled={isEnriching}
-                                className="text-[10px] px-4 py-2 rounded-lg font-bold uppercase transition-all bg-zinc-100 text-black hover:bg-zinc-300 shadow-sm flex items-center gap-2 tracking-wider"
+                                className="text-[10px] px-4 py-2 rounded-lg font-bold uppercase transition-all bg-black text-white hover:bg-zinc-800 shadow-sm flex items-center gap-2 tracking-wider"
                             >
                                 <SparklesIcon className="w-3.5 h-3.5" />
                                 {isEnriching ? 'Enriching...' : 'Deep Research & Enrich'}
@@ -226,7 +226,7 @@ export const SeoOutput: React.FC<SeoOutputProps> = ({ result, isLoading, isEnric
                                                 navigator.clipboard.writeText(fullCode);
                                                 alert("HTML copied!");
                                             }}
-                                            className="bg-zinc-900 text-white dark:bg-white dark:text-black hover:bg-zinc-700 dark:hover:bg-zinc-200 px-3 py-2 rounded-lg text-[10px] font-bold shadow-lg uppercase tracking-wider transition-colors"
+                                            className="bg-black text-white dark:bg-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 px-3 py-2 rounded-lg text-[10px] font-bold shadow-lg uppercase tracking-wider transition-colors"
                                         >
                                             Copy Code
                                         </button>
