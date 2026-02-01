@@ -64,15 +64,29 @@ export const optimizeArticleForSeo = async (articleText: string): Promise<SeoRes
     3. LENGTH PARITY: If the input has ${wordCount} words, the optimized output MUST have at least ${wordCount} words. 
     4. STRUCTURE INTEGRITY: Maintain all original information blocks. If the input has multiple detailed sections, keep them detailed.
     
-    OUTPUT FORMAT:
-    - Return ONLY a JSON object.
-    - Fields: keyPhrase, title, description, slug, htmlContent, tags, categories, socialMediaPost, seoChecklist, readability.
-    - 'htmlContent' must be the full optimized article in HTML (H2, strong, p tags).
+    OUTPUT FORMAT (STRICT JSON):
+    - Return a JSON object with EXACTLY these fields:
+      * keyPhrase: (string) The main SEO keyword.
+      * title: (string) Optimized SEO Title.
+      * description: (string) SEO Meta Description.
+      * slug: (string) URL-friendly slug.
+      * htmlContent: (string) The article in HTML (H2, strong, p).
+      * tags: (string) CSV tags.
+      * categories: (string) Relevant categories.
+      * socialMediaPost: (string) A catchy social caption.
+      * seoChecklist: (Array) MUST HAVE AT LEAST 6 ITEMS. Each: { "item": "Condition", "status": "pass" | "manual_action" | "fail", "details": "Explanation" }.
+      * readability: (Array) MUST HAVE AT LEAST 5 ITEMS. Each: { "criteria": "Metric", "score": "X%", "status": "good" | "ok" | "needs_improvement", "message": "Feedback" }.
+
+    CRITICAL:
+    - ALL fields must be populated. 
+    - NEVER return empty arrays for seoChecklist or readability.
+    - NEVER return empty strings for item, details, criteria, or message.
+    - KEEP ALL KEYS AND STATUSES IN ENGLISH AS SPECIFIED.
 
     SOURCE TEXT TO PROCESS:
     ${articleText}
     
-    FINAL CHECK: Is the output as long or longer than the input? If no, rewrite to ensure no detail is lost.`;
+    FINAL CHECK: Is the output as long or longer than the input? Are all checklist items present and detailed? If no, rewrite.`;
 
     try {
         DebugLogger.log('info', `Optimization started: Input ${wordCount} words.`);

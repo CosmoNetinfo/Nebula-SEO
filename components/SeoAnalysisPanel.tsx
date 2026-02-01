@@ -17,11 +17,11 @@ export const SeoAnalysisPanel: React.FC<SeoAnalysisPanelProps> = ({ items }) => 
         if (!Array.isArray(items) || items.length === 0) return 0;
         
         const totalPoints = items.reduce((acc, item) => {
-            if (!item) return acc + 30;
+            if (!item) return acc;
             const s = (item.status || 'poor').toLowerCase();
-            if (s === 'good' || s === 'ottimo') return acc + 100;
-            if (s === 'average' || s === 'medio') return acc + 60;
-            return acc + 30; // poor
+            if (s === 'good' || s === 'ottimo' || s === 'pass' || s === 'success') return acc + 100;
+            if (s === 'average' || s === 'medio' || s === 'warning' || s === 'manual_action') return acc + 60;
+            return acc + 30; // poor / fail
         }, 0);
         
         return Math.round(totalPoints / items.length);
@@ -29,8 +29,8 @@ export const SeoAnalysisPanel: React.FC<SeoAnalysisPanelProps> = ({ items }) => 
 
     const getStatusIcon = (status: string) => {
         const s = (status || 'poor').toLowerCase();
-        if (s === 'good' || s === 'ottimo') return <CheckCircleIcon className="w-4 h-4 text-black dark:text-zinc-200 mt-0.5 shrink-0" />;
-        if (s === 'average' || s === 'medio') return <ExclamationTriangleIcon className="w-4 h-4 text-zinc-700 dark:text-zinc-500 mt-0.5 shrink-0" />;
+        if (s === 'good' || s === 'ottimo' || s === 'pass' || s === 'success') return <CheckCircleIcon className="w-4 h-4 text-black dark:text-zinc-200 mt-0.5 shrink-0" />;
+        if (s === 'average' || s === 'medio' || s === 'warning' || s === 'manual_action') return <ExclamationTriangleIcon className="w-4 h-4 text-zinc-700 dark:text-zinc-500 mt-0.5 shrink-0" />;
         return <XCircleIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-600 mt-0.5 shrink-0" />;
     };
 

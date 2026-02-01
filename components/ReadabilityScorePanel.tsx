@@ -12,14 +12,22 @@ export const ReadabilityScorePanel: React.FC<ReadabilityScorePanelProps> = ({ it
         if (!Array.isArray(items) || items.length === 0) return 0;
         
         const totalPoints = items.reduce((acc, item) => {
-            if (!item) return acc + 30;
-            if (item.status === 'good') return acc + 100;
-            if (item.status === 'average') return acc + 60;
-            return acc + 30;
+            if (!item) return acc;
+            const s = (item.status || 'poor').toLowerCase();
+            if (s === 'good' || s === 'excellent' || s === 'ottimo') return acc + 100;
+            if (s === 'ok' || s === 'average' || s === 'medio' || s === 'warning') return acc + 60;
+            return acc + 30; // poor / needs_improvement
         }, 0);
         
         return Math.round(totalPoints / items.length);
     }, [items]);
+
+    const getStatusIcon = (status: string) => {
+        const s = (status || 'poor').toLowerCase();
+        if (s === 'good' || s === 'excellent' || s === 'ottimo') return <CheckCircleIcon className="w-4 h-4 text-black dark:text-zinc-300" />;
+        if (s === 'ok' || s === 'average' || s === 'medio' || s === 'warning') return <ExclamationTriangleIcon className="w-4 h-4 text-zinc-700 dark:text-zinc-500" />;
+        return <XCircleIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-600" />;
+    };
 
     return (
         <div className="bg-white dark:bg-zinc-950/30 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800/50 shadow-lg relative overflow-hidden group mb-6 transition-colors duration-300">
@@ -42,9 +50,7 @@ export const ReadabilityScorePanel: React.FC<ReadabilityScorePanelProps> = ({ it
                 {Array.isArray(items) && items.map((r, i) => (
                      <div key={i} className="flex items-start gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800/30 bg-zinc-50 dark:bg-black/20 hover:bg-zinc-100 dark:hover:bg-zinc-900/40 transition-colors group/item">
                         <div className="mt-0.5 shrink-0">
-                            {r.status === 'good' && <CheckCircleIcon className="w-4 h-4 text-black dark:text-zinc-300" />}
-                            {r.status === 'average' && <ExclamationTriangleIcon className="w-4 h-4 text-zinc-700 dark:text-zinc-500" />}
-                            {r.status === 'poor' && <XCircleIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-600" />}
+                            {getStatusIcon(r.status)}
                         </div>
                         
                         <div className="flex-1">
