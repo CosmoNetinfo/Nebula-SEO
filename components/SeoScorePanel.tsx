@@ -74,16 +74,16 @@ export const SeoScorePanel: React.FC<SeoScorePanelProps> = ({ htmlContent, focus
     };
 
     return (
-        <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-700/50 shadow-lg relative overflow-hidden group">
+        <div className="bg-white dark:bg-zinc-950/30 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800/50 shadow-lg relative overflow-hidden group transition-colors duration-300">
             <div className="flex items-center justify-between mb-4 relative z-10">
-                <h4 className="text-xs uppercase font-bold text-slate-400 tracking-wider">Analisi SEO Real-Time</h4>
+                <h4 className="text-xs uppercase font-bold text-zinc-600 dark:text-zinc-500 tracking-wider">Analisi SEO Real-Time</h4>
                 <div className={`px-3 py-1 rounded-full border ${getScoreColor(metrics.score)} bg-opacity-10 backdrop-blur-sm font-black text-sm`}>
                     TOP SCORE: {metrics.score}/100
                 </div>
             </div>
             
             {/* Progress Bar */}
-            <div className="h-1.5 w-full bg-slate-800 rounded-full mb-6 relative z-10 overflow-hidden">
+            <div className="h-1.5 w-full bg-zinc-200 dark:bg-zinc-900 rounded-full mb-6 relative z-10 overflow-hidden transition-colors">
                  <div 
                     className={`h-full ${getBarColor(metrics.score)} transition-all duration-1000 ease-out`} 
                     style={{ width: `${metrics.score}%` }}
@@ -98,9 +98,9 @@ export const SeoScorePanel: React.FC<SeoScorePanelProps> = ({ htmlContent, focus
                         : <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500 mt-0.5" />
                     }
                     <div>
-                        <p className="text-[10px] uppercase font-bold text-slate-500">Keyword Density</p>
-                        <p className="text-xs font-medium text-slate-200">{metrics.density}% ({metrics.keywordCount} volte)</p>
-                        <p className="text-[9px] text-slate-600">Target: 0.5% - 2.5%</p>
+                        <p className="text-[10px] uppercase font-bold text-zinc-500">Keyword Density</p>
+                        <p className="text-xs font-medium text-zinc-900 dark:text-zinc-200">{metrics.density}% ({metrics.keywordCount} volte)</p>
+                        <p className="text-[9px] text-zinc-400 dark:text-zinc-600">Target: 0.5% - 2.5%</p>
                     </div>
                 </div>
                 
@@ -111,9 +111,9 @@ export const SeoScorePanel: React.FC<SeoScorePanelProps> = ({ htmlContent, focus
                         : <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500 mt-0.5" />
                     }
                     <div>
-                        <p className="text-[10px] uppercase font-bold text-slate-500">Lunghezza</p>
-                        <p className="text-xs font-medium text-slate-200">{metrics.wordCount} parole</p>
-                        <p className="text-[9px] text-slate-600">Target: &gt;600</p>
+                        <p className="text-[10px] uppercase font-bold text-zinc-500">Lunghezza</p>
+                        <p className="text-xs font-medium text-zinc-900 dark:text-zinc-200">{metrics.wordCount} parole</p>
+                        <p className="text-[9px] text-zinc-400 dark:text-zinc-600">Target: &gt;600</p>
                     </div>
                 </div>
                 
@@ -124,9 +124,9 @@ export const SeoScorePanel: React.FC<SeoScorePanelProps> = ({ htmlContent, focus
                         : <XCircleIcon className="w-4 h-4 text-red-500 mt-0.5" />
                     }
                     <div>
-                        <p className="text-[10px] uppercase font-bold text-slate-500">Struttura H2</p>
-                        <p className="text-xs font-medium text-slate-200">{metrics.h2Count} sottotitoli</p>
-                        <p className="text-[9px] text-slate-600">Minimo 2 sezioni</p>
+                        <p className="text-[10px] uppercase font-bold text-zinc-500">Struttura H2</p>
+                        <p className="text-xs font-medium text-zinc-900 dark:text-zinc-200">{metrics.h2Count} sottotitoli</p>
+                        <p className="text-[9px] text-zinc-400 dark:text-zinc-600">Minimo 2 sezioni</p>
                     </div>
                 </div>
                 
@@ -137,8 +137,8 @@ export const SeoScorePanel: React.FC<SeoScorePanelProps> = ({ htmlContent, focus
                         : <ExclamationTriangleIcon className="w-4 h-4 text-yellow-500 mt-0.5" />
                     }
                     <div>
-                        <p className="text-[10px] uppercase font-bold text-slate-500">Leggibilità</p>
-                        <p className="text-xs font-medium text-slate-200">
+                        <p className="text-[10px] uppercase font-bold text-zinc-500">Leggibilità</p>
+                        <p className="text-xs font-medium text-zinc-900 dark:text-zinc-200">
                             {metrics.hasLists ? 'Liste OK' : 'No Liste'} • {metrics.hasBold ? 'Grassetti OK' : 'No Grassetti'}
                         </p>
                     </div>
