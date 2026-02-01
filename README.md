@@ -1,20 +1,21 @@
 # ✨ Nebula SEO - AI Content Optimizer
 > **L'Architetto Cosmico per i tuoi Contenuti Web**
 
-![Nebula SEO Banner](https://img.shields.io/badge/Status-Stable_v2.1-18181b?style=for-the-badge&logo=rocket)
-![Tech Stack](https://img.shields.io/badge/Stack-React_19_•_Gemini_2.0_•_Supabase-ffffff?style=for-the-badge&labelColor=000000)
+![Nebula SEO Banner](https://img.shields.io/badge/Status-Stable_v2.5-18181b?style=for-the-badge&logo=rocket)
+![Tech Stack](https://img.shields.io/badge/Stack-React_19_•_Groq_•_Llama_3.3_•_Supabase-ffffff?style=for-the-badge&labelColor=000000)
 ![Theme](https://img.shields.io/badge/Theme-Monochrome_OLED-000000?style=for-the-badge)
 
-**Nebula SEO** è una piattaforma avanzata per l'ottimizzazione editoriale che combina la potenza di **Google Gemini 2.0 Flash** con un'interfaccia **Monochrome OLED** professionale. Progettata per content creator, SEO specialist e redazioni digitali, trasforma bozze grezze (generate da AI come Perplexity o scritte a mano) in articoli perfettamente formattati, ottimizzati per i motori di ricerca e arricchiti con fonti autorevoli.
+**Nebula SEO** è una piattaforma avanzata per l'ottimizzazione editoriale che combina la potenza di **Groq (Llama 3.3 70B)** con un'interfaccia **Monochrome OLED** professionale. Progettata per content creator, SEO specialist e redazioni digitali, trasforma bozze grezze (generate da AI come Perplexity o scritte a mano) in articoli perfettamente formattati, ottimizzati per i motori di ricerca e arricchiti con fonti autorevoli.
 
 ---
 
 ## 🌌 Perché Nebula SEO?
 
 Il web writing moderno richiede velocità e precisione. Nebula SEO risolve problemi critici:
-1.  **Il "Muro di Testo"**: Le AI generiche producono testi piatti. Nebula ristruttura automaticamente inserendo H2, H3, liste puntate e grassetti strategici.
-2.  **L'Allucinazione delle Fonti**: A differenza di altri tool, Nebula verifica e inserisce link contestuali reali tramite Google Search Grounding.
-3.  **Produttività Estrema**: La coda di elaborazione batch permette di lavorare su 4 articoli simultaneamente, mentre l'interfaccia **Light/Dark Mode** si adatta al tuo ambiente di lavoro.
+1.  **L'Integrità del Contenuto**: Mentre altre AI riassumono, Nebula è configurata con una direttiva di "Zero-Loss", garantendo che ogni parola e dettaglio originale venga preservato e potenziato.
+2.  **Velocità Estrema**: Grazie all'integrazione con l'engine **Groq**, l'elaborazione di articoli lunghi è quasi istantanea.
+3.  **Il "Muro di Testo"**: Le AI generiche producono testi piatti. Nebula ristruttura automaticamente inserendo H2, H3, liste puntate e grassetti strategici.
+4.  **Produttività Estrema**: La coda di elaborazione batch permette di lavorare su 4 articoli simultaneamente, mentre l'interfaccia **Light/Dark Mode** si adatta al tuo ambiente di lavoro.
 
 ---
 
@@ -22,16 +23,16 @@ Il web writing moderno richiede velocità e precisione. Nebula SEO risolve probl
 
 ### 1. ⚡ Ottimizzazione Intelligente (Smart Rewriting)
 Il cuore del sistema. L'IA analizza il testo in entrata e applica oltre **20 regole editoriali** in tempo reale:
+*   **Zero-Summarization**: Direttiva ferrea per mantenere la lunghezza originale al 100%.
 *   **Correzione Ripetizioni**: Elimina l'inizio di frase ripetitivo.
 *   **HTML Semantico**: Genera automaticamente una struttura gerarchica (`<h2>`, `<h3>`, `<ul>`, `<strong>`).
-*   **Tone of Voice**: Adatta lo stile rendendolo professionale ma coinvolgente ("Human-like").
 *   **Metadati Completi**: Genera Title Tag, Meta Description, Slug URL, Focus Keyword e Tag CSV.
 
 ### 2. 📊 SEO Score & Analisi (NEW)
 Monitoraggio della qualità in tempo reale:
+*   **Word Count Tracker**: Confronto immediato tra parole originali e ottimizzate.
 *   **Keyword Density**: Analizza la frequenza della parola chiave principale.
 *   **Readability Score**: Valuta la leggibilità del testo (indice Flesch-Kincaid adattato).
-*   **Checklist Tecnica**: Verifica presenza di H1, H2, lunghezza paragrafi, e struttura dei link.
 
 ### 3. 🔗 Arricchimento Fonti (Source Grounding)
 Non solo forma, ma sostanza. La funzione **"Aumenta Profondità"**:
@@ -79,7 +80,7 @@ Un'esperienza utente raffinata e priva di distrazioni.
 |------------|------------|-------------|
 | **Frontend** | React 19 + Vite | Rendering ultra-veloce e State management ottimizzato. |
 | **Styling** | Tailwind CSS v3 | Design System custom con supporto nativo Dark Mode. |
-| **AI Core** | Google Gemini 2.0 Flash | Modello multimodale a bassa latenza. |
+| **AI Core** | Groq (Llama 3.3 70B) | Engine ultra-veloce con latenza minima e alta precisione. |
 | **Database** | Supabase (PostgreSQL) | Backend-as-a-Service per persistenza dati e Archivio. |
 
 ---
