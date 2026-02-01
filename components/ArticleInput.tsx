@@ -35,7 +35,7 @@ export const ArticleInput: React.FC<ArticleInputProps> = ({
                     </h2>
                 </div>
                 <div className="flex gap-2">
-                     <button className="text-slate-500 hover:text-indigo-400 transition-all hover:scale-110" title="Backup">
+                     <button className="text-zinc-500 hover:text-indigo-400 transition-all hover:scale-110" title="Backup">
                         <CloudArrowDownIcon className="w-3.5 h-3.5" />
                     </button>
                 </div>
@@ -46,12 +46,12 @@ export const ArticleInput: React.FC<ArticleInputProps> = ({
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     placeholder="Incolla qui l'articolo da ottimizzare..."
-                    className="w-full h-48 p-3 bg-slate-950/60 border border-slate-700/50 rounded-lg 
+                    className="w-full h-48 p-3 bg-black/60 border border-zinc-800/50 rounded-lg 
                              focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500/50 
-                             transition-all duration-300 text-slate-200 text-xs leading-relaxed 
+                             transition-all duration-300 text-zinc-200 text-xs leading-relaxed 
                              custom-scrollbar resize-none
-                             hover:bg-slate-950/80 hover:border-slate-600/50
-                             placeholder:text-slate-600"
+                             hover:bg-zinc-950/80 hover:border-zinc-700/50
+                             placeholder:text-zinc-600"
                     disabled={isLoading}
                 />
                 <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
@@ -76,7 +76,7 @@ export const ArticleInput: React.FC<ArticleInputProps> = ({
                 </span>
             </button>
             
-            <p className="text-[10px] text-slate-500/80 text-center font-medium">
+            <p className="text-[10px] text-zinc-500/80 text-center font-medium">
                 L'IA elaborerà fino a 4 testi simultaneamente
             </p>
         </div>

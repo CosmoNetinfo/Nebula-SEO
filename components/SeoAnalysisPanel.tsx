@@ -46,16 +46,16 @@ export const SeoAnalysisPanel: React.FC<SeoAnalysisPanelProps> = ({ items }) => 
     };
 
     return (
-        <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-700/50 shadow-lg relative overflow-hidden group mb-6">
+        <div className="bg-black/60 p-5 rounded-2xl border border-zinc-700/50 shadow-lg relative overflow-hidden group mb-6">
             <div className="flex items-center justify-between mb-4 relative z-10">
-                <h4 className="text-xs uppercase font-bold text-slate-400 tracking-wider">Analisi SEO Tecnica</h4>
+                <h4 className="text-xs uppercase font-bold text-zinc-500 tracking-wider">Analisi SEO Tecnica</h4>
                 <div className={`px-3 py-1 rounded-full border ${getScoreColor(score)} bg-opacity-10 backdrop-blur-sm font-black text-sm`}>
                     SEO: {score}/100
                 </div>
             </div>
             
             {/* Progress Bar */}
-            <div className="h-1.5 w-full bg-slate-800 rounded-full mb-6 relative z-10 overflow-hidden">
+            <div className="h-1.5 w-full bg-zinc-800 rounded-full mb-6 relative z-10 overflow-hidden">
                  <div 
                     className={`h-full ${getBarColor(score)} transition-all duration-1000 ease-out`} 
                     style={{ width: `${score}%` }}
@@ -64,11 +64,11 @@ export const SeoAnalysisPanel: React.FC<SeoAnalysisPanelProps> = ({ items }) => 
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
                 {items && items.map((r, i) => (
-                     <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-800/30 transition-colors">
+                     <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-zinc-800/20 transition-colors">
                         {getStatusIcon(r.status)}
                         <div>
-                            <p className="text-[10px] uppercase font-bold text-slate-500">{r.item}</p>
-                            <p className="text-[10px] text-slate-300 leading-tight mt-1">{r.details}</p>
+                            <p className="text-[10px] uppercase font-bold text-zinc-500">{r.item}</p>
+                            <p className="text-[10px] text-zinc-300 leading-tight mt-1">{r.details}</p>
                         </div>
                     </div>
                 ))}

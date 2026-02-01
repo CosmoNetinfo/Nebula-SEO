@@ -183,7 +183,7 @@ const App: React.FC = () => {
     const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {};
 
     return (
-        <div className="bg-slate-900 min-h-screen text-slate-200 font-sans pb-12 relative">
+        <div className="bg-black min-h-screen text-zinc-200 font-sans pb-12 relative">
             <div className="container mx-auto max-w-7xl px-4 py-4 md:px-6 md:py-6 relative z-10">
                 <header className="glass-card p-3 md:p-4 rounded-xl mb-4 shadow-lg slide-in-up">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-2">
@@ -212,7 +212,7 @@ const App: React.FC = () => {
                                          flex items-center gap-1.5 group"
                             >
                                 <ArchiveBoxIcon className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform" />
-                                <span className="text-slate-300 group-hover:text-white">Archivio</span>
+                                <span className="text-zinc-300 group-hover:text-white">Archivio</span>
                                 <span className="ml-0.5 bg-indigo-500/20 text-indigo-400 px-1.5 py-0.5 rounded-full text-[9px] font-black">
                                     {savedArticles.length}
                                 </span>
@@ -272,11 +272,11 @@ const App: React.FC = () => {
                             <div className="space-y-2.5 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                                 {batchQueue.length === 0 ? (
                                     <div className="text-center py-12">
-                                        <div className="inline-block p-4 rounded-2xl bg-slate-900/50 mb-3">
-                                            <ArchiveBoxIcon className="w-12 h-12 text-slate-600" />
+                                        <div className="inline-block p-4 rounded-2xl bg-zinc-900/50 mb-3">
+                                            <ArchiveBoxIcon className="w-12 h-12 text-zinc-600" />
                                         </div>
-                                        <p className="text-sm text-slate-500 font-medium">Nessuna analisi attiva</p>
-                                        <p className="text-xs text-slate-600 mt-1">Il tuo output ottimizzato apparirà qui quando è pronto</p>
+                                        <p className="text-sm text-zinc-500 font-medium">Nessuna analisi attiva</p>
+                                        <p className="text-xs text-zinc-600 mt-1">Il tuo output ottimizzato apparirà qui quando è pronto</p>
                                     </div>
                                 ) : (
                                     batchQueue.map((item, index) => (
@@ -286,7 +286,7 @@ const App: React.FC = () => {
                                             className={`p-4 rounded-2xl border cursor-pointer transition-all duration-300 flex items-center justify-between group ${
                                                 selectedBatchId === item.id 
                                                 ? 'bg-gradient-to-r from-indigo-600/20 to-cyan-600/10 border-indigo-500/50 shadow-lg shadow-indigo-500/20' 
-                                                : 'bg-slate-900/40 border-slate-700/50 hover:border-slate-600 hover:bg-slate-900/60'
+                                                : 'bg-zinc-900/40 border-zinc-800/50 hover:border-zinc-600 hover:bg-zinc-900/60'
                                             }`}
                                             style={{animationDelay: `${index * 0.05}s`}}
                                         >
@@ -295,7 +295,7 @@ const App: React.FC = () => {
                                                     {selectedBatchId === item.id && (
                                                         <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></div>
                                                     )}
-                                                    <p className="text-sm font-bold text-slate-100 truncate">
+                                                    <p className="text-sm font-bold text-zinc-100 truncate">
                                                         {item.result?.title || item.text.substring(0, 45) + '...'}
                                                     </p>
                                                 </div>
@@ -304,7 +304,7 @@ const App: React.FC = () => {
                                                         item.status === 'completed' ? 'bg-green-500/20 text-green-400' : 
                                                         item.status === 'processing' ? 'bg-indigo-500/20 text-indigo-400 animate-pulse' : 
                                                         item.status === 'error' ? 'bg-red-500/20 text-red-400' : 
-                                                        'bg-slate-700/50 text-slate-400'
+                                                        'bg-zinc-800/50 text-zinc-400'
                                                     }`}>
                                                         {item.status === 'completed' ? '✓ Completato' :
                                                          item.status === 'processing' ? '⚡ Elaborazione' :
